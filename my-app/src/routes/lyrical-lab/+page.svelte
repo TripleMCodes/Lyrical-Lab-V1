@@ -6,16 +6,22 @@
     import Controls from '../../lib/components/Controls.svelte'
     import SongPanel from '../../lib/components/SongPanel.svelte'
     import Notification from '../../lib/components/Notification.svelte'
+    import {fetchWords} from '../../lib/api/client'
   import { FileWatcherEventKind } from "typescript";
   // import { words } from "../sverdle/words.server";
   let words = $state(0);
   let chars = $state(0);
   let editorContent = $state("");
+  let editor2Content = $state("");
   let title = $state("");
   let artist = $state("");
   let album = $state("");
   let mood = $state("");
   let genre = $state("");
+
+  let wordSelected = $state("")
+  let wordSearched = $state("")
+  let wordList = $state()
 
   let showNotification = $state(false);
   let notificationMessage = $state("");
@@ -76,15 +82,32 @@
         showNotification = true;
     }
 }
-    // let collapsed = $state(false);
-    // import icon1 from '../../../public/icons8-brain-64.png'
+
+  async function fetchWordsWrapper(){
+    const lst = await fetchWords(wordSelected, wordSearched)
+    wordList = lst
+    console.log($state.snapshot(wordList))
+    if (wordList.length === 0){
+      notificationMessage = "No results found";
+      notificationType = "error";
+      showNotification = true;
+    }
+
+    let textList = ""
+
+    for (let index = 0; index < wordList.length; index++) {
+      textList += wordList[index]['word'] + '\n'
+    }
+    editor2Content = textList
+  }
+   
 </script>
 
 
 <SongPanel bind:title bind:artist bind:album bind:mood bind:genre />
 <section  class="ll-container" >
-  <Controls onSave={handleSave} />
-  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} />
+  <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper}/>
+  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} />
 </section>
 
 <section class="word-counter">

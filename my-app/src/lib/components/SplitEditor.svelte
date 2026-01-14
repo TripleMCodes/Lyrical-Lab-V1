@@ -1,7 +1,7 @@
 <script>
 
-    let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable() } = $props()
-    let editor2 = $state("");
+    let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable() } = $props()
+    // let editor2 = $state("");
    
     let debounceTimer;
 

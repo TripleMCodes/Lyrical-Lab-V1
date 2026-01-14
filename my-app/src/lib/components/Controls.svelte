@@ -1,6 +1,6 @@
 <script>
     import Tooltip from "./Tooltip.svelte"
-    let { onSave } = $props();
+    let { onSave, selected = $bindable(), searchWord = $bindable(), word = $bindable() } = $props();
 </script>
 
 
@@ -39,16 +39,16 @@
         </div> 
     </section>
 
-    <section class="r-n-l">
+    <section class="r-n-l" >
         <label for="r-n-l">Rhymes and Lexicon</label>
-        <input type="text" name="word" id="word" placeholder="Enter worrd here...">
-        <select name="search" id="search">
+        <input type="text" name="word" id="word" placeholder="Enter worrd here..." bind:value={word}>
+        <select name="search" id="search" bind:value={selected}>
         <option value="rhyme">Rhyme</option>
         <option value="synonym">Synonym</option>
         <option value="related">Related</option>
         <option value="homophone">Homophone</option>
         </select>
-        <button>Search</button>
+        <button onclick={searchWord}>Search</button>
     </section>
 
     <section class="control-btns">
