@@ -1,0 +1,43 @@
+from fastapi import status, HTTPException, Depends, APIRouter
+from sqlalchemy.orm import Session
+from app import schemas, oauth2, models, database
+from app.syllable_counter import SyllableCounter
+
+
+router = APIRouter(
+    prefix='/api/lyric-tools',
+    tags=['lyric-tools']
+)
+
+# current_user: schemas.TokenData = Depends(oauth2.get_current_user)
+
+@router.post('/syllabe-counter')
+def count_syllables(
+    data: dict,
+    db: Session = Depends(database.get_db),
+    current_user: schemas.TokenData = Depends(oauth2.get_current_user)
+):  
+    # print("in the fire")
+    # print(data)
+    syllable_counter = SyllableCounter()
+    results = syllable_counter.count_syllables_in_text(data['message'])
+
+    text = ""
+
+    for line in results:
+        text += f'{line[0]} ({str(line[1])}){'\n'}'
+
+    data = {"message": text}
+    return data
+
+@router.post('/save-song')
+def save_song(
+    data:dict,
+    db: Session = Depends(database.get_db),
+    current_user: schemas.TokenData = Depends(oauth2.get_current_user)
+):
+    print(data)
+
+    data = {'message': "Song saved successfully"}
+
+    return data

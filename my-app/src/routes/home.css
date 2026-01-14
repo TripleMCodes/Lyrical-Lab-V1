@@ -1,0 +1,116 @@
+.search-section {
+        display:flex;
+        justify-content:space-evenly;
+        align-items: space-evenly;
+        flex-direction: column;
+        max-width: 100%;
+        max-height: 100%;
+}
+
+.intro{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+   
+}
+
+.intro p{
+    max-width: 40%;
+}
+
+.search-box input, 
+.search-box select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  flex: 1 1 100%; /* full width on small screens */
+  border-radius: 5px;
+  border: none;
+  background-color: #443360;
+  color: #f5f5f5;
+}
+
+.search-box button, .intro a {
+  padding: 0.5rem 1rem;
+  background-color: #dcb6ff;
+  color: #2b1e3c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+  flex: 1 1 auto;
+  text-decoration: none;
+}
+
+.search-box {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap; /* allows wrapping on small screens */
+}
+
+.search-box button:hover {
+  background-color: #c29cff;
+}
+
+
+.intro {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.intro {
+  color: #dcb6ff;
+  margin-bottom: 1rem;
+}
+
+.intro p {
+  color: #e0c8ff;
+  margin-bottom: 1.5rem;
+}
+
+
+/* Container styling */
+#results-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  background-color: #1a0a2b; /* very dark purple */
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(128, 0, 255, 0.4); /* soft neon glow */
+  /* max-width: 400px; */
+  max-height: 400px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  
+}
+
+/* Inner UL (if you want it nested) */
+#results-list ul {
+  padding: 0;
+  margin: 0;
+}
+
+/* Each result item */
+#results-list li, .notify {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(128, 0, 255, 0.2);
+  color: #d8b3ff; /* light neon purple */
+  font-family: 'Fira Mono', monospace;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+/* Hover glow effect */
+#results-list li:hover, .notify {
+  background-color: rgba(128, 0, 255, 0.2);
+  text-shadow: 0 0 10px #d8b3ff;
+  transform: translateX(5px);
+}
+
+/* Last item: no border */
+#results-list li:last-child {
+  border-bottom: none;
+}
