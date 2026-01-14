@@ -5,6 +5,7 @@
     import Editor from '../../lib/components/SplitEditor.svelte'
     import Controls from '../../lib/components/Controls.svelte'
     import SongPanel from '../../lib/components/SongPanel.svelte'
+    import Notification from '../../lib/components/Notification.svelte'
   import { FileWatcherEventKind } from "typescript";
   // import { words } from "../sverdle/words.server";
   let words = $state(0);
@@ -16,12 +17,24 @@
   let mood = $state("");
   let genre = $state("");
 
+  let showNotification = $state(false);
+  let notificationMessage = $state("");
+  let notificationType = $state("success");
+
+  function notify(n){
+    notificationMessage = `Please provide ${n}`;
+    notificationType = "error";
+    showNotification = true;
+  }
+
   async function handleSave() {
     console.log("button pressed");
 
     let data = {};
     if (!title || !artist || !editorContent){
-      console.log("Please enter required fields")
+      if (!title) notify("Title")
+      if (!artist) notify("Artist")
+      if (!editorContent) notify("Lyrics")
       return
     }
 
@@ -46,8 +59,21 @@
         );
         const msg = await res.json();
         console.log(msg);
+
+        if (res.ok) {
+            notificationMessage = msg.message || "Song saved successfully!";
+            notificationType = "success";
+            showNotification = true;
+        } else {
+            notificationMessage = msg.message || "Failed to save song";
+            notificationType = "error";
+            showNotification = true;
+        }
     } catch (err) {
         console.log(err);
+        notificationMessage = "Network error: Failed to save song";
+        notificationType = "error";
+        showNotification = true;
     }
 }
     // let collapsed = $state(false);
@@ -72,6 +98,13 @@
     <span>{chars}</span>
   </div>
 </section>
+
+<Notification
+  bind:show={showNotification}
+  bind:message={notificationMessage}
+  bind:type={notificationType}
+  on:close={() => showNotification = false}
+/>
 
 
  <style>
