@@ -11,7 +11,7 @@ router = APIRouter(
 
 # current_user: schemas.TokenData = Depends(oauth2.get_current_user)
 
-@router.post('/syllabe-counter')
+@router.post('/syllabe-counter', status_code=status.HTTP_200_OK)
 def count_syllables(
     data: dict,
     db: Session = Depends(database.get_db),
@@ -30,14 +30,20 @@ def count_syllables(
     data = {"message": text}
     return data
 
-@router.post('/save-song')
+
+
+
+@router.post('/save-song', status_code=status.HTTP_201_CREATED)
 def save_song(
-    data:dict,
+    data:schemas.NewSong,
     db: Session = Depends(database.get_db),
-    current_user: schemas.TokenData = Depends(oauth2.get_current_user)
+    current_user: models.Users = Depends(oauth2.get_current_user)
 ):
-    print(data)
+    
+    new_song = models.Lyrics(user_id=current_user.uid, **data.dict())
+    db.add(new_song)
+    db.commit()
 
-    data = {'message': "Song saved successfully"}
+    response = {'message': "Song saved successfully"}
 
-    return data
+    return response

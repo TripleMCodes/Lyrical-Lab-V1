@@ -43,13 +43,13 @@ def verify_access_token(token: str, credential_exception):
         uid = payload.get("uid")
         if uid is None:
             raise credential_exception
-        return schemas.TokenData(id=uid)
+        return schemas.TokenData(uid=uid)
     except JWTError as e:
         logging.debug(e)
         raise credential_exception
     
 # token: str = Depends(oauth2_scheme)
-def get_current_user(access_token: str = Cookie(None), db: Session = Depends(database.get_db)):
+def get_current_user(access_token: str = Cookie(), db: Session = Depends(database.get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -59,5 +59,7 @@ def get_current_user(access_token: str = Cookie(None), db: Session = Depends(dat
     token = verify_access_token(access_token, credential_exception=credentials_exception)
 
     user = db.query(models.Users).filter(models.Users.uid == token.uid).first()
+
+    # print(f'this is the user: {user}')
 
     return user

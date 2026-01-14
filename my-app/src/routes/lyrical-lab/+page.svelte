@@ -25,11 +25,12 @@
       return
     }
 
-    data["title"] = title;
-    data["artist"] = artist;
-    data["lyrics"] = editorContent;
-    if (mood) data["mood"] = mood;
-    if (genre) data["genre"] = genre;
+    data["song_name"] = title;
+    data["song_artist"] = artist;
+    data["song_lyrics"] = editorContent;
+    if (mood) data["song_mood"] = mood;
+    if (genre) data["song_genre"] = genre;
+    if (album) data["song_album"] = album;
 
     try {
         const res = await fetch(
