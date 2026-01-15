@@ -1,6 +1,6 @@
 <script>
     import Tooltip from "./Tooltip.svelte"
-    let { onSave, selected = $bindable(), searchWord = $bindable(), word = $bindable() } = $props();
+    let { onSave, selected = $bindable(), searchWord = $bindable(), word = $bindable(), checkFlow} = $props();
 </script>
 
 
@@ -65,7 +65,7 @@
             </Tooltip>
         </button>
 
-        <button>
+        <button onclick={checkFlow}>
             <Tooltip text="Flow check">
                 <img src="/icons8-foursquare-64.png" alt="flow check icon">
             </Tooltip>

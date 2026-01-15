@@ -23,6 +23,8 @@
   let wordSearched = $state("")
   let wordList = $state()
 
+  let selectedText = $state("")
+
   let showNotification = $state(false);
   let notificationMessage = $state("");
   let notificationType = $state("success");
@@ -100,14 +102,64 @@
     }
     editor2Content = textList
   }
+
+  function handleTextSelection(e) {
+        const textarea = e.target;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        selectedText = textarea.value.substring(start, end);
+        // console.log("Selected text:", selectedText);
+        // return selectedText
+    }
+
+    async function handleTextSelectionWrapper(){
+      let lines = selectedText.split(/\r?\n/);
+
+      if (!lines){
+        notificationMessage = "Please select text, try again";
+        notificationType = "error";
+        showNotification = true;
+        return
+      }
+
+      if (lines.length === 1 && lines[0] === ""){
+        notificationMessage = "Please select text, try again";
+        notificationType = "error";
+        showNotification = true;
+        return
+        }
+      
+      try{
+        const res = await fetch(
+        "http://localhost:8000/api/lyric-tools/check-flow",
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers:{
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({'message': lines})
+        }
+      );
+      const data = await res.json();
+      editor2Content = data.message
+      } catch (err){
+        notificationMessage = "Couldn't process lines";
+        notificationType = "error";
+        showNotification = true;
+      }
+    }
    
 </script>
 
 
 <SongPanel bind:title bind:artist bind:album bind:mood bind:genre />
 <section  class="ll-container" >
-  <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper}/>
-  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} />
+
+  <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper}/>
+
+  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection}/>
+
 </section>
 
 <section class="word-counter">

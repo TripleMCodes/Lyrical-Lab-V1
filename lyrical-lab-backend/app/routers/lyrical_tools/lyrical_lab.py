@@ -1,7 +1,8 @@
 from fastapi import status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from app import schemas, oauth2, models, database
-from app.syllable_counter import SyllableCounter
+from app.syllable_counter import SyllableCounter 
+from app.lyrics_n_summarization import StressedSyllableAnotator
 
 
 router = APIRouter(
@@ -30,9 +31,6 @@ def count_syllables(
     data = {"message": text}
     return data
 
-
-
-
 @router.post('/save-song', status_code=status.HTTP_201_CREATED)
 def save_song(
     data:schemas.NewSong,
@@ -47,3 +45,15 @@ def save_song(
     response = {'message': "Song saved successfully"}
 
     return response
+
+@router.post('/check-flow')
+def check_flow(
+    data:dict,
+    current_user: models.Users = Depends(oauth2.get_current_user)
+):
+    stress_syllables = StressedSyllableAnotator(data['message'])
+    html = stress_syllables.analyze_flow_on_stressed_syllables()
+
+    res = {"message": html}
+
+    return res

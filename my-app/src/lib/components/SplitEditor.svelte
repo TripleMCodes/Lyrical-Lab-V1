@@ -1,7 +1,8 @@
 <script>
 
-    let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable() } = $props()
+    let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable(), selectedText = $bindable() , onSelected} = $props()
     // let editor2 = $state("");
+    
    
     let debounceTimer;
 
@@ -39,8 +40,7 @@
             } catch (err){
                 console.error(err)
             }
-        }, 300) //300ms after typing
-
+        }, 300) //300ms
     })
 
 
@@ -126,6 +126,7 @@
     bind:value={editor1}
     spellcheck="false"
     onscroll={() => syncScroll(editorA, editorB)}
+    onselect={onSelected}
   ></textarea>
 
   <div
@@ -138,14 +139,21 @@
   ></div>
 
 
-    <textarea
-    class="editor"
-    bind:value={editor2}
-     bind:this={editorB}
-     onscroll={() => syncScroll(editorB, editorA)}
-    spellcheck="false"
-    readonly
-  ></textarea>
+    <div class="textarea-wrapper" onscroll={() => syncScroll(editorB, editorA)}>
+      <!-- <textarea
+        class="editor"
+        bind:value={editor2}
+        bind:this={editorB}
+        onscroll={() => syncScroll(editorB, editorA)}
+        spellcheck="false"
+        readonly
+      ></textarea> -->
+      
+      <div class="html-overlay editor"  
+        bind:this={editorB}>
+        {@html editor2}
+      </div>
+    </div>
 
 </div>
 
@@ -183,6 +191,36 @@
         background: rgba(60, 0, 120, 0.1);
         border: 1px solid rgba(200, 120, 255, 0.35);
         }
+
+    .textarea-wrapper {
+        position: relative;
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+    }
+    
+    .textarea-wrapper textarea{
+        color: transparent;
+    }
+
+
+    .html-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+        border-radius: 10px;
+        overflow-y: auto;
+        pointer-events: none;
+        color: #e6ccff;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
 
     .editor {
         flex: 1;
