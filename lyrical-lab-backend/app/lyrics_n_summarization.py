@@ -2,13 +2,15 @@ import logging
 import requests
 from pathlib import Path
 import sys
+import pyphen
+import pronouncing
 logging.basicConfig(level=logging.DEBUG)
 
-API_KEY = Path(__file__).parent / "secrets" / ".env"
+# API_KEY = Path(__file__).parent / "secrets" / ".env"
 
-if not API_KEY.exists():
-    logging.debug("API key not found")
-    sys.exit()
+# if not API_KEY.exists():
+#     logging.debug("API key not found")
+#     sys.exit()
 
 class OpenRouterClient:
     def __init__(self, model="meta-llama/llama-3-70b-instruct", app_title="Autodidex", referer="https://Autodidex.com"):
@@ -71,12 +73,137 @@ class OpenRouterClient:
 
         prompt += lyrics
         return self._send_request(prompt)
+
+
+
+
+def get_stress_pattern(line):
+    """Return a string of U (unstressed) and S (stressed) syllables for a line"""
+
+    words = line.lower().split()
+    pattern = []
+
+
+    for word in words:
+        phones = pronouncing.phones_for_word(word)
+
+        if phones:
+            logging.debug(phones[0])
+            stress = pronouncing.stresses(phones[0])
+            
+            for c in stress:
+                if c in '12': # If this syllable is primary stress or secondary stress
+                    pattern.append("S") # add stressed syllable
+                else:
+                    pattern.append('u') # c == 0, unstressed
+        else:
+            pattern.append("?") #unknown word
+    
+    return "".join(pattern)
+
+def alignment_score(patterns):
+    """Calculate how aligned the stressed syllables are across multiple lines"""
+
+    if len(patterns) < 2:
+        return None
+
+    # Pad patterns to same length
+    max_len = max(len(p) for p in patterns)
+    padded = [p.ljust(max_len) for p in patterns]
+
+    # Compare syllable column by column
+    aligned = 0
+    total = 0
+    for i in range(max_len):
+        # Check if all non-space syllbles in this column are the same
+        column = [p[i] for p in padded if p[i] != " "]
+        if column:
+            total += 1
+            if all(c == column[0] for c in column):
+                aligned += 1
+
+    return aligned / total if total else 0
+
+
+def highlight_flow(patterns, lines):
+    """Return HTML showing flow pattern with color coding"""
+
+    max_len = max(len(p) for p in patterns)
+    padded = [p.ljust(max_len) for p in patterns]
+
+    #determine alignment per column
+    column_alignment = []
+    for i  in range(max_len):
+        #loops over every line's stress pattern 
+        #looks at the i-th syllable or space
+        #skips if it's just a padding space
+        #collect only the real syllables into column list
+        column = [p[i] for p in padded if p[i] != " "]
+        if not column:
+            column_alignment.append(None)
+        elif all( c == column[0] for c in column):
+            column_alignment.append(True) #aligned
+        else:
+            column_alignment.append(False) #misaligned
+        
+    # Build HTML with colors
+    html_lines = []
+    for line, pattern in zip(lines, padded):
+        # Green if it aligns with the other lines
+        # Red if it’s off-beat
+        # Add it as bold colored HTML
+        colored_pattern = ""
+        for char, aligned in zip(pattern, column_alignment):
+            if char == 'S':
+                color = "green" if aligned else "red"
+                colored_pattern += f"<span style='color:{color};font-weight:bold'>{char}</span>"
+            elif char == 'u':
+                colored_pattern += f"<span style='color:gray'>{char}</span>"
+            else:
+                colored_pattern += " "
+        html_lines.append(f"<b>{line}</b><br>{colored_pattern}<br><br>")
+    
+    logging.debug("".join(html_lines))    
+    return "".join(html_lines)
+    
+
+class StressedSyllableAnotator():
+
+    def __init__(self, lines):
+        self.lines = lines # list
+
+    def analyze_flow_on_stressed_syllables(self):
+        """Analyze flow of selected text in editor"""
+
+        patterns = [get_stress_pattern(line) for line in self.lines]
+        logging.debug(patterns)
+
+        # Generate color-coded HTML flow map
+        html = highlight_flow(patterns, self.lines)
+
+        # Compute alignment score
+        score = alignment_score(patterns)
+
+        if score is not None:
+            html += f"<b>flow Aligment Score: {score:.2f}</b>"
+        
+        return html
+    
+
+
+
         
     
 if __name__ == "__main__":
     
-    or_client  = OpenRouterClient()
 
-    logging.debug(or_client.generate_lyrics("Last time I saw you was in a dream", "Pop"))
-#     logging.debug(or_client.cliches_phrase_quotes("Love", "metaphor"))
-#     # logging.debug(or_client.summarize_text("The quick brown fox jumps over the lazy dog. This is a classic example of a pangram, which is a sentence that contains every letter of the alphabet at least once. Pangrams are often used to test fonts and keyboards."))
+
+    lst = [
+        'I am here',
+        'Time is weird',
+        'Find him near',
+        'Grab a spear'
+    ]
+
+    stress_syllables = StressedSyllableAnotator(lst)
+    print(stress_syllables.analyze_flow_on_stressed_syllables())
