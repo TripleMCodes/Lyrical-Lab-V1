@@ -22,6 +22,7 @@
   let wordSelected = $state("")
   let wordSearched = $state("")
   let wordList = $state()
+  let debounceTimer;
 
   let isLoading = $state(false)
 
@@ -157,6 +158,41 @@
     function cancleAction(){
       isLoading = false;
     }
+
+    let draftData = {};
+    
+    function autoSave(){
+      clearTimeout(debounceTimer)
+
+      if (title) draftData["song_name"] = title
+      if (artist) draftData["song_artist"] = artist
+      if (editorContent) draftData["song_lyrics"] = editorContent
+      if (album) draftData["song_album"] = album
+      if (mood) draftData["song_mood"] = mood
+      if (genre) draftData["song_genre"] = genre
+
+      debounceTimer = setTimeout( async () => {
+        try{
+          const res = await fetch(
+            "http://localhost:8000/api/lyric-tools/save-draft",
+            {
+              method: "POST",
+              credentials: "include",
+              headers:{
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(draftData)
+            }
+          );
+          const resData = await res.json();
+          //add a better way to deal with res
+        }catch (err){
+          //add a better catch
+        }
+      }, 3000)
+    }
+
+
    
 </script>
 
@@ -166,7 +202,7 @@
 
   <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper}/>
 
-  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction}/>
+  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction} saveDraft={autoSave}/>
 
 </section>
 

@@ -1,6 +1,6 @@
 <script>
 
-    let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable(), selectedText = $bindable() , onSelected, loading = $bindable(), cancelRes} = $props()
+    let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable(), selectedText = $bindable() , onSelected, loading = $bindable(), cancelRes, saveDraft} = $props()
     import SigilSpinner from '../../lib/components/SigilSpinner.svelte';
     // let editor2 = $state("");
     
@@ -128,6 +128,7 @@
     spellcheck="false"
     onscroll={() => syncScroll(editorA, editorB)}
     onselect={onSelected}
+    oninput={saveDraft}
   ></textarea>
 
   <div

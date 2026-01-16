@@ -57,3 +57,23 @@ def check_flow(
     res = {"message": html}
 
     return res
+
+@router.post('/save-draft')
+def save_draft(
+    data: dict,
+    current_user: models.Users = Depends(oauth2.get_current_user),
+    db: Session = Depends(database.get_db),
+):
+    user = db.query(models.StateFold).filter(
+        models.StateFold.user_id == current_user.uid
+    ).first()
+
+    if user:
+        for key, value in data.items():
+            setattr(user, key, value)
+    else:
+        user = models.StateFold(user_id=current_user.uid, **data)
+        db.add(user)
+
+    db.commit()
+    return {'message': "draft saved"}
