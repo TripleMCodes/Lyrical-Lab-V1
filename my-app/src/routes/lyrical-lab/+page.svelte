@@ -23,6 +23,8 @@
   let wordSearched = $state("")
   let wordList = $state()
 
+  let isLoading = $state(false)
+
   let selectedText = $state("")
 
   let showNotification = $state(false);
@@ -86,6 +88,7 @@
 }
 
   async function fetchWordsWrapper(){
+    isLoading = true
     const lst = await fetchWords(wordSelected, wordSearched)
     wordList = lst
     console.log($state.snapshot(wordList))
@@ -93,10 +96,11 @@
       notificationMessage = "No results found";
       notificationType = "error";
       showNotification = true;
+      isLoading = false
     }
 
     let textList = ""
-
+    isLoading = false
     for (let index = 0; index < wordList.length; index++) {
       textList += wordList[index]['word'] + '\n'
     }
@@ -149,6 +153,10 @@
         showNotification = true;
       }
     }
+
+    function cancleAction(){
+      isLoading = false;
+    }
    
 </script>
 
@@ -158,7 +166,7 @@
 
   <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper}/>
 
-  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection}/>
+  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction}/>
 
 </section>
 
@@ -271,7 +279,5 @@
     font-size: 1rem;
   }
 }
-
-
 
 </style> 

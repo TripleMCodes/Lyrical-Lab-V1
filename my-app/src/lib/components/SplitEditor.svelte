@@ -1,6 +1,7 @@
 <script>
 
-    let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable(), selectedText = $bindable() , onSelected} = $props()
+    let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable(), selectedText = $bindable() , onSelected, loading = $bindable(), cancelRes} = $props()
+    import SigilSpinner from '../../lib/components/SigilSpinner.svelte';
     // let editor2 = $state("");
     
    
@@ -148,12 +149,21 @@
         spellcheck="false"
         readonly
       ></textarea> -->
-      
-      <div class="html-overlay editor"  
-        bind:this={editorB}>
-        {@html editor2}
-      </div>
-    </div>
+
+
+    {#if loading}
+        <SigilSpinner text="Consulting the lexicon…" />
+        <div class="cancle">
+            <button onclick={cancelRes}>Cancel</button>
+        </div>
+    {:else if loading === false}  
+        <div class="html-overlay editor"  
+            bind:this={editorB}>
+            {@html editor2}
+        </div>
+        
+    {/if}
+    </div>      
 
 </div>
 
@@ -333,5 +343,38 @@
     .editor:not(:focus) {
         animation: none;
         }
+
+    .cancle {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+    }
+
+    .cancle button {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #c77dff, #7b2cbf);
+        color: #fff;
+        border: 1px solid rgba(199, 125, 255, 0.6);
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(199, 125, 255, 0.4);
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .cancle button:hover {
+        background: linear-gradient(135deg, #e0aaff, #9d4edd);
+        box-shadow: 0 0 25px rgba(199, 125, 255, 0.7);
+        transform: translateY(-2px);
+    }
+
+    .cancle button:active {
+        transform: translateY(0);
+        box-shadow: 0 0 12px rgba(199, 125, 255, 0.5);
+    }
 
 </style>
