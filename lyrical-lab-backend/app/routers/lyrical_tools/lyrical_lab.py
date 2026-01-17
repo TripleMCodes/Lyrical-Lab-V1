@@ -77,3 +77,34 @@ def save_draft(
 
     db.commit()
     return {'message': "draft saved"}
+
+@router.get('/user-songs', status_code=status.HTTP_200_OK)
+def get_user_songs(
+    current_user: models.Users = Depends(oauth2.get_current_user),
+    db: Session = Depends(database.get_db) 
+):
+    
+    user_lyrics = db.query(models.Lyrics).filter(
+        models.Lyrics.user_id == current_user.uid
+    ).all()
+    return user_lyrics if user_lyrics else []
+
+@router.get('/user-songs/{song_id}', status_code=status.HTTP_200_OK)
+def get_song_by_id(
+    song_id: int,
+    current_user: models.Users = Depends(oauth2.get_current_user),
+    db: Session = Depends(database.get_db)
+):
+    
+    song = db.query(models.Lyrics).filter(
+        models.Lyrics.song_id == song_id,
+        models.Lyrics.user_id == current_user.uid
+    ).first()
+    
+    if not song:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Song not found"
+        )
+    
+    return song
