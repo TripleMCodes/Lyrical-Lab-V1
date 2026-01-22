@@ -17,6 +17,10 @@ export const load: PageLoad = async ({ fetch }) => {
         logo: {
             title: 'Lyrical Lab',
             tagline: 'Login and get locked in!'
+        },
+        urls:{
+            writing: true,
+            songs:true
         }
     };
 };

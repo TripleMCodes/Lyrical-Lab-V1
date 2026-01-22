@@ -24,6 +24,12 @@
   let wordList = $state()
   let debounceTimer;
 
+
+  let selectedValue = $state("")
+  let selectedGenre = $state("Pop")
+  let selectedFos = $state("Simile")
+  let genInput = $state("")
+
   let isLoading = $state(false)
 
   let selectedText = $state("")
@@ -81,7 +87,7 @@
             showNotification = true;
         }
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         notificationMessage = "Network error: Failed to save song";
         notificationType = "error";
         showNotification = true;
@@ -192,6 +198,89 @@
       }, 3000)
     }
 
+  function radioBtnChanged (event){
+    selectedValue = event.target.value
+    // console.log(selectedValue)
+  }
+
+  async function generate(){
+    console.log(selectedValue)
+    console.log(selectedGenre)
+    console.log(selectedFos)
+
+    let data = {}
+
+    if (!genInput){
+      notificationMessage = "Please provide Lyric or Figure of speech";
+      notificationType = "error";
+      showNotification = true;
+      return
+    }
+
+    if (selectedValue === "gen-fos"){
+      data['mode'] = "gen-fos"
+      if (!selectedFos){
+        notificationMessage = "Please select a figure of speech (i.e simile, idiom)";
+        notificationType = "error";
+        showNotification = true;
+        return
+      }
+      data["fos"] = selectedGenre;
+      data["content"] = genInput;
+    }
+    else if(selectedValue === "gen-lyrics"){
+      data["mode"] = "gen-lyrics"
+      if (!selectedGenre){
+        notificationMessage = "Please select a genre(i.e hip-hop, pop e.t.c)";
+        notificationType = "error";
+        showNotification = true;
+        return
+      }
+      data["genre"] = selectedGenre
+      data["content"] = genInput;
+    }
+    else{
+      notificationMessage = "Please select option. lyrics gen mode or Figure of speech mode";
+      notificationType = "error";
+      showNotification = true;
+      return
+    }
+    isLoading = true
+    try{
+      const res = await fetch(
+        "http://localhost:8000/api/lyric-tools/generate",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
+      );
+      const msg = await res.json()
+
+      if (res.ok){
+        isLoading = false
+        editor2Content = msg.message
+      }
+    } catch (err){
+      isLoading = false
+       notificationMessage = err.message;
+        notificationType = "error";
+        showNotification = true;
+    }
+
+  }
+
+  function selectedGenreChanged (event){
+    selectedGenre = event.target.value;
+  }
+
+  function selectedFosChanged(event){
+    selectedFos = event.target.value;
+  }
+
 
    
 </script>
@@ -200,7 +289,7 @@
 <SongPanel bind:title bind:artist bind:album bind:mood bind:genre />
 <section  class="ll-container" >
 
-  <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper}/>
+  <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={generate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput}/>
 
   <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction} saveDraft={autoSave}/>
 

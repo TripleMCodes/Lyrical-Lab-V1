@@ -24,21 +24,31 @@
 				<li aria-current={page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
 					<a href={resolve('/sverdle')}>Sverdle</a>
 				</li>
+				{#if page.data.urls.signup}
 				<li aria-current={page.url.pathname === '/signup' ? 'page' : undefined}>
 					<a href={resolve('/signup')}>Signup</a>
 				</li>
-				<li aria-current={page.url.pathname === '/login' ? 'page' : undefined}>
-					<a href={resolve('/login')}>Login</a>
-				</li>
+				{/if}
+				{#if page.data.urls.login}
+					<li aria-current={page.url.pathname === '/login' ? 'page' : undefined}>
+						<a href={resolve('/login')}>Login</a>
+					</li>
+				{/if}
+				{#if page.data.urls.writing}
+					<li aria-current={page.url.pathname === '/lyrical-lab' ? 'page' : undefined}>
+					<a href={resolve('/lyrical-lab')}>Writing Studio</a>
+					</li>
+				{/if}
+				{#if page.data.urls.songs}
+					<li aria-current={page.url.pathname === '/lyrical-lab/songs-library' ? 'page' : undefined}>
+					<a href={resolve('/lyrical-lab/songs-library')}>Songs</a>
+					</li>
+				{/if}
+
 			</ul>
 		</nav>
 	</div>
 
-	<!-- <div class="corner">
-		<a href="https://github.com/sveltejs/kit">
-			<img src={github} alt="GitHub" />
-		</a>
-	</div> -->
 
 </header>
 

@@ -21,7 +21,11 @@ export const load: PageLoad = async ({ fetch, params }) => {
         const song = await response.json();
         
         return {
-            song
+            song,
+            urls:{
+                songs: true,
+                writing: true
+            }
         };
     } catch (error) {
         console.error('Failed to load song:', error);

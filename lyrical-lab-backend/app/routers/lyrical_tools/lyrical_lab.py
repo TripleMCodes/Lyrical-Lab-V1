@@ -2,7 +2,9 @@ from fastapi import status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from app import schemas, oauth2, models, database
 from app.syllable_counter import SyllableCounter 
-from app.lyrics_n_summarization import StressedSyllableAnotator
+from app.lyrics_n_summarization import StressedSyllableAnotator, OpenRouterClient
+import logging 
+logging.basicConfig(level=logging.DEBUG)
 
 
 router = APIRouter(
@@ -108,3 +110,26 @@ def get_song_by_id(
         )
     
     return song
+
+@router.post("/generate")
+def generate_mode_content(
+    data: dict,
+    current_use: models.Users = Depends(oauth2.get_current_user),
+    db:Session = Depends(database.get_db)
+):
+    # ai = OpenRouterClient()
+    logging.debug(f'Data: {data}')
+    try:
+        if data["mode"] == "gen-fos":
+            # data = ai.cliches_phrase_quotes(data["content"], data["fos"])
+            data = {"message": "It may not be clear\nBut fear not, I am here!"} # for testing
+        elif data["mode"] == "gen-lyrics":
+            # data = ai.generate_lyrics(data["content"], data["genre"])
+            data = {"message": "To be or not to be that is the question\nViolence is the answer"} # for testing
+    except Exception as e:
+        logging.debug(e)
+        data ={"message": "An error occurred, please try again."}
+        return data
+    
+    # data = {"message": "Fear not for I am here!"}
+    return data

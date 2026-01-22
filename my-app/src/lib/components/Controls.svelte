@@ -1,6 +1,6 @@
 <script>
     import Tooltip from "./Tooltip.svelte"
-    let { onSave, selected = $bindable(), searchWord = $bindable(), word = $bindable(), checkFlow} = $props();
+    let { onSave, selected = $bindable(), searchWord = $bindable(), word = $bindable(), checkFlow, selectedValue = $bindable(), handleChange, generate, selectedGenre = $bindable(), handleGenreChange, selectedFos=$bindable(), handleFosChange, genInput = $bindable()} = $props();
 </script>
 
 
@@ -8,17 +8,17 @@
     <section class="l-n-fos-gen">
        <label for="l-n-fos-gen">Lyrics and Figure of speech</label>
         <div class="lyrics-gen">
-            <input type="text" placeholder="Enter prompt..." />
+            <input type="text" placeholder="Enter prompt..." bind:value={genInput}/>
 
             <div class="configs">
-                <select name="genres" id="lyrics">
-                <option value="pop">Pop</option>
+                <select name="genres" id="lyrics" bind:value={selectedGenre} onchange={handleGenreChange}>
+                <option value="pop" >Pop</option>
                 <option value="rnb">RnB</option>
                 <option value="rock">Rock</option>
                 <option value="hip-pop">Hip-Pop</option>
                 </select>
 
-                <select name="figure-of-speech" id="figure-of-speech">
+                <select name="figure-of-speech" id="figure-of-speech" bind:value={selectedFos} onchange={handleFosChange}>
                 <option value="simile">Simile</option>
                 <option value="metaphor">Metaphor</option>
                 <option value="phrase">Phrase</option>
@@ -27,11 +27,11 @@
             </div>
 
             <div class="mode">
-                <span>lyrics gen mode: <input type="radio" name="mode" /></span>
-                <span>Figure of speech mode: <input type="radio" name="mode" /></span>
+                <span>lyrics gen mode: <input type="radio" name="mode" id="gen-lyrics" value="gen-lyrics" bind:group={selectedValue} onclick={handleChange}/></span>
+                <span>Figure of speech mode: <input type="radio" name="mode" id="gen-fos" value="gen-fos" bind:group={selectedValue} onclick={handleChange}/></span>
             </div>
 
-            <button>Generate lyrics</button>
+            <button onclick={generate}>Generate lyrics</button>
         </div>
 
         <div>

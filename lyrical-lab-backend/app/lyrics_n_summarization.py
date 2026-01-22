@@ -6,15 +6,16 @@ import pyphen
 import pronouncing
 logging.basicConfig(level=logging.DEBUG)
 
-# API_KEY = Path(__file__).parent / "secrets" / ".env"
 
+# API_KEY = Path(__file__).parent / "secrets" / ".env"
+API_KEY = 'thisismyapikeynowfornow'
 # if not API_KEY.exists():
 #     logging.debug("API key not found")
 #     sys.exit()
 
 class OpenRouterClient:
     def __init__(self, model="meta-llama/llama-3-70b-instruct", app_title="Autodidex", referer="https://Autodidex.com"):
-        self.api_key = API_KEY.read_text().strip()
+        self.api_key = API_KEY
         self.model = model
         self.url = "https://openrouter.ai/api/v1/chat/completions"
         self.headers = {
@@ -108,13 +109,16 @@ def alignment_score(patterns):
         return None
 
     # Pad patterns to same length
-    max_len = max(len(p) for p in patterns)
-    padded = [p.ljust(max_len) for p in patterns]
+    # max_len = max(len(p) for p in patterns)
+    min_len = min(len(p) for p in patterns)
+    padded = [p.ljust(min_len) for p in patterns]
+    # padded = [p.ljust(max_len) for p in patterns]
 
     # Compare syllable column by column
     aligned = 0
     total = 0
-    for i in range(max_len):
+    # for i in range(max_len):
+    for i in range(min_len):
         # Check if all non-space syllbles in this column are the same
         column = [p[i] for p in padded if p[i] != " "]
         if column:
@@ -141,7 +145,7 @@ def highlight_flow(patterns, lines):
         column = [p[i] for p in padded if p[i] != " "]
         if not column:
             column_alignment.append(None)
-        elif all( c == column[0] for c in column):
+        elif all( c == column[0] for c in column ):
             column_alignment.append(True) #aligned
         else:
             column_alignment.append(False) #misaligned
@@ -199,10 +203,9 @@ if __name__ == "__main__":
 
 
     lst = [
-        'I am here',
-        'Time is weird',
-        'Find him near',
-        'Grab a spear'
+        'I am connor',
+        'I am con'
+        
     ]
 
     stress_syllables = StressedSyllableAnotator(lst)
