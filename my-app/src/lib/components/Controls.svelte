@@ -1,6 +1,6 @@
 <script>
     import Tooltip from "./Tooltip.svelte"
-    let { onSave, selected = $bindable(), searchWord = $bindable(), word = $bindable(), checkFlow, selectedValue = $bindable(), handleChange, generate, selectedGenre = $bindable(), handleGenreChange, selectedFos=$bindable(), handleFosChange, genInput = $bindable()} = $props();
+    let { onSave, selected = $bindable(), searchWord = $bindable(), word = $bindable(), checkFlow, selectedValue = $bindable(), handleChange, generate, selectedGenre = $bindable(), handleGenreChange, selectedFos=$bindable(), handleFosChange, genInput = $bindable(), createNewSong} = $props();
 </script>
 
 
@@ -74,6 +74,12 @@
         <button >
             <Tooltip text="criticise lyrics">
                 <img src="/icons8-brain-64.png" alt="criticise icon">
+            </Tooltip>
+        </button> 
+
+        <button onclick={createNewSong}>
+            <Tooltip text="Create new song">
+                <img src="/icons8-quill-with-ink-48.png" alt="new song icon">
             </Tooltip>
         </button> 
     </section>

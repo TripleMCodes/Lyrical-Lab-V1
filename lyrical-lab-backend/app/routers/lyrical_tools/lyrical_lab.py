@@ -33,20 +33,37 @@ def count_syllables(
     data = {"message": text}
     return data
 
-@router.post('/save-song', status_code=status.HTTP_201_CREATED)
+@router.post("/save-song", status_code=status.HTTP_201_CREATED)
 def save_song(
-    data:schemas.NewSong,
+    data: schemas.NewSong,
     db: Session = Depends(database.get_db),
-    current_user: models.Users = Depends(oauth2.get_current_user)
+    current_user: models.Users = Depends(oauth2.get_current_user),
 ):
-    
-    new_song = models.Lyrics(user_id=current_user.uid, **data.dict())
+    # existing song for this user + song name
+    song = (
+        db.query(models.Lyrics)
+        .filter(
+            models.Lyrics.user_id == current_user.uid,
+            models.Lyrics.song_name == data.song_name,
+        )
+        .first()
+    )
+
+    if song:
+        update_data = data.model_dump(exclude_unset=True) 
+
+        for key, value in update_data.items():
+            setattr(song, key, value)
+
+        db.commit()
+        return {"message": "Song updated successfully"}
+
+    new_song = models.Lyrics(user_id=current_user.uid, **data.model_dump())
+
     db.add(new_song)
     db.commit()
 
-    response = {'message': "Song saved successfully"}
-
-    return response
+    return {"message": "Song saved successfully"}
 
 @router.post('/check-flow')
 def check_flow(

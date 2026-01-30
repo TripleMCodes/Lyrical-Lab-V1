@@ -7,8 +7,21 @@
     import SongPanel from '../../lib/components/SongPanel.svelte'
     import Notification from '../../lib/components/Notification.svelte'
     import {fetchWords} from '../../lib/api/client'
-  import { FileWatcherEventKind } from "typescript";
+    import { FileWatcherEventKind } from "typescript";
+
+    import { onMount } from 'svelte';
+    import { get } from 'svelte/store';
+    import { goto } from "$app/navigation";
+    import { replaceState } from '$app/navigation';
+    // import { effect } from 'svelte';
+    import { editingSong } from '$lib/stores/editingSong';
+
   // import { words } from "../sverdle/words.server";
+
+  // import { currentSong } from '$lib/stores/song';
+
+  // let song = $currentSong;
+
   let words = $state(0);
   let chars = $state(0);
   let editorContent = $state("");
@@ -38,6 +51,39 @@
   let notificationMessage = $state("");
   let notificationType = $state("success");
 
+
+  // onMount(() => {
+  //   const s = get(editingSong);
+  //   if (s) {
+  //     title = s.song_name ?? '';
+  //     editorContent = s.song_lyrics ?? '';
+  //     artist = s.song_artist ?? '';
+  //     genre = s.song_genre ?? '';
+  //     album = s.song_album ?? '';
+  //     mood = s.song_mood ?? '';
+  //   }
+  // });
+
+
+  $effect(() => {
+    const song = $editingSong;
+    if (song) {
+      title = song.song_name ?? '';
+      editorContent = song.song_lyrics ?? '';
+      genre = song.song_genre ?? '';
+      mood = song.song_mood ?? '';
+      artist = song.song_artist ?? '';
+    } else {
+      title = '';
+      editorContent =  '';
+      genre = '';
+      mood = '';
+      artist =  '';
+    }
+  });
+
+
+
   function notify(n){
     notificationMessage = `Please provide ${n}`;
     notificationType = "error";
@@ -45,8 +91,7 @@
   }
 
   async function handleSave() {
-    console.log("button pressed");
-
+   
     let data = {};
     if (!title || !artist || !editorContent){
       if (!title) notify("Title")
@@ -61,6 +106,13 @@
     if (mood) data["song_mood"] = mood;
     if (genre) data["song_genre"] = genre;
     if (album) data["song_album"] = album;
+
+    // if updating existing song
+    const s = get(editingSong);
+    if (s.song_id){
+      data['song_id'] = s.song_id;
+    }
+
 
     try {
         const res = await fetch(
@@ -112,6 +164,14 @@
       textList += wordList[index]['word'] + '\n'
     }
     editor2Content = textList
+  }
+
+
+  function createNewSong(){
+    editingSong.set(null);
+   
+    // replaceState('/lyrical-lab');
+    // goto('/lyrical-lab');
   }
 
   function handleTextSelection(e) {
@@ -289,7 +349,7 @@
 <SongPanel bind:title bind:artist bind:album bind:mood bind:genre />
 <section  class="ll-container" >
 
-  <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={generate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput}/>
+  <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={generate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>
 
   <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction} saveDraft={autoSave}/>
 

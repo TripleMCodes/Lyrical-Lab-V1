@@ -1,1 +1,19 @@
 uvicorn app.main:app --host localhost --port 8000 --reload
+
+
+
+I am at his route /lyrical-lab/songs-library/id, and I want when this button is clicked to got back to this route /lyrical-lab, I know how to this - but here the this is I have this data for the song being displayed and I don' t know how to route back with it.
+I'll provide snippets of my code:
+Page at /lyrical-lab/songs-library/id:
+ let { data } = $props<{ data: PageData }>();
+ const song = data.song; 
+const update_song = () => {
+        goto('/lyrical-lab')
+        console.log(data);
+    }
+
+the button
+ <div>
+            <button onclick={update_song}>Update</button>
+     </div>
+Page at lyrical-lab has been attached

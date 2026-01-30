@@ -192,16 +192,9 @@ class StressedSyllableAnotator():
             html += f"<b>flow Aligment Score: {score:.2f}</b>"
         
         return html
-    
-
-
-
-        
-    
+     
 if __name__ == "__main__":
     
-
-
     lst = [
         'I am connor',
         'I am con'

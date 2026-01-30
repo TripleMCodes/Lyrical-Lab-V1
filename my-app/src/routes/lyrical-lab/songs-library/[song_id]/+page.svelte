@@ -1,12 +1,18 @@
 <script lang="ts">
     import type { PageData } from './$types';
     import { goto } from '$app/navigation';
+    import { editingSong } from '$lib/stores/editingSong';
 
     let { data } = $props<{ data: PageData }>();
     const song = data.song;
 
     const goBack = () => {
         goto('/lyrical-lab/songs-library');
+    };
+
+    const update_song = () => {
+    editingSong.set(song);   
+    goto('/lyrical-lab');
     };
 </script>
 
@@ -56,6 +62,9 @@
         <div class="lyrics-text">
             {song.song_lyrics}
         </div>
+        <div>
+            <button onclick={update_song}>Update</button>
+        </div>
     </div>
 </div>
 
@@ -67,7 +76,7 @@
     }
 
     /* === BACK BUTTON === */
-    .back-btn {
+    .back-btn, button {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
@@ -85,13 +94,13 @@
         transition: all 0.25s ease;
     }
 
-    .back-btn:hover {
+    .back-btn:hover, button:hover {
         background: linear-gradient(135deg, #e0aaff, #9d4edd);
         box-shadow: 0 0 26px rgba(199, 125, 255, 0.7);
         transform: translateX(-2px);
     }
 
-    .back-btn:active {
+    .back-btn:active, button:active {
         transform: translateX(-1px);
     }
 

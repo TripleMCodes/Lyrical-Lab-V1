@@ -2,14 +2,34 @@
 	import Header from './Header.svelte';
 	import './layout.css';
 	import Footer from './Footer.svelte'
+  import Particles from '$lib/components/Particles.svelte';
 
 	let { children } = $props();
 </script>
 
-<div class="app">
+<!-- <div class="app">
+	<Particles />
+
+	<div class="app">
+	<slot />
+	</div>
+
 	<Header />
 
 	<main>
+		{@render children()}
+	</main>
+
+	<Footer />
+</div> -->
+
+
+<Particles />
+
+<div class="app">
+	<Header />
+
+	<main class="content">
 		{@render children()}
 	</main>
 
