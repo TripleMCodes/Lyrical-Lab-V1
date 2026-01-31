@@ -24,7 +24,7 @@
 </div> -->
 
 
-<Particles />
+<!-- <Particles /> -->
 
 <div class="app">
 	<Header />

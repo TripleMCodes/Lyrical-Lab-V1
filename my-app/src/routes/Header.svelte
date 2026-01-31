@@ -40,10 +40,11 @@
 					</li>
 				{/if}
 				{#if page.data.urls.songs}
-					<li aria-current={page.url.pathname === '/lyrical-lab/songs-library' ? 'page' : undefined}>
-					<a href={resolve('/lyrical-lab/songs-library')}>Songs</a>
-					</li>
+				<li aria-current={page.url.pathname === '/lyrical-lab/songs-library' ? 'page' : undefined}>
+					<a href={`${resolve('/lyrical-lab/songs-library')}?page=1&size=4`}>Songs</a>
+				</li>
 				{/if}
+
 
 			</ul>
 		</nav>

@@ -1,4 +1,5 @@
-from fastapi import status, HTTPException, Depends, APIRouter
+from fastapi import status, HTTPException, Depends, APIRouter, Query
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from app import schemas, oauth2, models, database
 from app.syllable_counter import SyllableCounter 
@@ -97,23 +98,50 @@ def save_draft(
     db.commit()
     return {'message': "draft saved"}
 
-@router.get('/user-songs', status_code=status.HTTP_200_OK)
+@router.get("/user-songs", status_code=status.HTTP_200_OK)
 def get_user_songs(
     current_user: models.Users = Depends(oauth2.get_current_user),
-    db: Session = Depends(database.get_db) 
+    db: Session = Depends(database.get_db),
+    page: int = Query(1, ge=1),
+    size: int = Query(4, ge=1, le=100),
 ):
-    
-    user_lyrics = db.query(models.Lyrics).filter(
-        models.Lyrics.user_id == current_user.uid
-    ).all()
-    return user_lyrics if user_lyrics else []
+    base_q = (
+        db.query(models.Lyrics)
+        .filter(models.Lyrics.user_id == current_user.uid)
+        .order_by(models.Lyrics.song_id.desc())
+    )
+
+    total = db.query(func.count(models.Lyrics.song_id))\
+              .filter(models.Lyrics.user_id == current_user.uid)\
+              .scalar() or 0
+
+    items = (
+        base_q
+        .offset((page - 1) * size)
+        .limit(size)
+        .all()
+    )
+
+    pages = (total + size - 1) // size if size else 1
+
+    return {
+    "debug": "PAGINATED_ROUTE_V1",
+    "items": items,
+    "total": total,
+    "page": page,
+    "size": size,
+    "pages": pages,
+    "next_page": page + 1 if page < pages else None,
+    "prev_page": page - 1 if page > 1 else None,
+}
 
 @router.get('/user-songs/{song_id}', status_code=status.HTTP_200_OK)
 def get_song_by_id(
     song_id: int,
     current_user: models.Users = Depends(oauth2.get_current_user),
-    db: Session = Depends(database.get_db)
+    db: Session = Depends(database.get_db),
 ):
+
     
     song = db.query(models.Lyrics).filter(
         models.Lyrics.song_id == song_id,
