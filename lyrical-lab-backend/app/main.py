@@ -11,7 +11,7 @@ from .routers.lyrical_tools import lyrical_lab
 
 app = FastAPI()
 # Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 # @app.on_event("startup")
 # def on_startup():

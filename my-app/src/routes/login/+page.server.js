@@ -27,7 +27,7 @@ export const actions = {
         });
 
         if (!res.ok) {
-            return fail(400, { message: 'Signup failed' });
+            return fail(400, { message: 'Login failed' });
         }
 
         const data = await res.json();

@@ -1,11 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+import os
 
-DATABASE_URL = f"mysql+pymysql://conor:02122020@localhost/lyrical_lab"
+DATABASE_URL = os.getenv("DATABASE_URL") or f"mysql+pymysql://conor:02122020@localhost/lyrical_lab" 
 
 engine = create_engine(
     DATABASE_URL,
-    echo=True
+    echo=True,
+    pool_pre_ping=True
 )
 
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
