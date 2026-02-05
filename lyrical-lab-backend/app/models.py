@@ -31,6 +31,14 @@ class Lyrics(Base):
     user = relationship("Users", back_populates="lyrics")
 
 
+class Stats(Base):
+    __tablename__ = "stats"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    total_writing_time = Column(Integer, nullable=True)
+    writing_sessions = Column(Integer, nullable=True)
+    user_id = Column(Integer, ForeignKey('users.uid'), nullable=False, unique=True)
+
 class StateFold(Base):
     __tablename__ = "statefold"
 
