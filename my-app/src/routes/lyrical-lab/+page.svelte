@@ -109,8 +109,10 @@
 
     // if updating existing song
     const s = get(editingSong);
-    if (s.song_id){
+    if (s && s.song_id){
       data['song_id'] = s.song_id;
+    }else{
+      data['song_id'] = null
     }
 
 

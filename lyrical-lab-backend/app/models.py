@@ -20,7 +20,7 @@ class Lyrics(Base):
     song_id = Column(Integer, primary_key=True, autoincrement=True)
     song_name = Column(String(150), nullable=False)
     song_genre = Column(String(100), nullable=False)
-    song_lyrics = Column(Text, nullable=False)
+    song_lyrics = Column(Text, nullable=False) 
     user_id = Column(Integer, ForeignKey('users.uid'), nullable=False)
     song_artist = Column(String(150), nullable=False)
     date_created = Column(DateTime, nullable=False, default=func.now())

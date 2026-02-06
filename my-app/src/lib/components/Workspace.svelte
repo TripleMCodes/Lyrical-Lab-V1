@@ -1,5 +1,5 @@
 <script lang="ts">
-    let {title = $bindable(), artist = $bindable(), album = $bindable(), recent_songs = $bindable()} = $props()
+    let {title = $bindable(), artist = $bindable(), album = $bindable(), recent_songs = $bindable(), openStudio} = $props()
 </script>
 
 <section class="work-space">
@@ -19,33 +19,34 @@
             <p>Album</p>
             <p>{album}</p>
         </span>
-        <button>Continue Writing</button>
+        <button onclick={openStudio}>Continue Writing</button>
     </div>
 
+    
     <div class="recent-songs">
         <h3>Recent Songs</h3>
         {#each recent_songs as song }
             <span>
                 <p>Title</p>
-                <p>{song.title}</p>
+                <p>{song.song_name || "song name"}</p>
             </span> 
             <span>
                 <p>Artist</p>
-                <p>{song.artist}</p>
+                <p>{song.song_artist || ""}</p>
             </span> 
             {#if song.album}
                 <span>
                     <p>Album</p>
-                    <p>{song.artist}</p>
+                    <p>{song.song_album || ""}</p>
                 </span>
             {/if}
             <span>
                 <p>Date Created</p>
-                <p>{song.date_creted}</p>
+                <p>{song.date_created || ""}</p>
             </span> 
             <span>
                 <p>Date Modifed</p>
-                <p>{song.date_updated}</p>
+                <p>{song.date_modified || ""}</p>
             </span> 
         {/each}
     </div>

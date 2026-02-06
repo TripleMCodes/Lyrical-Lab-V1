@@ -159,7 +159,7 @@ def get_song_by_id(
 @router.post("/generate")
 def generate_mode_content(
     data: dict,
-    current_use: models.Users = Depends(oauth2.get_current_user),
+    current_user: models.Users = Depends(oauth2.get_current_user),
     db:Session = Depends(database.get_db)
 ):
     # ai = OpenRouterClient()
@@ -178,3 +178,24 @@ def generate_mode_content(
     
     # data = {"message": "Fear not for I am here!"}
     return data
+
+
+# @router.get("/stats", status_code=status.HTTP_200_OK)
+# def get_stats(
+#     current_user: models.Users = Depends(oauth2.get_current_user),
+#     db: Session = Depends(database.get_db),
+# ):
+#     stats = (
+#         db.query(models.Stats)
+#         .filter(models.Stats.user_id == current_user.uid)
+#         .first()
+#     )
+
+#     if stats is None:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail="Stats not found for user",
+#         )
+
+#     return stats
+

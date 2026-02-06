@@ -26,9 +26,6 @@ export const load: PageLoad = async ({ fetch, url }) => {
   }
 
 const data = await res.json();
-// console.log("data:", data);
-// console.log("data.items:", data.items);
-// console.log("data.debug:", data.debug);
 
   return {
     songs: data.items ?? [],

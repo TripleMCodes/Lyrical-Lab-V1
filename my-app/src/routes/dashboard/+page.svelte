@@ -4,17 +4,31 @@
     import RimeSearch from "$lib/components/RimeSearch.svelte";
     import Scratchpad from "$lib/components/Scratchpad.svelte";
     import Search from "$lib/components/Search.svelte";
+    import type { PageData } from "../$types";
+    import { goto } from '$app/navigation'
+    import { editingSong } from "$lib/stores/editingSong";
 
-    let writing_time = $state()
-    let writing_sessions = $state()
-    let new_songs = $state()
-    let num_songs = $state()
+    let { data } = $props<{ data: PageData }>();
 
-    let draft_artist = $state()
-    let draft_title = $state()
-    let draft_album = $state()
+    let writing_time = $state(data.stats.writing_sessions)
+    let writing_sessions = $state(data.stats.total_writing_time)
+    let new_songs = $state(data.songs_stats.new_songs)
+    let num_songs = $state(data.songs_stats.num_songs)
 
-    let recentSongs = $state()
+    let draft_artist = $state(data.draft.song_artist)
+    let draft_title = $state(data.draft.song_name)
+    let draft_album = $state(data.draft.song_album)
+
+    let recentSongs = $state(data.recent_songs);
+
+    function openStudio (){
+       editingSong.set(data.draft)
+       goto('/lyrical-lab')
+    }
+
+
+    $inspect(recentSongs)
+
 
 </script>
 
@@ -30,7 +44,7 @@
         
         <Stats bind:writing_time={writing_time} bind:writing_sessions={writing_sessions} bind:new_songs={new_songs} bind:num_songs={num_songs}/>
 
-        <Workspace bind:artist={draft_artist} bind:title={draft_title} bind:album={draft_album} bind:recent_songs={recentSongs}/>
+        <Workspace openStudio={openStudio} bind:artist={draft_artist} bind:title={draft_title} bind:album={draft_album} bind:recent_songs={recentSongs}/>
 
 
     </div>
