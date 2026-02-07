@@ -39,6 +39,16 @@ class Stats(Base):
     writing_sessions = Column(Integer, nullable=True)
     user_id = Column(Integer, ForeignKey('users.uid'), nullable=False, unique=True)
 
+
+class Scratchpad(Base):
+    __tablename__ = "scratchpad"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    note = Column(Text, nullable=False)
+    date_created = Column(DateTime, nullable=False, default=func.now())
+    date_modified = Column(DateTime, nullable=False, onupdate=func.now())
+    user_id = Column(Integer, ForeignKey('users.uid'), nullable=False, unique=True)
+
 class StateFold(Base):
     __tablename__ = "statefold"
 

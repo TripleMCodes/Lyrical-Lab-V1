@@ -108,6 +108,8 @@ button{
 
     color: rgba(233, 213, 255, 0.95);
     text-transform: uppercase;
+    margin-bottom: 0;
+    padding: 0;
 }
 
 /* ========= Shared card style ========= */
@@ -132,9 +134,41 @@ button{
 
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-
     overflow: hidden;
 }
+
+.recent-songs{
+    overflow-y:scroll ;
+    height: 80%;
+}
+.recent-songs::-webkit-scrollbar{
+    width:5px;
+}
+
+.recent-songs::-webkit-scrollbar-track{
+    background: rgba(20, 0, 40, 0.6);
+    border-radius: 8px;
+}
+
+.recent-songs::-webkit-scrollbar-thumb {
+        background: linear-gradient(
+            180deg,
+            #c77dff,
+            #7b2cbf
+        );
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(199, 125, 255, 0.6);
+        }    
+
+.recent-songs::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(
+            180deg,
+            #e0aaff,
+            #9d4edd
+        );
+        }
+
+
 
 /* Subtle neon edge accent */
 .draft::before,
