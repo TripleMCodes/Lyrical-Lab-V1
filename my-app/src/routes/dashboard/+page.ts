@@ -17,6 +17,8 @@ export const load: PageLoad = async ({ fetch }) => {
 
     let recent_songs_data:Array<Object> = []
 
+    let notes_data: Array<Object> = []
+    
     const res = await fetch("http://localhost:8000/api/users/stats", {
         method: "GET",
         credentials: "include",
@@ -33,6 +35,11 @@ export const load: PageLoad = async ({ fetch }) => {
     });
 
     const res4 = await fetch("http://localhost:8000/api/users/recent-songs", {
+        method: "GET",
+        credentials: "include"
+    });
+
+    const res5 = await fetch("http://localhost:8000/api/lyric-tools/get-notes", {
         method: "GET",
         credentials: "include"
     });
@@ -55,6 +62,10 @@ export const load: PageLoad = async ({ fetch }) => {
         recent_songs_data = await res4.json()
     }
 
+    if (res5.ok) {
+        notes_data = await res5.json()
+    }
+
     
 
     return {
@@ -62,6 +73,7 @@ export const load: PageLoad = async ({ fetch }) => {
         songs_stats: songs_data,
         recent_songs: recent_songs_data,
         draft: song_draft, 
+        notes: notes_data,
         logo: {
             title: "Dashboard",
             tagline: "Drop science in the lab"

@@ -4,9 +4,12 @@
     import RimeSearch from "$lib/components/RimeSearch.svelte";
     import Scratchpad from "$lib/components/Scratchpad.svelte";
     import Search from "$lib/components/Search.svelte";
+    import Notification from "$lib/components/Notification.svelte";
     import type { PageData } from "../$types";
     import { goto } from '$app/navigation'
     import { editingSong } from "$lib/stores/editingSong";
+  import { derived } from "svelte/store";
+  import { isExpressionWithTypeArguments } from "typescript";
 
     let { data } = $props<{ data: PageData }>();
 
@@ -19,13 +22,102 @@
     let draft_title = $state(data.draft.song_name)
     let draft_album = $state(data.draft.song_album)
 
-    let recentSongs = $state(data.recent_songs);
+    let recentSongs = $state(data.recent_songs)
+
+    let notes = $state(data.notes)
+    let note = $state("")
+    let currentNoteId = $state("")
+
+    let showNotification = $state(false);
+    let notificationMessage = $state("");
+    let notificationType = $state("success");
+
 
     function openStudio (){
        editingSong.set(data.draft)
        goto('/lyrical-lab')
     }
 
+    function viewNote(note_content, note_id){
+        note = note_content;
+        currentNoteId = note_id
+    }
+
+    async function updateSongsList() {
+        const res5 = await fetch("http://localhost:8000/api/lyric-tools/get-notes", {
+        method: "GET",
+        credentials: "include"
+    });
+
+        if (res5.ok) {
+            notes = await res5.json()
+        }
+    }
+
+    async function saveNote(){
+
+        if (!note){
+             notificationMessage = "Error - note to save empty";
+            notificationType = "error";
+            showNotification = true;
+            return
+        }
+
+        try{
+            const res = await fetch(
+                "http://localhost:8000/api/lyric-tools/save-note",
+                {
+                    method: 'POST', 
+                    credentials: 'include',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({"note": note, "id":currentNoteId})
+                }
+            )
+            const res_data = await res.json();
+            updateSongsList()
+            notificationMessage = res_data.message;
+            notificationType = "success";
+            showNotification = true;
+
+        }catch(err){
+            notificationMessage = "Couldn't process lines";
+            notificationType = "error";
+            showNotification = true;
+        }
+
+
+    }
+
+    async function delNote(id){
+        console.log(id)
+        // id = Number(id)
+        try{
+            const res = await fetch(`http://localhost:8000/api/lyric-tools/notes/${id}`,
+                {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }
+            )
+
+            const res_data = await res.json();
+            updateSongsList()
+            notificationMessage = res_data.message;
+            notificationType = "success";
+            showNotification = true;
+        }catch(error){
+            notificationMessage = "Couldn't process lines";
+            notificationType = "error";
+            showNotification = true;
+        }
+
+    }
+
+    function createNote(){
+        currentNoteId = ""
+        note = ""
+    }
 
     $inspect(recentSongs)
 
@@ -36,7 +128,7 @@
 <section class="container">
     <div class="main scrollable">
         <Search/>
-        <Scratchpad/>
+        <Scratchpad viewNote={viewNote} makeNewNote={createNote} delNote={delNote} saveNote={saveNote} bind:notes={notes} bind:note={note} />
         <RimeSearch/>
     </div>
 
@@ -49,6 +141,13 @@
 
     </div>
 </section>
+
+<Notification 
+    bind:show={showNotification}
+    bind:message={notificationMessage}
+    bind:type={notificationType}
+    on:close={() => showNotification = false}
+/>
 
 <style>
 :root {

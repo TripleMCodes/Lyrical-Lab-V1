@@ -51,20 +51,6 @@
   let notificationMessage = $state("");
   let notificationType = $state("success");
 
-
-  // onMount(() => {
-  //   const s = get(editingSong);
-  //   if (s) {
-  //     title = s.song_name ?? '';
-  //     editorContent = s.song_lyrics ?? '';
-  //     artist = s.song_artist ?? '';
-  //     genre = s.song_genre ?? '';
-  //     album = s.song_album ?? '';
-  //     mood = s.song_mood ?? '';
-  //   }
-  // });
-
-
   $effect(() => {
     const song = $editingSong;
     if (song) {

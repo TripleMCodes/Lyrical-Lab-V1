@@ -180,22 +180,92 @@ def generate_mode_content(
     return data
 
 
-# @router.get("/stats", status_code=status.HTTP_200_OK)
-# def get_stats(
-#     current_user: models.Users = Depends(oauth2.get_current_user),
-#     db: Session = Depends(database.get_db),
-# ):
-#     stats = (
-#         db.query(models.Stats)
-#         .filter(models.Stats.user_id == current_user.uid)
-#         .first()
-#     )
+@router.get('/get-notes', status_code=status.HTTP_200_OK)
+def get_notes(
+    current_user: models.Users = Depends(oauth2.get_current_user),db: Session = Depends(database.get_db)
+):
 
-#     if stats is None:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail="Stats not found for user",
-#         )
+    notes = (
+        db.query(models.Scratchpad)
+        .filter(models.Scratchpad.user_id == current_user.uid)
+        .all()
+    )
+    print(notes)
 
-#     return stats
+    if notes is None:
+        return {}
+    
+    return notes
 
+
+@router.post("/save-note", status_code=status.HTTP_200_OK)
+def save_note(
+    data: dict,
+    current_user: models.Users = Depends(oauth2.get_current_user),
+    db: Session = Depends(database.get_db),
+):
+    note_text = (data.get("note") or "").strip()
+    note_id = data.get("id")
+
+    if not note_text:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Please provide a non-empty note.",
+        )
+
+    # Update existing note
+    if note_id:
+        note_obj = (
+            db.query(models.Scratchpad)
+            .filter(
+                models.Scratchpad.id == note_id,
+                models.Scratchpad.user_id == current_user.uid,
+            )
+            .first()
+        )
+
+        if not note_obj:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Note not found.",
+            )
+
+        note_obj.note = note_text
+        db.commit()
+        db.refresh(note_obj)
+
+        return {"message": "Note updated successfully.", "note_obj": note_obj}
+
+    # Create new note
+    new_note = models.Scratchpad(user_id=current_user.uid, note=note_text)
+    db.add(new_note)
+    db.commit()
+    db.refresh(new_note)
+
+    return {"message": "Note saved successfully.", "note_obj": new_note}
+
+@router.delete("/notes/{note_id}", status_code=status.HTTP_200_OK)
+def delete_note(
+    note_id: int,
+    current_user: models.Users = Depends(oauth2.get_current_user),
+    db: Session = Depends(database.get_db),
+):
+    note_obj = (
+        db.query(models.Scratchpad)
+        .filter(
+            models.Scratchpad.id == note_id,
+            models.Scratchpad.user_id == current_user.uid,
+        )
+        .first()
+    )
+
+    if not note_obj:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found.",
+        )
+
+    db.delete(note_obj)
+    db.commit()
+
+    return {"message": "Note successfully deleted.", "id": note_id}

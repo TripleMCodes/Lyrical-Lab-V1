@@ -14,6 +14,14 @@ class Users(Base):
 
     lyrics = relationship("Lyrics", back_populates="user", cascade="all, delete-orphan")
 
+    scratchpad = relationship(
+        "Scratchpad",
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )
+
+
+
 class Lyrics(Base):
     __tablename__ = "lyrics"
 
@@ -30,7 +38,7 @@ class Lyrics(Base):
 
     user = relationship("Users", back_populates="lyrics")
 
-
+    
 class Stats(Base):
     __tablename__ = "stats"
     
@@ -44,10 +52,30 @@ class Scratchpad(Base):
     __tablename__ = "scratchpad"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+
     note = Column(Text, nullable=False)
-    date_created = Column(DateTime, nullable=False, default=func.now())
-    date_modified = Column(DateTime, nullable=False, onupdate=func.now())
-    user_id = Column(Integer, ForeignKey('users.uid'), nullable=False, unique=True)
+
+    date_created = Column(
+        DateTime,
+        nullable=False,
+        server_default=func.now()
+    )
+
+    date_modified = Column(
+        DateTime,
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now()
+    )
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.uid", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+
+    user = relationship("Users", back_populates="scratchpad")
 
 class StateFold(Base):
     __tablename__ = "statefold"

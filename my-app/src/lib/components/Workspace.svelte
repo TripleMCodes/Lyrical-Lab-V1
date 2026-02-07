@@ -60,12 +60,12 @@
     width: 100%;
     display: grid;
     grid-template-columns: 360px 1fr;
-    gap: 1.2rem;
+    /* gap: 1.2rem; */
     align-items: start;
 
-    margin-top:2rem;
+    /* margin-top:2rem; */
 
-    padding: 1.2rem;
+    padding: 1rem;
 
     background: linear-gradient(
         180deg,
@@ -137,12 +137,17 @@ button{
     overflow: hidden;
 }
 
+.draft{
+    height: 100%;
+}
 .recent-songs{
     overflow-y:scroll ;
-    height: 80%;
+    height: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
 }
 .recent-songs::-webkit-scrollbar{
-    width:5px;
+    width:2px;
 }
 
 .recent-songs::-webkit-scrollbar-track{
