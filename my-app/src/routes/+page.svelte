@@ -16,7 +16,7 @@
             isLoading = true
             const lst = await fetchWords(selected, word)
             wordList = lst
-            console.log($state.snapshot(wordList))
+            // console.log($state.snapshot(wordList))
             if (wordList.length === 0){
                   notify = "No results found"
             }

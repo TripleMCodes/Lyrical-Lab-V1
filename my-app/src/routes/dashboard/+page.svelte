@@ -10,6 +10,8 @@
     import { editingSong } from "$lib/stores/editingSong";
   import { derived } from "svelte/store";
   import { isExpressionWithTypeArguments } from "typescript";
+  import {fetchWords} from '$lib/api/client'
+//   import SigilSpinner from '$lib/components/SigilSpinner.svelte';
 
     let { data } = $props<{ data: PageData }>();
 
@@ -28,9 +30,15 @@
     let note = $state("")
     let currentNoteId = $state("")
 
+    let rhyme = $state("")
+    let rime_list = $state([])
+    let isLoading = $state(false)
+
+
     let showNotification = $state(false);
     let notificationMessage = $state("");
     let notificationType = $state("success");
+
 
 
     function openStudio (){
@@ -119,6 +127,19 @@
         note = ""
     }
 
+    async function findRhyme(){
+        console.log("rime button click!")
+        rime_list = []
+        isLoading = true
+        const lst = await fetchWords("rhyme", rhyme)
+        rime_list = lst
+        isLoading = false
+    }
+
+    // function cancelSearch(){
+    //     isLoading = false
+    // }
+
     $inspect(recentSongs)
 
 
@@ -128,8 +149,10 @@
 <section class="container">
     <div class="main scrollable">
         <Search/>
+
         <Scratchpad viewNote={viewNote} makeNewNote={createNote} delNote={delNote} saveNote={saveNote} bind:notes={notes} bind:note={note} />
-        <RimeSearch/>
+
+        <RimeSearch findRhyme={findRhyme} bind:rhyme={rhyme} bind:rime_list={rime_list} bind:isLoading={isLoading} />
     </div>
 
     <div class="main scrollable">
