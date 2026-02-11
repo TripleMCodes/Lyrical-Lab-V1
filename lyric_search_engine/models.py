@@ -8,5 +8,7 @@ class LyricDoc:
     title: str
     text: str
     artist: Optional[str] = None
+    chorus: Optional[str] = None
+    verses: Optional[str] = None
     created_at: Optional[datetime] = None
     meta: Optional[Dict[str, Any]] = None
