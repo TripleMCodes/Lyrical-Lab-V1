@@ -1,5 +1,5 @@
-from lyric_search_engine.models import LyricDoc
-from lyric_search_engine.engine import LLSearchEngine
+from lyric_search_engine.models import LyricDoc 
+from lyric_search_engine.engine import LLSearchEngine, FieldWeights
 from lyric_search_engine.storage import SQLiteFeedbackStore
 from lyric_search_engine.feedback import Feedback
 
@@ -68,19 +68,55 @@ I still recall everything about you from you favorite colors to your deepest sec
 Favorite colors - Pink and purple
 Deepest secrets - I'm keepin' 'em til the day I am buried
     """),
+    LyricDoc("6", "Warming up", """
+    Them: "You’re nothing without me. I made you, and I can tear you apart."
+Xarya: "You created a more diabolical monster than the one you are."
+
+Half Chorus (Xarya):
+I hope you're ready, I'm just warming up//
+I'm on my feet — you stepped on me when I was down//
+I stood my ground, I'm stepping up so step aside//
+I hope you're ready — I'm just warning ya//
+
+Verse 1 (Connor):
+I'm just warming up but I'm warming up to none of y’all//(2)
+’Cause ya took from me, now I take from y’all — can’t you see I’m taking after y’all//(2)
+I'm not wanting more, I'm after all//(1)
+You took my lunch in the school of life but ya none the wiser after all//(2)
+You shook my world — I stood my ground and shook it off//(2)
+This the aftershock — you cross the wires, you after shock//(2)
+— change flow —
+I'm feeling electric, I need to be grounded//
+But my head in the nimbus — I like when it's cloudy//
+I was always on edge with some horrors around me//
+Now I live on the edge and I'm ready for jumping//
+
+Chorus 2 (Xarya):
+I hope you're ready — I'm just warming up//
+I'm on my feet — you stepped on me when I was down//
+I stood my ground — I'm stepping up so step aside//
+I hope you're ready — I'm just warning ya//
+So how d' you like me now when you have let me down//
+I don't want you — all you did was lead me on//
+You ain't want me — all you did was treat me wrong//
+So how d’ you like me now when I have let you go//
+
+Interlude:
+Them: "So, you think you're better now?"
+Xarya: "No… I just think I'm better off without you."
+
+"""),
 ]
 
 store = SQLiteFeedbackStore("ll_feedback.db")
-engine = LLSearchEngine(feedback_store=store)
-engine.index(docs)
+engine = LLSearchEngine(
+    feedback_store=store,
+    field_weights=FieldWeights(title=2.5, chorus=2.0, verses=1.0),
+)
 
-print("Search:", engine.search("miss you", top_k=3))
+rebuilt = engine.index(docs)
+print("Rebuilt index?", rebuilt)
 
-fb = Feedback(store)
-fb.clicked("miss you", "5") # user liked it
-fb.thumbs_up("miss you", "5")
+print(engine.search("hate", top_k=5, with_snippets=True))
 
-print("Search after feedback:", engine.search("miss you", top_k=3))
-
-
-# store.clear()
+store.clear()

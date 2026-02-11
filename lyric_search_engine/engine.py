@@ -32,12 +32,15 @@ class LLSearchEngine:
         stopwords: Optional[set[str]] = None,
         field_weights: Optional[FieldWeights] = None,
     ):
+        sw = stopwords if stopwords is not None else DEFAULT_STOPWORDS
+
         self.vectorizer = TfidfVectorizer(
-            preprocessor=normalize,
-            max_features=tfidf_max_features,
-            ngram_range=tfidf_ngram_range,
-            stop_words=stopwords if stopwords is not None else DEFAULT_STOPWORDS,
-        )
+        preprocessor=normalize,
+        max_features=tfidf_max_features,
+        ngram_range=tfidf_ngram_range,
+        stop_words=sorted(list(sw)),
+            )
+
 
         self.feedback_store = feedback_store
         self.field_weights = field_weights or FieldWeights()
