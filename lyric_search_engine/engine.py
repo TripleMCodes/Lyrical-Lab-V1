@@ -1,4 +1,3 @@
-# llsearch/engine.py
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -14,6 +13,8 @@ from .preprocess import normalize
 from .storage import SQLiteFeedbackStore
 from .stopwords import DEFAULT_STOPWORDS
 from .fields import doc_fields
+from .embeddings import EmbeddingProvider, SentenceTransformerProvider
+from .vector_index import FaissIndex
 
 
 @dataclass
@@ -22,8 +23,14 @@ class FieldWeights:
     chorus: float = 1.8
     verses: float = 1.0
 
+@dataclass
+class HybridWeights:
+    tfidf: float = 0.4
+    semantic: float = 0.6
+
 
 class LLSearchEngine:
+    
     def __init__(
         self,
         feedback_store: Optional[SQLiteFeedbackStore] = None,
@@ -31,27 +38,38 @@ class LLSearchEngine:
         tfidf_ngram_range: Tuple[int, int] = (1, 2),
         stopwords: Optional[set[str]] = None,
         field_weights: Optional[FieldWeights] = None,
+
+        embedding_provider: Optional[EmbeddingProvider] = None,
+        hybrid_weights: Optional[HybridWeights] = None,
+        semantic_top_k: int = 50,  # candidates pulled from semantic index before rerank
     ):
         sw = stopwords if stopwords is not None else DEFAULT_STOPWORDS
 
         self.vectorizer = TfidfVectorizer(
-        preprocessor=normalize,
-        max_features=tfidf_max_features,
-        ngram_range=tfidf_ngram_range,
-        stop_words=sorted(list(sw)),
-            )
-
+            preprocessor=normalize,
+            max_features=tfidf_max_features,
+            ngram_range=tfidf_ngram_range,
+            stop_words=sorted(list(sw)),
+        )
 
         self.feedback_store = feedback_store
         self.field_weights = field_weights or FieldWeights()
 
+        self.embedding_provider = embedding_provider or SentenceTransformerProvider()
+        self.hybrid_weights = hybrid_weights or HybridWeights()
+        self.semantic_top_k = semantic_top_k
+
         self.docs: List[LyricDoc] = []
         self.doc_index: Dict[str, int] = {}
 
-        # Cached matrices
+        # Cached TF-IDF matrices
         self._title_matrix = None
         self._chorus_matrix = None
         self._verses_matrix = None
+
+        # Cached semantic index
+        self._semantic_index: Optional[FaissIndex] = None
+        self._semantic_dim: Optional[int] = None
 
         # caching signature
         self._signature: Optional[str] = None
@@ -97,10 +115,21 @@ class LLSearchEngine:
         ]
         self.vectorizer.fit(fit_corpus)
 
-        # Transform each field into the same vector space
         self._title_matrix = self.vectorizer.transform(titles)
         self._chorus_matrix = self.vectorizer.transform(choruses)
         self._verses_matrix = self.vectorizer.transform(verses)
+
+        semantic_texts = [
+            f"{titles[i]}\n{choruses[i]}\n{verses[i]}".strip()
+            for i in range(len(docs))
+        ]
+
+        doc_ids = [d.doc_id for d in docs]
+        vectors = self.embedding_provider.embed(semantic_texts)  # shape (n, dim), float32, normalized
+
+        self._semantic_dim = int(vectors.shape[1])
+        self._semantic_index = FaissIndex(self._semantic_dim)
+        self._semantic_index.build(doc_ids, vectors)
 
         self._signature = sig
         return True
@@ -160,7 +189,11 @@ class LLSearchEngine:
         if self._title_matrix is None:
             raise RuntimeError("Index is empty. Call engine.index(docs) first.")
 
-        scores = self._field_scores(query)
+        tfidf_scores = self._field_scores(query)
+        sem_scores = self._semantic_scores(query)
+
+        hw = self.hybrid_weights
+        scores = (hw.tfidf * tfidf_scores) + (hw.semantic * sem_scores)
 
         if self.feedback_store is not None:
             scores = scores + self._feedback_boost(query)
@@ -181,3 +214,23 @@ class LLSearchEngine:
             results.append(item)
 
         return results
+
+
+    def _semantic_scores(self, query: str) -> np.ndarray:
+        """
+        Returns an array aligned to docs, where each entry is the semantic similarity.
+        Uses FAISS for top candidate retrieval, then expands into a full score vector.
+        """
+        if self._semantic_index is None:
+            return np.zeros(len(self.docs), dtype=float)
+
+        qvec = self.embedding_provider.embed([query])[0]  # (dim,)
+        candidates = self._semantic_index.search(qvec, top_k=self.semantic_top_k)
+
+        scores = np.zeros(len(self.docs), dtype=float)
+        for doc_id, sim in candidates:
+            idx = self.doc_index.get(doc_id)
+            if idx is not None:
+                scores[idx] = float(sim)
+        return scores
+
