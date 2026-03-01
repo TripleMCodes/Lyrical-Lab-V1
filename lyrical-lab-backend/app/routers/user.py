@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from datetime import datetime, timedelta
 from sqlalchemy import func, text
 from .. import models, schemas, utils
@@ -130,27 +131,31 @@ def get_user(id:int, db: Session = Depends(get_db)):
     
     return user
 
-@router.get("/writing-stats")
+
+
+@router.get("/dashboard/writing-stats")
 def dashboard_writing_stats(
     db: Session = Depends(get_db),
     current_user: models.Users = Depends(oauth2.get_current_user),
 ):
 
-    rows = (
-        db.query(
+    stmt = (
+        select(
+            models.Stats.date_created,
             models.Stats.total_writing_time,
             models.Stats.writing_sessions,
-            models.Stats.date_created
         )
-        .all()
+        .where(models.Stats.user_id == current_user.uid)
+        .order_by(models.Stats.date_created.asc())
     )
-
+    
+    rows = db.execute(stmt).all()
 
     return [
         {
-            "date": r.day.date().isoformat(),
-            "writingTime": int(r.writing_time),
-            "sessions": int(r.sessions),
+            "date": r.date_created.date() if r.date_created.date() else None,
+            "writing_time": int(r.total_writing_time or 0),
+            "sessions": int(r.writing_sessions or 0),
         }
         for r in rows
     ]

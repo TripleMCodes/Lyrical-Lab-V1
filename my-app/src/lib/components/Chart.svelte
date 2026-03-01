@@ -11,7 +11,7 @@
   let days = 30;
 
   async function load() {
-    const res = await fetch(`http://localhost:8000/api/users/writing-stats`, {
+    const res = await fetch(`http://localhost:8000/api/users/dashboard/writing-stats`, {
       credentials: "include"
     });
     if (!res.ok) throw new Error("Failed to load stats");

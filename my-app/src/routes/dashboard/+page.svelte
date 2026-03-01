@@ -21,6 +21,7 @@
     let new_songs = $state(data.songs_stats.new_songs)
     let num_songs = $state(data.songs_stats.num_songs)
 
+    
     let draft_artist = $state(data.draft.song_artist)
     let draft_title = $state(data.draft.song_name)
     let draft_album = $state(data.draft.song_album)
