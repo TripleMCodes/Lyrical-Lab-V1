@@ -14,7 +14,8 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, BASE_DIR)
 
 # Import Base from your database module
-from app.database import Base
+from app.database import Base  
+target_metadata = Base.metadata
 
 # Import models so Base.metadata gets populated
 import app.models  # noqa: F401

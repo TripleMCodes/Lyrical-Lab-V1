@@ -41,11 +41,14 @@ class Lyrics(Base):
     
 class Stats(Base):
     __tablename__ = "stats"
-    
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    total_writing_time = Column(Integer, nullable=True)
-    writing_sessions = Column(Integer, nullable=True)
-    user_id = Column(Integer, ForeignKey('users.uid'), nullable=False, unique=True)
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.uid"), nullable=False, index=True)
+
+    total_writing_time = Column(Integer, nullable=False, default=0)
+    writing_sessions = Column(Integer, nullable=False, default=0)
+
+    date_created = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
 
 
 class Scratchpad(Base):

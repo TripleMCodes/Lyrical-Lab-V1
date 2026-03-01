@@ -2,15 +2,21 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL") or f"mysql+pymysql://conor:02122020@localhost/lyrical_lab" 
+DATABASE_URL = os.getenv("DATABASE_URL") or "postgresql+psycopg://postgres:1234@localhost:5432/mprosody_db"
 
 engine = create_engine(
     DATABASE_URL,
     echo=True,
-    pool_pre_ping=True
+    pool_pre_ping=True,
+    future=True,
 )
 
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+SessionLocal = sessionmaker(
+    bind=engine,
+    autocommit=False,
+    autoflush=False,
+    expire_on_commit=False,
+)
 
 Base = declarative_base()
 
@@ -19,4 +25,4 @@ def get_db():
     try:
         yield db
     finally:
-        db.close() 
+        db.close()

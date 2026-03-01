@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from sqlalchemy import func, text
 from .. import models, schemas, utils
+from datetime import datetime, timedelta, timezone
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from app.database import engine, get_db
@@ -103,12 +104,12 @@ def get_recent_songs(
     db:Session = Depends(get_db),
     current_user: models.Users = Depends(oauth2.get_current_user)
 ):
-    one_week_ago = datetime.now() - timedelta(days=7)
+    
     recent_songs = (
     db.query(models.Lyrics)
     .filter(
         models.Lyrics.user_id == current_user.uid,
-        models.Lyrics.date_created >= func.now() - text("INTERVAL 7 DAY")
+        models.Lyrics.date_created >= func.now() - text("interval '7 days'")
     )
     .all()
     )
@@ -128,3 +129,28 @@ def get_user(id:int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with id: {id} not found")
     
     return user
+
+@router.get("/writing-stats")
+def dashboard_writing_stats(
+    db: Session = Depends(get_db),
+    current_user: models.Users = Depends(oauth2.get_current_user),
+):
+
+    rows = (
+        db.query(
+            models.Stats.total_writing_time,
+            models.Stats.writing_sessions,
+            models.Stats.date_created
+        )
+        .all()
+    )
+
+
+    return [
+        {
+            "date": r.day.date().isoformat(),
+            "writingTime": int(r.writing_time),
+            "sessions": int(r.sessions),
+        }
+        for r in rows
+    ]

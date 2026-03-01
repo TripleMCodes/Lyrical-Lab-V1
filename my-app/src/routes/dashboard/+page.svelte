@@ -5,6 +5,7 @@
     import Scratchpad from "$lib/components/Scratchpad.svelte";
     import Search from "$lib/components/Search.svelte";
     import Notification from "$lib/components/Notification.svelte";
+    import Chart from "$lib/components/Chart.svelte"
     import type { PageData } from "../$types";
     import { goto } from '$app/navigation'
     import { editingSong } from "$lib/stores/editingSong";
@@ -158,7 +159,7 @@
     <div class="main scrollable">
         
         <Stats bind:writing_time={writing_time} bind:writing_sessions={writing_sessions} bind:new_songs={new_songs} bind:num_songs={num_songs}/>
-
+        <Chart></Chart>
         <Workspace openStudio={openStudio} bind:artist={draft_artist} bind:title={draft_title} bind:album={draft_album} bind:recent_songs={recentSongs}/>
 
 
