@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app import schemas, oauth2, models, database
 from app.syllable_counter import SyllableCounter 
 from app.lyrics_n_summarization import StressedSyllableAnotator, OpenRouterClient
+from datetime import datetime, timedelta
 import logging 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -269,3 +270,54 @@ def delete_note(
     db.commit()
 
     return {"message": "Note successfully deleted.", "id": note_id}
+
+
+@router.post('/save-writing-seconds', status_code=status.HTTP_200_OK)
+def save_writing_seconds(
+    data: dict,
+    db: Session = Depends(database.get_db),
+    current_user: models.Users = Depends(oauth2.get_current_user),
+):
+    """Save a writing session in seconds. Adds the seconds to today's
+    `total_writing_time`. If no stats row exists for today, create one and
+    set `writing_sessions` to 0 per spec.
+    """
+    try:
+        secs = int(data.get('secs', 0))
+        print(f'The seconds are {secs}')
+        print(f'The data is {data}')
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid secs value")
+
+    if secs <= 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="secs must be > 0")
+
+    now = datetime.utcnow()
+    start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    end = start + timedelta(days=1)
+
+    stat = (
+        db.query(models.Stats)
+        .filter(
+            models.Stats.user_id == current_user.uid,
+            models.Stats.date_created >= start,
+            models.Stats.date_created < end,
+        )
+        .first()
+    )
+
+    if stat:
+        stat.total_writing_time = (stat.total_writing_time or 0) + secs
+        # If writing_sessions isn't present, follow spec and set to zero.
+        if stat.writing_sessions is None:
+            stat.writing_sessions = 0
+        # Count this stop as a session
+        stat.writing_sessions = stat.writing_sessions + 1
+    else:
+        stat = models.Stats(user_id=current_user.uid, total_writing_time=secs, writing_sessions=0, date_created=now.date())
+        db.add(stat)
+
+    db.commit()
+    db.refresh(stat)
+
+    return {"message": "saved", "stats": {"total_writing_time": stat.total_writing_time, "writing_sessions": stat.writing_sessions}}

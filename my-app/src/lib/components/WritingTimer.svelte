@@ -71,6 +71,10 @@
 
   function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    let secs = Math.ceil(state.accumulatedMs / 1000);
+    let remainder = state.accumulatedMs % 1000;
+    // console.log(`the secs are ${secs}s`);
+    // console.log(`the remainder are ${remainder}s`);
   }
 
   function start() {
@@ -87,14 +91,44 @@
     if (!state.running) return;
 
     const now = Date.now();
+    let addedMs = 0;
     if (state.lastTickAt) {
-      state.accumulatedMs += Math.max(0, now - state.lastTickAt);
+      addedMs = Math.max(0, now - state.lastTickAt);
+      state.accumulatedMs += addedMs;
     }
 
     state.running = false;
     state.lastTickAt = null;
 
     saveState();
+
+    const sessionSecs = Math.ceil(state.accumulatedMs / 1000);
+    if (sessionSecs > 0) {
+      sendSessionSecs(sessionSecs);
+    }
+  }
+
+  async function sendSessionSecs(secs: number) {
+    try {
+      const token = localStorage.getItem('access_token') || localStorage.getItem('token');
+      const headers: any = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch('http://localhost:8000/api/lyric-tools/save-writing-seconds', {
+        method: 'POST',
+        credentials: 'include',
+        headers:{
+            "Content-Type": "application/json"
+          },
+        body: JSON.stringify({ secs }),
+      });
+
+      if (!res.ok) {
+        console.warn('Failed to save writing seconds', await res.text());
+      }
+    } catch (err) {
+      console.warn('Error saving writing seconds', err);
+    }
   }
 
   function onUserActivity() {
@@ -127,6 +161,7 @@
 
     if (idleMs >= idleSeconds * 1000) {
       stop();
+
     }
   }
 
