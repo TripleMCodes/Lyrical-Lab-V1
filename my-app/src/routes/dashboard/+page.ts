@@ -5,7 +5,7 @@ export const ssr = false;
 export const load: PageLoad = async ({ fetch }) => {
     let stats_data: Object = {
         writing_sessions: 0,
-        total_writing_time: 0
+        writing_time: 0
     };
 
     let songs_data: Object = {

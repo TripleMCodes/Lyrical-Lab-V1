@@ -6,6 +6,8 @@
     import Controls from '../../lib/components/Controls.svelte'
     import SongPanel from '../../lib/components/SongPanel.svelte'
     import Notification from '../../lib/components/Notification.svelte'
+
+    import WritingTimer from "../../lib/components/WritingTimer.svelte";
     import {fetchWords} from '../../lib/api/client'
     import { FileWatcherEventKind } from "typescript";
 
@@ -335,6 +337,8 @@
 
 
 <SongPanel bind:title bind:artist bind:album bind:mood bind:genre />
+
+<WritingTimer idleSeconds={10} />
 <section  class="ll-container" >
 
   <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={generate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>

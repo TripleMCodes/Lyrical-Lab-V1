@@ -16,8 +16,16 @@
 
     let { data } = $props<{ data: PageData }>();
 
-    let writing_time = $state(data.stats.writing_sessions)
-    let writing_sessions = $state(data.stats.total_writing_time)
+    let writing_time = $state(data.stats.writing_time)
+
+    console.log("WRITING TIME:", writing_time)
+
+    let minutes = $derived(Math.floor(writing_time / 60))
+    let seconds = $derived(writing_time % 60)
+
+    let formatted_time = $derived(`${minutes}m ${seconds}s`)
+
+    let writing_sessions = $state(data.stats.writing_sessions)
     let new_songs = $state(data.songs_stats.new_songs)
     let num_songs = $state(data.songs_stats.num_songs)
 
@@ -159,7 +167,7 @@
 
     <div class="main scrollable">
         
-        <Stats bind:writing_time={writing_time} bind:writing_sessions={writing_sessions} bind:new_songs={new_songs} bind:num_songs={num_songs}/>
+        <Stats bind:writing_time={formatted_time} bind:writing_sessions={writing_sessions} bind:new_songs={new_songs} bind:num_songs={num_songs}/>
         <Chart></Chart>
         <Workspace openStudio={openStudio} bind:artist={draft_artist} bind:title={draft_title} bind:album={draft_album} bind:recent_songs={recentSongs}/>
 

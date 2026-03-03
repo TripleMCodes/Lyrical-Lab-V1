@@ -34,19 +34,24 @@ def get_stats(
     current_user: models.Users = Depends(oauth2.get_current_user),
     db: Session = Depends(database.get_db),
 ):
-    stats = (
-        db.query(models.Stats)
-        .filter(models.Stats.user_id == int(current_user.uid))
-        .first()
+    today = datetime.now(timezone.utc).date()
+
+    total_writing_time, writing_sessions = (
+    db.query(
+        func.coalesce(func.sum(models.Stats.total_writing_time), 0),
+        func.coalesce(func.sum(models.Stats.writing_sessions), 0),
     )
-
-    if stats is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Stats not found for user",
-        )
-
-    return stats
+    .filter(
+        models.Stats.user_id == current_user.uid,
+        func.date(models.Stats.date_created) == today,
+    )
+    .first()
+)
+   
+    return {
+        "writing_time": int(total_writing_time),
+        "writing_sessions": int(writing_sessions),
+    }
 
 @router.get("/song-quantity")
 def get_song_num(

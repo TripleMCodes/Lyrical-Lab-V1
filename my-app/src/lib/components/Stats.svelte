@@ -7,7 +7,7 @@
     <h2>Stats</h2>
 
     <div class="stat-row">
-        <span class="label">Total writing time</span>
+        <span class="label">Writing time (Recently)</span>
         <span class="value">{writing_time}</span>
     </div>
 
@@ -17,7 +17,7 @@
     </div>
 
     <div class="stat-row">
-        <span class="label">Writing sessions</span>
+        <span class="label">Writing sessions (Recently)</span>
         <span class="value">{writing_sessions}</span>
     </div>
 
