@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     // @ts-ignore
     import { text } from "@sveltejs/kit";
     // @ts-ignore
@@ -15,14 +15,18 @@
     import { get } from 'svelte/store';
     import { goto } from "$app/navigation";
     import { replaceState } from '$app/navigation';
+    import type { PageData } from "../$types";
     // import { effect } from 'svelte';
     import { editingSong } from '$lib/stores/editingSong';
 
   // import { words } from "../sverdle/words.server";
 
-  // import { currentSong } from '$lib/stores/song';
+  import { currentSong } from '$lib/stores/song';
+  
 
-  // let song = $currentSong;
+  let { data } = $props<{ data: PageData }>();
+
+  let song = $currentSong;
 
   let words = $state(0);
   let chars = $state(0);
@@ -36,7 +40,7 @@
 
   let wordSelected = $state("")
   let wordSearched = $state("")
-  let wordList = $state()
+  let wordList = $state<Array<{ word: string }>>([])
   let debounceTimer;
 
 
@@ -53,23 +57,23 @@
   let notificationMessage = $state("");
   let notificationType = $state("success");
 
-  $effect(() => {
-    const song = $editingSong;
-    if (song) {
-      title = song.song_name ?? '';
-      editorContent = song.song_lyrics ?? '';
-      genre = song.song_genre ?? '';
-      mood = song.song_mood ?? '';
-      artist = song.song_artist ?? '';
-    } else {
-      title = '';
-      editorContent =  '';
-      genre = '';
-      mood = '';
-      artist =  '';
-    }
-  });
-
+  // $effect(() => {
+  //   const song = $editingSong;
+  //   if (song) {
+  //     title = song.song_name ?? '';
+  //     editorContent = song.song_lyrics ?? '';
+  //     genre = song.song_genre ?? '';
+  //     mood = song.song_mood ?? '';
+  //     artist = song.song_artist ?? '';
+  //   } else {
+  //     title = '';
+  //     editorContent =  '';
+  //     genre = '';
+  //     mood = '';
+  //     artist =  '';
+  //   }
+  // });
+  
 
 
   function notify(n){
@@ -134,7 +138,27 @@
         notificationType = "error";
         showNotification = true;
     }
+
+    increment_session_count();
 }
+
+  async function increment_session_count(){
+    try{
+      const res = await fetch("http://localhost:8000/api/lyric-tools/increment-session", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+         },
+          body: JSON.stringify({'sess': 1})
+      })
+      if (res.ok){
+        console.log("session count incremented")
+      }
+    }catch(err){
+      console.log("Couldn't increment session count")
+    }
+  }
 
   async function fetchWordsWrapper(){
     isLoading = true
@@ -242,15 +266,16 @@
           );
           const resData = await res.json();
           //add a better way to deal with res
+          console.log("draft saved");
         }catch (err){
           //add a better catch
+          console.log("draft not saved - ", err);
         }
       }, 3000)
     }
 
   function radioBtnChanged (event){
     selectedValue = event.target.value
-    // console.log(selectedValue)
   }
 
   async function generate(){
@@ -331,6 +356,15 @@
     selectedFos = event.target.value;
   }
 
+  if (data && data.draft_data) {
+    const draft = data.draft_data;
+    title = draft.song_name ?? '';
+    editorContent = draft.song_lyrics ?? '';
+    // console.log(editorContent)
+    genre = draft.song_genre ?? '';
+    mood = draft.song_mood ?? '';
+    artist = draft.song_artist ?? '';
+  }
 
    
 </script>

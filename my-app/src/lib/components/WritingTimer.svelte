@@ -71,10 +71,7 @@
 
   function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    let secs = Math.ceil(state.accumulatedMs / 1000);
-    let remainder = state.accumulatedMs % 1000;
-    // console.log(`the secs are ${secs}s`);
-    // console.log(`the remainder are ${remainder}s`);
+
   }
 
   function start() {

@@ -16,7 +16,7 @@
     });
     if (!res.ok) throw new Error("Failed to load stats");
     data = await res.json();
-    console.log(`This is your data ${data}`);
+    // console.log(`This is your data ${data}`);
     renderChart();
   }
 
