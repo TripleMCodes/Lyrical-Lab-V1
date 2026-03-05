@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 from app.database import Base
 from sqlalchemy import (
-    Column, Integer, String, Text, DateTime, ForeignKey, func, UniqueConstraint
+    Column, Integer, String, Text, DateTime, ForeignKey, func, UniqueConstraint, Index, UUID
 )
 import uuid
 
@@ -25,9 +25,45 @@ class Users(Base):
     )
 
 
+
+# class Lyrics(Base):
+#     __tablename__ = "lyrics"
+#     __table_args__ = (
+#         UniqueConstraint("user_id", "client_uid", name="uq_lyrics_user_client_uid"),
+#     )
+
+#     # Cloud ID
+#     song_id = Column(Integer, primary_key=True, autoincrement=True)
+#     # Ownership (cloud truth)
+#     user_id = Column(Integer, ForeignKey("users.uid", ondelete="CASCADE"), nullable=False)
+
+#     # Idempotency / client linkage (desktop-local song id)
+#     client_uid = Column(String(36), nullable=True, index=True)
+#     source = Column(String(20), nullable=False, server_default="web")  # "desktop" | "web"
+
+#     # Metadata
+#     song_name = Column(String(150), nullable=False)
+#     song_artist = Column(String(150), nullable=False)
+#     song_album = Column(String(100), nullable=True)
+#     song_genre = Column(String(100), nullable=False)
+#     song_mood = Column(String(100), nullable=True)
+
+#     # Content
+#     song_lyrics = Column(Text, nullable=False)
+
+#     # Timestamps
+#     date_created = Column(DateTime, nullable=False, server_default=func.now())
+#     date_modified = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
+
+#     # Optional soft delete
+#     deleted_at = Column(DateTime, nullable=True)
+
+#     user = relationship("Users", back_populates="lyrics")
+
 class Lyrics(Base):
     __tablename__ = "lyrics"
     __table_args__ = (
+        # Idempotent uploads: a given user + client_uid points to exactly one cloud song
         UniqueConstraint("user_id", "client_uid", name="uq_lyrics_user_client_uid"),
     )
 
@@ -37,29 +73,80 @@ class Lyrics(Base):
     # Ownership (cloud truth)
     user_id = Column(Integer, ForeignKey("users.uid", ondelete="CASCADE"), nullable=False)
 
-    # Idempotency / client linkage (desktop-local song id)
-    client_uid = Column(String(36), nullable=True, index=True)
+    # Idempotency / client linkage (stable UUID generated on client per local song)
+    # Postgres-native UUID is better than String(36)
+    client_uid = Column(UUID(as_uuid=True), nullable=True, index=True)
+
+    # Origin (helps analytics/debug)
     source = Column(String(20), nullable=False, server_default="web")  # "desktop" | "web"
 
-    # Metadata
+    # Metadata (kept on HEAD only; versions track lyrics text only)
     song_name = Column(String(150), nullable=False)
     song_artist = Column(String(150), nullable=False)
     song_album = Column(String(100), nullable=True)
     song_genre = Column(String(100), nullable=False)
     song_mood = Column(String(100), nullable=True)
 
-    # Content
+    # Content (HEAD)
     song_lyrics = Column(Text, nullable=False)
 
-    # Timestamps
-    date_created = Column(DateTime, nullable=False, server_default=func.now())
-    date_modified = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
+    # Versioning (NEW)
+    # - version: current HEAD version number
+    # - lyrics_hash: sha256 hex (64 chars) of *normalized* lyrics
+    # - hash_algo: stored for future-proofing; default sha256
+    version = Column(Integer, nullable=False, server_default="1")
+    lyrics_hash = Column(String(64), nullable=False)
+    hash_algo = Column(String(20), nullable=False, server_default="sha256")
+
+    # Timestamps (use tz-aware for Postgres)
+    date_created = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+    date_modified = Column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
 
     # Optional soft delete
-    deleted_at = Column(DateTime, nullable=True)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
 
+    # Relationships
     user = relationship("Users", back_populates="lyrics")
 
+    versions = relationship(
+        "LyricsVersion",
+        back_populates="head",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        order_by="LyricsVersion.version.desc()",
+    )
+
+
+
+class LyricsVersion(Base):
+    __tablename__ = "lyrics_versions"
+    __table_args__ = (
+        UniqueConstraint("lyrics_id", "version", name="uq_lyrics_versions_lyrics_id_version"),
+        Index("ix_lyrics_versions_lyrics_id_created_at", "lyrics_id", "created_at"),
+    )
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+
+    # Which "head" song this snapshot belongs to
+    lyrics_id = Column(Integer, ForeignKey("lyrics.song_id", ondelete="CASCADE"), nullable=False)
+
+    # Snapshot number (stores the *old* version number you are archiving)
+    version = Column(Integer, nullable=False)
+
+    # The snapshot text
+    lyrics = Column(Text, nullable=False)
+
+    # Hash of this snapshot (sha256 of normalized lyrics)
+    lyrics_hash = Column(String(64), nullable=False)  # sha256 hex = 64 chars
+    hash_algo = Column(String(20), nullable=False, server_default="sha256")
+
+    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
+    # Optional: why this snapshot was created (manual save, autosave, before upload, etc.)
+    note = Column(String(120), nullable=True)
+
+    # Relationship back to head
+    head = relationship("Lyrics", back_populates="versions")
     
 class Stats(Base):
     __tablename__ = "stats"

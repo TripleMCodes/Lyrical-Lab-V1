@@ -6,6 +6,7 @@ from app.syllable_counter import SyllableCounter
 from app.lyrics_n_summarization import StressedSyllableAnotator, OpenRouterClient
 from datetime import datetime, timedelta
 import logging 
+import hashlib
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -35,39 +36,74 @@ def count_syllables(
     data = {"message": text}
     return data
 
-@router.post("/save-song", status_code=status.HTTP_201_CREATED)
+@router.post("/save-song", status_code=status.HTTP_200_OK)
 def save_song(
     data: schemas.NewSong,
     db: Session = Depends(database.get_db),
     current_user: models.Users = Depends(oauth2.get_current_user),
 ):
-    # existing song for this user + song name
-    song = (
-        db.query(models.Lyrics)
-        .filter(
-            models.Lyrics.user_id == current_user.uid,
-            models.Lyrics.song_name == data.song_name,
+    def normalize_lyrics(lyrics):
+        return lyrics.replace('\r\n', '\n')
+    
+    norm_lyrics = normalize_lyrics(data.song_lyrics)
+    new_hash = hashlib.sha256(norm_lyrics.encode('utf-8')).hexdigest()
+    
+    if data.song_id is not None:
+        # Update existing song
+        song = db.query(models.Lyrics).filter(
+            models.Lyrics.song_id == data.song_id,
+            models.Lyrics.user_id == current_user.uid
+        ).with_for_update().first()
+        
+        if not song:
+            raise HTTPException(status_code=404, detail="Song not found")
+        
+        if song.lyrics_hash == new_hash:
+            # No changes
+            return {"message": "No changes"}
+        
+        # Archive old version
+        version_snapshot = models.LyricsVersion(
+            lyrics_id=song.song_id,
+            version=song.version,
+            lyrics=song.song_lyrics,
+            lyrics_hash=song.lyrics_hash,
+            hash_algo=song.hash_algo,
+            note="manual save"
         )
-        .first()
-    )
-
-    if song:
-        update_data = data.model_dump(exclude_unset=True) 
-
-        for key, value in update_data.items():
-            setattr(song, key, value)
-
+        db.add(version_snapshot)
+        
+        # Update HEAD
+        song.song_lyrics = data.song_lyrics
+        song.lyrics_hash = new_hash
+        song.version += 1
+        song.song_name = data.song_name
+        song.song_artist = data.song_artist
+        song.song_mood = data.song_mood
+        song.song_genre = data.song_genre
+        song.song_album = data.song_album
+        
         db.commit()
         return {"message": "Song updated successfully"}
-
-    new_song = models.Lyrics(user_id=current_user.uid, **data.model_dump())
-
-
-
-    db.add(new_song)
-    db.commit()
-
-    return {"message": "Song saved successfully"}
+    
+    else:
+        # Create new song
+        new_song = models.Lyrics(
+            user_id=current_user.uid,
+            song_name=data.song_name,
+            song_artist=data.song_artist,
+            song_lyrics=data.song_lyrics,
+            song_mood=data.song_mood,
+            song_genre=data.song_genre,
+            song_album=data.song_album,
+            lyrics_hash=new_hash,
+            version=1,
+            hash_algo="sha256",
+            source="web"
+        )
+        db.add(new_song)
+        db.commit()
+        return {"message": "Song saved successfully"}
 
 @router.post('/check-flow')
 def check_flow(

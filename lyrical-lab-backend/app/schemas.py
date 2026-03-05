@@ -21,6 +21,7 @@ class TokenData(BaseModel):
     uid: int
 
 class NewSong(BaseModel):
+    song_id: Optional[int] = None
     song_name: str
     song_artist: str
     song_lyrics: str
