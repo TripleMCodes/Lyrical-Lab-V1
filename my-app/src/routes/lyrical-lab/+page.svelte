@@ -21,6 +21,11 @@
 
   // import { words } from "../sverdle/words.server";
 
+
+  interface Song {
+    song_id: Number
+  } 
+
   import { currentSong } from '$lib/stores/song';
   
 

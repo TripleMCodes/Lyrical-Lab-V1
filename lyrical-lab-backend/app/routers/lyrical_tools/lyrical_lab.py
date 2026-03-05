@@ -84,7 +84,17 @@ def save_song(
         song.song_album = data.song_album
         
         db.commit()
-        return {"message": "Song updated successfully"}
+        db.refresh(song)
+        return {
+            "message": "Song updated successfully",
+            "song": {
+                "song_id": song.song_id,
+                "song_name": song.song_name,
+                "song_artist": song.song_artist,
+                "song_lyrics": song.song_lyrics,
+                "song_genre": song.song_genre,
+            },
+        }
     
     else:
         # Create new song
@@ -103,7 +113,17 @@ def save_song(
         )
         db.add(new_song)
         db.commit()
-        return {"message": "Song saved successfully"}
+        db.refresh(new_song)
+        return {
+            "message": "Song saved successfully",
+            "song": {
+                "song_id": new_song.song_id,
+                "song_name": new_song.song_name,
+                "song_artist": new_song.song_artist,
+                "song_lyrics": new_song.song_lyrics,
+                "song_genre": new_song.song_genre,
+            },
+        }
 
 @router.post('/check-flow')
 def check_flow(
