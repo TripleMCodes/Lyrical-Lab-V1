@@ -62,6 +62,8 @@ def save_song(
 
     new_song = models.Lyrics(user_id=current_user.uid, **data.model_dump())
 
+
+
     db.add(new_song)
     db.commit()
 
@@ -98,6 +100,24 @@ def save_draft(
 
     db.commit()
     return {'message': "draft saved"}
+
+@router.get('/get-draft')
+def get_draft(
+    current_user: models.Users = Depends(oauth2.get_current_user),
+    db: Session = Depends(database.get_db)
+):
+    user = db.query(models.StateFold).filter(
+        models.StateFold.user_id == current_user.uid
+    ).first()
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Draft not found")
+
+    draft_data = {column.name: getattr(user, column.name) for column in user.__table__.columns if column.name != "id" and column.name != "user_id"}
+    print(draft_data)
+
+    return draft_data
+
 
 @router.get("/user-songs", status_code=status.HTTP_200_OK)
 def get_user_songs(
@@ -312,7 +332,7 @@ def save_writing_seconds(
         if stat.writing_sessions is None:
             stat.writing_sessions = 0
         # Count this stop as a session
-        stat.writing_sessions = stat.writing_sessions + 1
+        # stat.writing_sessions = stat.writing_sessions + 1
     else:
         stat = models.Stats(user_id=current_user.uid, total_writing_time=secs, writing_sessions=0, date_created=now.date())
         db.add(stat)
@@ -321,3 +341,47 @@ def save_writing_seconds(
     db.refresh(stat)
 
     return {"message": "saved", "stats": {"total_writing_time": stat.total_writing_time, "writing_sessions": stat.writing_sessions}}
+
+
+@router.post('/increment-session')
+def save_session(
+    data: dict,
+    db: Session = Depends(database.get_db),
+    current_user: models.Users = Depends(oauth2.get_current_user),
+):
+    try:
+        secs = int(data.get('sess', 0))
+        print(f'The seconds are {secs}')
+        print(f'The data is {data}')
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid session value")
+
+    if secs <= 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="session must be > 0")
+
+
+    now = datetime.utcnow()
+    start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    end = start + timedelta(days=1)
+
+    stat = (
+        db.query(models.Stats)
+        .filter(
+            models.Stats.user_id == current_user.uid,
+            models.Stats.date_created >= start,
+            models.Stats.date_created < end,
+        )
+        .first()
+    )
+
+    if stat:
+        stat.writing_sessions = (stat.writing_sessions or 0) + 1
+    else:
+        stat = models.Stats(user_id=current_user.uid, total_writing_time=0, writing_sessions=1, date_created=now.date())
+        db.add(stat)
+
+    db.commit()
+    db.refresh(stat)
+
+    return {"message": "saved", "stats": {"total_writing_time": stat.total_writing_time, "writing_sessions": stat.writing_sessions}}
+    

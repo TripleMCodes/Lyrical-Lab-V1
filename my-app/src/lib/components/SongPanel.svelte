@@ -5,12 +5,12 @@
 <section  class="song-infor">
   <div class="song-name">
     <label for="title">Title: </label>
-    <input type="text" name="title" id="title" bind:value={title}>
+    <input type="text" name="title" id="title" bind:value={title} placeholder="Required">
   </div>
 
   <div class="song-artist">
     <label for="artist">Artist: </label>
-    <input type="text" name="artist" id="artist" bind:value={artist}>
+    <input type="text" name="artist" id="artist" bind:value={artist} placeholder="Required">
   </div>
 
   <div class="song-album">
@@ -25,7 +25,7 @@
 
   <div class="song-genre">
     <label for="genre">Genre: </label>
-    <input type="text" name="genre" id="genre" placeholder="Optional" bind:value={genre}>
+    <input type="text" name="genre" id="genre" placeholder="Required" bind:value={genre}>
   </div>
 </section>
 

@@ -1,6 +1,10 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 from app.database import Base
+from sqlalchemy import (
+    Column, Integer, String, Text, DateTime, ForeignKey, func, UniqueConstraint
+)
+import uuid
 
 class Users(Base):
     __tablename__ = "users"
@@ -21,20 +25,38 @@ class Users(Base):
     )
 
 
-
 class Lyrics(Base):
     __tablename__ = "lyrics"
+    __table_args__ = (
+        UniqueConstraint("user_id", "client_uid", name="uq_lyrics_user_client_uid"),
+    )
 
+    # Cloud ID
     song_id = Column(Integer, primary_key=True, autoincrement=True)
+
+    # Ownership (cloud truth)
+    user_id = Column(Integer, ForeignKey("users.uid", ondelete="CASCADE"), nullable=False)
+
+    # Idempotency / client linkage (desktop-local song id)
+    client_uid = Column(String(36), nullable=True, index=True)
+    source = Column(String(20), nullable=False, server_default="web")  # "desktop" | "web"
+
+    # Metadata
     song_name = Column(String(150), nullable=False)
-    song_genre = Column(String(100), nullable=False)
-    song_lyrics = Column(Text, nullable=False) 
-    user_id = Column(Integer, ForeignKey('users.uid'), nullable=False)
     song_artist = Column(String(150), nullable=False)
-    date_created = Column(DateTime, nullable=False, default=func.now())
-    date_modified = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())
-    song_mood = Column(String(100), nullable=True)
     song_album = Column(String(100), nullable=True)
+    song_genre = Column(String(100), nullable=False)
+    song_mood = Column(String(100), nullable=True)
+
+    # Content
+    song_lyrics = Column(Text, nullable=False)
+
+    # Timestamps
+    date_created = Column(DateTime, nullable=False, server_default=func.now())
+    date_modified = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
+
+    # Optional soft delete
+    deleted_at = Column(DateTime, nullable=True)
 
     user = relationship("Users", back_populates="lyrics")
 
