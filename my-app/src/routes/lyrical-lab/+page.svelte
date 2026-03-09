@@ -4,7 +4,7 @@
     // @ts-ignore
     import Editor from '../../lib/components/SplitEditor.svelte'
     import Controls from '../../lib/components/Controls.svelte'
-    import SongPanel from '../../lib/components/SongPanel.svelte'
+    import SongPanel from '../../lib/components/SongPanel.svelte'  
     import Notification from '../../lib/components/Notification.svelte'
 
     import WritingTimer from "../../lib/components/WritingTimer.svelte";
@@ -23,8 +23,18 @@
 
 
   interface Song {
-    song_id: Number
-  } 
+    song_id?: Number;
+    song_name?: String;
+    song_artist?: String;
+    song_lyrics?: String;
+    song_genre?: String;
+  }
+
+
+  let saved_song_id: Number = $state();
+  let song_data;
+
+
 
   import { currentSong } from '$lib/stores/song';
   
@@ -62,56 +72,63 @@
   let notificationMessage = $state("");
   let notificationType = $state("success");
 
-  // $effect(() => {
-  //   const song = $editingSong;
-  //   if (song) {
-  //     title = song.song_name ?? '';
-  //     editorContent = song.song_lyrics ?? '';
-  //     genre = song.song_genre ?? '';
-  //     mood = song.song_mood ?? '';
-  //     artist = song.song_artist ?? '';
-  //   } else {
-  //     title = '';
-  //     editorContent =  '';
-  //     genre = '';
-  //     mood = '';
-  //     artist =  '';
-  //   }
-  // });
-  
-
-
-  function notify(n){
+  function notify(n: string){
     notificationMessage = `Please provide ${n}`;
     notificationType = "error";
     showNotification = true;
   }
 
   async function handleSave() {
-   
-    let data = {};
-    if (!title || !artist || !editorContent){
-      if (!title) notify("Title")
-      if (!artist) notify("Artist")
-      if (!editorContent) notify("Lyrics")
-      return
+
+    
+    let song_to_save = {};
+    if (typeof saved_song_id === "number" && saved_song_id >= 0) {
+      console.log("song id value", saved_song_id)
+      song_to_save["song_id"] = saved_song_id;
+      if (!title){
+        notify("Please provide song title")
+        return
+      }
+      song_to_save["song_name"] = title;
+      if (!artist){
+        notify("Please provide the artist's name")
+        return
+      }
+      song_to_save["song_artist"] = artist;
+      if (!editorContent){
+        notify("Please provide lyrics")
+        return
+      }
+      song_to_save["song_lyrics"] = editorContent;
+      if (mood) song_to_save["song_mood"] = mood;
+      if (genre) song_to_save["song_genre"] = genre;
+      if (album) song_to_save["song_album"] = album;
+      
     }
+    else{
+      if (!title || !artist || !editorContent){
+        if (!title) notify("Title")
+        if (!artist) notify("Artist")
+        if (!editorContent) notify("Lyrics")
+        return
+      }
 
-    data["song_name"] = title;
-    data["song_artist"] = artist;
-    data["song_lyrics"] = editorContent;
-    if (mood) data["song_mood"] = mood;
-    if (genre) data["song_genre"] = genre;
-    if (album) data["song_album"] = album;
+      song_to_save["song_name"] = title;
+      song_to_save["song_artist"] = artist;
+      song_to_save["song_lyrics"] = editorContent;
+      if (mood) song_to_save["song_mood"] = mood;
+      if (genre) song_to_save["song_genre"] = genre;
+      if (album) song_to_save["song_album"] = album;
 
-    // if updating existing song
-    const s = get(editingSong);
-    if (s && s.song_id){
-      data['song_id'] = s.song_id;
-    }else{
-      data['song_id'] = null
+      // if updating existing song from songs library
+      const s = get(editingSong);
+      if (s && s.song_id){
+        song_to_save['song_id'] = s.song_id;
+      }else{
+        song_to_save['song_id'] = null
+      }
+
     }
-
 
     try {
         const res = await fetch(
@@ -122,7 +139,7 @@
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(song_to_save)
             }
         );
         const msg = await res.json();
@@ -132,14 +149,20 @@
             notificationMessage = msg.message || "Song saved successfully!";
             notificationType = "success";
             showNotification = true;
+            song_data = msg.song;
+            saved_song_id = song_data.song_id;
         } else {
             notificationMessage = msg.message || "Failed to save song";
             notificationType = "error";
             showNotification = true;
         }
     } catch (err) {
-        // console.log(err);
-        notificationMessage = "Network error: Failed to save song";
+        if (err.message === "No changes"){
+          notificationMessage = err.message;
+        }
+        else{
+          notificationMessage = "Network error: Failed to save song";
+        }
         notificationType = "error";
         showNotification = true;
     }

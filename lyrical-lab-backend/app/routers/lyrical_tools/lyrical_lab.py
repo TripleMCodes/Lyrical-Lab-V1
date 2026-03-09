@@ -42,6 +42,7 @@ def save_song(
     db: Session = Depends(database.get_db),
     current_user: models.Users = Depends(oauth2.get_current_user),
 ):
+
     def normalize_lyrics(lyrics):
         return lyrics.replace('\r\n', '\n')
     
