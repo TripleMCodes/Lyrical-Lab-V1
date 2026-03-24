@@ -24,12 +24,12 @@
 				<li aria-current={page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
 					<a href={resolve('/sverdle')}>Sverdle</a>
 				</li>
-				{#if page.data.urls.signup}
+				{#if page.data?.urls.signup}
 				<li aria-current={page.url.pathname === '/signup' ? 'page' : undefined}>
 					<a href={resolve('/signup')}>Signup</a>
 				</li>
 				{/if}
-				{#if page.data.urls.login}
+				{#if page.data?.urls.login}
 					<li aria-current={page.url.pathname === '/login' ? 'page' : undefined}>
 						<a href={resolve('/login')}>Login</a>
 					</li>

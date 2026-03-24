@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import status, HTTPException, Depends, APIRouter, Query
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -126,6 +128,190 @@ def save_song(
             },
         }
 
+
+
+@router.delete('/delete-song/{song_id}', status_code=status.HTTP_200_OK)
+def delete_song(
+    song_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: models.Users = Depends(oauth2.get_current_user),
+):
+    song = db.query(models.Lyrics).filter(
+        models.Lyrics.song_id == song_id,
+        models.Lyrics.user_id == current_user.uid
+    ).first()
+
+    if not song:
+        raise HTTPException(status_code=404, detail="Song not found")
+
+    db.delete(song)
+    db.commit()
+    return {"message": "Song deleted successfully"}
+
+
+@router.post('/upload-song', status_code=status.HTTP_200_OK)
+def upload_song(
+    data: schemas.UploadingSong,
+    db: Session = Depends(database.get_db),
+    current_user: models.Users = Depends(oauth2.get_current_user),
+):
+    """
+    Upload a song from the desktop client.
+    Handles both creation and updates based on song_id or client_uid.
+    """
+
+    # print(f"Payload: {data}")
+
+    try:
+        def normalize_lyrics(lyrics: str) -> str:
+            if not lyrics or not lyrics.strip():
+                raise HTTPException(status_code=400, detail="Song lyrics cannot be empty")
+            return lyrics.replace('\r\n', '\n').replace('\r', '\n')
+
+        norm_lyrics = normalize_lyrics(data.song_lyrics)
+        new_hash = hashlib.sha256(norm_lyrics.encode('utf-8')).hexdigest()
+
+        client_uid = data.client_uid or str(uuid.uuid4())
+
+        if data.song_id is not None:
+            # Update existing song
+            song = db.query(models.Lyrics).filter(
+                models.Lyrics.song_id == data.song_id,
+                models.Lyrics.user_id == current_user.uid
+            ).with_for_update().first()
+
+            if not song:
+                raise HTTPException(status_code=404, detail="Song not found")
+
+            if song.lyrics_hash == new_hash:
+                return {"message": "No changes detected", "song": {"song_id": song.song_id}}
+
+            # Archive old version
+            version_snapshot = models.LyricsVersion(
+                lyrics_id=song.song_id,
+                version=song.version,
+                lyrics=song.song_lyrics,
+                lyrics_hash=song.lyrics_hash,
+                hash_algo=song.hash_algo,
+                note="desktop upload"
+            )
+            db.add(version_snapshot)
+
+            # Update HEAD
+            song.song_lyrics = norm_lyrics
+            song.lyrics_hash = new_hash
+            song.version += 1
+            song.song_name = data.song_name
+            song.song_artist = data.song_artist
+            song.song_mood = data.song_mood
+            song.song_genre = data.song_genre
+            song.song_album = data.song_album
+            song.client_uid = client_uid  # Ensure client_uid is set
+
+            db.commit()
+            db.refresh(song)
+            return {
+                "message": "Song updated successfully",
+                "song": {
+                    "song_id": song.song_id,
+                    "song_name": song.song_name,
+                    "song_artist": song.song_artist,
+                    "song_lyrics": song.song_lyrics,
+                    "song_genre": song.song_genre,
+                    "user_id": current_user.uid
+                },
+            }
+
+        else:
+            # Create new song or update by client_uid
+            existing_song = db.query(models.Lyrics).filter(
+                models.Lyrics.user_id == current_user.uid,
+                models.Lyrics.client_uid == client_uid
+            ).first()
+
+            if existing_song:
+                # Update existing by client_uid
+                if existing_song.lyrics_hash == new_hash:
+                    return {"message": "No changes detected", "song": {"song_id": existing_song.song_id}}
+
+                # Archive old version
+                version_snapshot = models.LyricsVersion(
+                    lyrics_id=existing_song.song_id,
+                    version=existing_song.version,
+                    lyrics=existing_song.song_lyrics,
+                    lyrics_hash=existing_song.lyrics_hash,
+                    hash_algo=existing_song.hash_algo,
+                    note="desktop upload"
+                )
+                db.add(version_snapshot)
+
+                # Update HEAD
+                existing_song.song_lyrics = norm_lyrics
+                existing_song.lyrics_hash = new_hash
+                existing_song.version += 1
+                existing_song.song_name = data.song_name
+                existing_song.song_artist = data.song_artist
+                existing_song.song_mood = data.song_mood
+                existing_song.song_genre = data.song_genre
+                existing_song.song_album = data.song_album
+
+                db.commit()
+                db.refresh(existing_song)
+                return {
+                    "message": "Song updated successfully",
+                    "song": {
+                        "song_id": existing_song.song_id,
+                        "song_name": existing_song.song_name,
+                        "song_artist": existing_song.song_artist,
+                        "song_lyrics": existing_song.song_lyrics,
+                        "song_genre": existing_song.song_genre,
+                        "user_id": current_user.uid,
+                    },
+                }
+
+            else:
+                # Create new song
+                new_song = models.Lyrics(
+                    user_id=current_user.uid,
+                    song_name=data.song_name,
+                    song_artist=data.song_artist,
+                    song_lyrics=norm_lyrics,
+                    song_mood=data.song_mood,
+                    song_genre=data.song_genre,
+                    song_album=data.song_album,
+                    lyrics_hash=new_hash,
+                    client_uid=client_uid,
+                    version=1,
+                    hash_algo="sha256",
+                    source="desktop"
+                )
+
+                db.add(new_song)
+                db.commit()
+                db.refresh(new_song)
+                return {
+                    "message": "Song uploaded successfully",
+                    "song": {
+                        "song_id": new_song.song_id,
+                        "song_name": new_song.song_name,
+                        "song_artist": new_song.song_artist,
+                        "song_lyrics": new_song.song_lyrics,
+                        "song_genre": new_song.song_genre,
+                        "user_id": current_user.uid,
+                    },
+                }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Error uploading song: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+    # return {'message': "Got it"}
+
+
+    
+
 @router.post('/check-flow')
 def check_flow(
     data:dict,
@@ -213,6 +399,17 @@ def get_user_songs(
     "prev_page": page - 1 if page > 1 else None,
 }
 
+@router.get('/get-uploaded-songs', status_code=status.HTTP_200_OK)
+def get_uploaded_songs(
+    current_user: models.Users = Depends(oauth2.get_current_user),
+    db: Session = Depends(database.get_db),
+):
+    songs = db.query(models.Lyrics).filter(models.Lyrics.user_id == current_user.uid).order_by(models.Lyrics.song_id.desc()).all()
+
+    return {
+        "message": "Uploaded songs",
+        "songs": songs
+    }
 @router.get('/user-songs/{song_id}', status_code=status.HTTP_200_OK)
 def get_song_by_id(
     song_id: int,
@@ -441,4 +638,45 @@ def save_session(
     db.refresh(stat)
 
     return {"message": "saved", "stats": {"total_writing_time": stat.total_writing_time, "writing_sessions": stat.writing_sessions}}
-    
+
+@router.get('/songs-library/{song_id}/versions', status_code=status.HTTP_200_OK)
+def get_song_versions(
+    song_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: models.Users = Depends(oauth2.get_current_user),
+):
+    song = db.query(models.Lyrics).filter(
+        models.Lyrics.song_id == song_id,
+        models.Lyrics.user_id == current_user.uid
+    ).first()
+
+    if not song:
+        raise HTTPException(status_code=404, detail="Song not found")
+
+    versions = db.query(models.LyricsVersion).filter(
+        models.LyricsVersion.lyrics_id == song_id
+    ).order_by(models.LyricsVersion.version.desc()).all()
+
+    return {
+        "message": "Song versions retrieved successfully",
+        "song": {
+            "song_id": song.song_id,
+            "song_name": song.song_name,
+            "song_artist": song.song_artist,
+            "song_lyrics": song.song_lyrics,
+            "song_genre": song.song_genre,
+            "song_mood": song.song_mood,
+            "song_album": song.song_album,
+            "version": song.version
+        },
+        "versions": [
+            {
+                "version": version.version,
+                "lyrics": version.lyrics,
+                "lyrics_hash": version.lyrics_hash,
+                "hash_algo": version.hash_algo,
+                "note": version.note
+            }
+            for version in versions
+        ]
+    }

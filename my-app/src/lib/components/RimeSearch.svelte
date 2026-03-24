@@ -168,7 +168,7 @@
 
 
 .mini-rhyme__results{
-  height: 100px;
+  /* height: 100%; */
   overflow-y: scroll;
   display: flex;
   flex-direction: column;

@@ -109,7 +109,7 @@
     flex-direction: row;
 }
 .note-container {
-  height: 100px;              /* adjust as needed */
+  height: 400px;
   overflow-y: scroll;
   /* padding-right: 0.5rem;          prevents content clipping */
   /* border: 2px solid blanchedalmond;  */

@@ -221,7 +221,7 @@
 /* ===== Main panels ===== */
 .main {
     flex: 1;                 /* equal width */
-    height: 100%;            /* equal height */
+    /* height: 100%;            /* equal height */ 
     min-height: 0;           /* allows inner scrolling */
 
     display: flex;
@@ -249,7 +249,7 @@
     color: #f5e9ff;
 
     /* Internal scroll instead of breaking height */
-    overflow: hidden;
+    overflow-y:scroll;
 }
 
 /* Optional: allow content scrolling */

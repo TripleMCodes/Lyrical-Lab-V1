@@ -2,12 +2,43 @@
     import type { PageData } from './$types';
     import { goto } from '$app/navigation';
     import { editingSong } from '$lib/stores/editingSong';
+  import { redirect } from '@sveltejs/kit';
 
     let { data } = $props<{ data: PageData }>();
     const song = data.song;
+    const song_id = data.song.song_id;
 
     const goBack = () => {
         goto('/lyrical-lab/songs-library');
+    };
+
+
+    function delete_song() {
+        if (confirm('Are you sure you want to delete this song? This action cannot be undone.')) {
+            fetch(`/api/songs/${song_id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Song deleted successfully.');
+                    goto('/lyrical-lab/songs-library');
+                } else {
+                    alert('Failed to delete the song. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting song:', error);
+                alert('An error occurred while deleting the song. Please try again.');
+            });
+        }
+        
+    }
+
+
+
+    const view_versions = () => {
+        console.log('Navigating to versions page for song_id:', song_id);   
+        goto(`/lyrical-lab/songs-library/${song_id}/versions`);
     };
 
     const update_song = () => {
@@ -48,6 +79,7 @@
                 <span class="label">Created</span>
                 <span class="value">{new Date(song.date_created).toLocaleDateString()}</span>
             </div>
+
             {#if song.date_modified !== song.date_created}
                 <div class="meta-item">
                     <span class="label">Modified</span>
@@ -64,6 +96,8 @@
         </div>
         <div>
             <button onclick={update_song}>Update</button>
+            <button onclick={delete_song}>Delete</button>
+            <button onclick={view_versions}>View versions</button>
         </div>
     </div>
 </div>

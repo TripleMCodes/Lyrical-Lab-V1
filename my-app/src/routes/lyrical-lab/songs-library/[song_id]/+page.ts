@@ -21,6 +21,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
         }
         
         const song = await response.json();
+        console.log('Fetched song:', song);
         
         return {
             song,

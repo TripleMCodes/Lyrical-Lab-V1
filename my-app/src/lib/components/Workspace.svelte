@@ -59,6 +59,7 @@
 .work-space {
     width: 100%;
     display: grid;
+    /* overflow-y: scroll; */
     grid-template-columns: 360px 1fr;
     /* gap: 1.2rem; */
     align-items: start;
@@ -113,10 +114,9 @@ button{
 }
 
 /* ========= Shared card style ========= */
-.draft,
-.recent-songs {
+.draft, .recent-songs {
     position: relative;
-
+    overflow-y: scroll;
     background: linear-gradient(
         180deg,
         rgba(120, 50, 180, 0.25),
@@ -134,15 +134,16 @@ button{
 
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    overflow: hidden;
+    /* overflow: hidden; */
+    max-height: 100%;
 }
 
-.draft{
-    height: 100%;
-}
-.recent-songs{
+/* .draft{
+    max-height: 200px;
+} */
+.recent-songs, .draft{
     overflow-y:scroll ;
-    height: 100%;
+    max-height: 280px;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
 }

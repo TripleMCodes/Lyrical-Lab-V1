@@ -28,3 +28,33 @@ class NewSong(BaseModel):
     song_mood: Optional[str] = None
     song_genre: Optional[str] = None
     song_album: Optional[str] = None
+
+class UploadingSong(BaseModel):
+    """Payload model for uploading a song from the desktop client.
+
+    This model is used to create or update a song in the cloud backend.
+    """
+
+    song_id: Optional[int] = None
+    song_name: str
+    song_artist: str
+    song_lyrics: str
+    song_mood: Optional[str] = None
+    song_genre: Optional[str] = None
+    song_album: Optional[str] = None
+    client_uid: Optional[str] = None
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "song_id": 123,
+                "song_name": "My Song",
+                "song_artist": "Artist",
+                "song_lyrics": "Some lyrics...",
+                "song_mood": "Happy",
+                "song_genre": "Pop",
+                "song_album": "Album",
+                "client_uid": "550e8400-e29b-41d4-a716-446655440000",
+            }
+        }
+    
