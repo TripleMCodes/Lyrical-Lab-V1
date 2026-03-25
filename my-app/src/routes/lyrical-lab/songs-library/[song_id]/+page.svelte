@@ -5,8 +5,8 @@
   import { redirect } from '@sveltejs/kit';
 
     let { data } = $props<{ data: PageData }>();
-    const song = data.song;
-    const song_id = data.song.song_id;
+    let song = $derived(data.song);
+    let song_id = $derived(data.song.song_id);
 
     const goBack = () => {
         goto('/lyrical-lab/songs-library');
@@ -14,8 +14,9 @@
 
 
     function delete_song() {
+        song_id = Number(song_id)
         if (confirm('Are you sure you want to delete this song? This action cannot be undone.')) {
-            fetch(`/api/songs/${song_id}`, {
+            fetch(`http://localhost:8000/api/lyric-tools/delete-song/${song_id}`, {
                 method: 'DELETE'
             })
             .then(response => {

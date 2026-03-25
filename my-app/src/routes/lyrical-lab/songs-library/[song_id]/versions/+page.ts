@@ -17,6 +17,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
             throw new Error(`Failed to fetch song versions: ${response.statusText}`);
         }  
         const versions = await response.json();
+        console.log("song data", versions)
 
         return {
             versions,
