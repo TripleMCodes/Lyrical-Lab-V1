@@ -655,7 +655,7 @@ def get_song_versions(
 
     versions = db.query(models.LyricsVersion).filter(
         models.LyricsVersion.lyrics_id == song_id
-    ).order_by(models.LyricsVersion.version.desc()).all()
+    ).all()
 
     return {
         "message": "Song versions retrieved successfully",

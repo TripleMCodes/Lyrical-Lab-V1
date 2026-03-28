@@ -18,30 +18,43 @@
     import type { PageData } from "../$types";
     // import { effect } from 'svelte';
     import { editingSong } from '$lib/stores/editingSong';
+     import { currentSong } from '$lib/stores/song';
 
   // import { words } from "../sverdle/words.server";
-
-
-  interface Song {
-    song_id?: Number;
-    song_name?: String;
-    song_artist?: String;
-    song_lyrics?: String;
-    song_genre?: String;
-  }
 
 
   let saved_song_id: Number = $state();
   let song_data;
 
-
-
-  import { currentSong } from '$lib/stores/song';
   
 
   let { data } = $props<{ data: PageData }>();
 
-  let song = $currentSong;
+  // let song = currentSong;
+  // console.log('the current song is', song)
+  // $inspect(song)
+
+  let song = $state(null);
+
+    // $effect(() => {
+    //     currentSong.subscribe(value => {
+    //         if (value) {
+    //             editingSong.set(value);
+    //             song = value;
+    //             console.log('this is the current value',song)
+    //             $inspect(song);
+    //         }
+    //     });
+    // });
+    editingSong.subscribe(value => {
+    if (value) {
+        song = value;
+        console.log('current editing song:', song);
+    }
+});
+    $effect(() => {
+    console.log('the value of song is', song);
+});
 
   let words = $state(0);
   let chars = $state(0);
@@ -384,7 +397,19 @@
     selectedFos = event.target.value;
   }
 
-  if (data && data.draft_data) {
+
+  if (song && song != null){
+     const draft = song.draft_data;
+    title = song.song_name ?? '';
+    editorContent = song.song_lyrics ?? '';
+    // console.log(editorContent)
+    genre = song.song_genre ?? '';
+    mood = song.song_mood ?? '';
+    artist = song.song_artist ?? '';
+    saved_song_id = song.song_id
+  }
+
+  else if (data && data.draft_data) {
     const draft = data.draft_data;
     title = draft.song_name ?? '';
     editorContent = draft.song_lyrics ?? '';

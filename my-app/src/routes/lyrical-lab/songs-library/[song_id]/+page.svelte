@@ -14,10 +14,12 @@
 
 
     function delete_song() {
-        song_id = Number(song_id)
+        song_id = Number(song_id);
         if (confirm('Are you sure you want to delete this song? This action cannot be undone.')) {
             fetch(`http://localhost:8000/api/lyric-tools/delete-song/${song_id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                credentials: "include"
+
             })
             .then(response => {
                 if (response.ok) {
