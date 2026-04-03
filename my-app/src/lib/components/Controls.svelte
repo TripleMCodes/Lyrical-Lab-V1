@@ -30,8 +30,12 @@
                 <span>lyrics gen mode: <input type="radio" name="mode" id="gen-lyrics" value="gen-lyrics" bind:group={selectedValue} onclick={handleChange}/></span>
                 <span>Figure of speech mode: <input type="radio" name="mode" id="gen-fos" value="gen-fos" bind:group={selectedValue} onclick={handleChange}/></span>
             </div>
-
-            <button onclick={generate}>Generate lyrics</button>
+            <button onclick={generate}>
+                <Tooltip text="Generate lyrics">
+                    <img src="/icons8-lyrics-50.png" alt="lyrics icon">
+                </Tooltip>
+            </button>
+            
         </div>
 
         <div>
@@ -48,16 +52,20 @@
         <option value="related">Related</option>
         <option value="homophone">Homophone</option>
         </select>
-        <button onclick={searchWord}>Search</button>
+        <button onclick={searchWord}>
+            <Tooltip text="Search">
+                <img src="/icons8-find-64.png" alt="search icon" height="50" width="50">
+            </Tooltip>
+        </button>
     </section>
 
     <section class="control-btns">
 
-        <Tooltip text="Save">
-            <button onclick={onSave}>
+        <button onclick={onSave}>
+            <Tooltip text="Save">
                 <img src="/icons8-save-64.png" alt="save icon">
-            </button>
-        </Tooltip>
+            </Tooltip>
+        </button>
 
         <button>
             <Tooltip text="Theme">
@@ -79,7 +87,7 @@
 
         <button onclick={createNewSong}>
             <Tooltip text="Create new song">
-                <img src="/icons8-quill-with-ink-48.png" alt="new song icon">
+                <img src="/icons8-add-file-64.png" alt="new song icon">
             </Tooltip>
         </button> 
     </section>
@@ -190,7 +198,7 @@
 
     .lyrics-gen button, button {
         margin-top: 10px;
-        padding: 14px;
+        padding: 7px;
         border-radius: 16px;
         border: none;
         background: linear-gradient(
@@ -198,10 +206,6 @@
             #9b5cff,
             #d066ff
         );
-        color: #140a24;
-        font-size: 0.95rem;
-        font-weight: 600;
-        letter-spacing: 0.05em;
         cursor: pointer;
         transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
