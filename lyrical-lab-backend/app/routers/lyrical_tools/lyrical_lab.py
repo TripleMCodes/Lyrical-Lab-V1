@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app import schemas, oauth2, models, database
 from app.syllable_counter import SyllableCounter 
 from app.lyrics_n_summarization import StressedSyllableAnotator, OpenRouterClient
+from app.Rhyme_engine.rhyme_engine import find_rhymes_api
 from datetime import datetime, timedelta
 import logging 
 import hashlib
@@ -307,10 +308,26 @@ def upload_song(
         logging.error(f"Error uploading song: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-    # return {'message': "Got it"}
 
-
+@router.post('/find-rhymes')
+def find_rhymes(
+    data: dict
+):
+    word = data["word"]
+    rhyme_list = []
     
+    try:
+        results = find_rhymes_api(word)
+        for rime in results:
+            r, s = rime[0], rime[1]
+            word_rime = f"{r}" #redundant
+            temp_dict = {"word": word_rime, "score": s}
+            rhyme_list.append(temp_dict)
+        return {"message": rhyme_list}
+    except Exception as e:
+        logging.debug(e)
+        return {'message': "Error - Please check word and ensure it is not multi-phrasal."}
+
 
 @router.post('/check-flow')
 def check_flow(
