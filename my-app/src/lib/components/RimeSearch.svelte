@@ -1,8 +1,8 @@
 <script lang="ts">
     import SigilSpinner from '$lib/components/SigilSpinner.svelte';
+  import Tooltip from './Tooltip.svelte';
 
     let {rhyme = $bindable(), rime_list = $bindable(), isLoading = $bindable() , findRhyme} = $props();
-
 
 </script>
 <section class="sider-items">
@@ -16,7 +16,11 @@
         bind:value={rhyme}
         placeholder="Type a word…"
       />
-      <button class="mini-rhyme__btn" type="button" onclick={findRhyme}>Go</button>
+      <button class="mini-rhyme__btn" type="button" onclick={findRhyme}>
+        <Tooltip text="Find rhyme">
+                <img src="/icons8-find-64.png" alt="search icon" width="50" height="50">
+        </Tooltip>
+      </button>
     </div>
 
     <div class="mini-rhyme__results">
@@ -31,7 +35,6 @@
             <li>{rime.word}</li>
           {/each}
         </ul>
-            <!-- <p>{rime.word}</p> -->
       {:else if isLoading === false}
         <p class="mini-rhyme__empty">No results</p>
       {/if}
@@ -118,25 +121,18 @@
 
 /* Button */
 .mini-rhyme__btn {
-  background: rgba(168, 85, 247, 0.16);
-  border: 1px solid rgba(168, 85, 247, 0.34);
+  background-color: transparent;
+  border-color: transparent;
   border-radius: 999px;
-
   padding: 0.5rem 0.85rem;
-
-  color: rgba(245, 233, 255, 0.95);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .mini-rhyme__btn:hover {
-  background: rgba(168, 85, 247, 0.26);
   box-shadow: 0 0 14px rgba(168, 85, 247, 0.28);
+  border-color: transparent;
+  background-color: transparent;
 }
 
 /* Results area */
@@ -168,7 +164,6 @@
 
 
 .mini-rhyme__results{
-  /* height: 100%; */
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -191,33 +186,6 @@
   background-color: rgba(255, 255, 255, 0.15);
 }
 
-button{
-  text-align:center;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #c77dff, #7b2cbf);
-  color: #fff;
-  border: 1px solid rgba(199, 125, 255, 0.6);
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 0 15px rgba(199, 125, 255, 0.4);
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
- button:hover {
-    background: linear-gradient(135deg, #e0aaff, #9d4edd);
-    box-shadow: 0 0 25px rgba(199, 125, 255, 0.7);
-    transform: translateY(-2px);
-}
-
-button:active {
-    transform: translateY(0);
-    box-shadow: 0 0 12px rgba(199, 125, 255, 0.5);
-}
-
-
 /* Container styling */
 #results-list {
   list-style: none;
@@ -226,14 +194,13 @@ button:active {
   background-color: #1a0a2b; /* very dark purple */
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(128, 0, 255, 0.4); /* soft neon glow */
-  /* max-width: 400px; */
   max-height: 400px;
   overflow-y: scroll;
   overflow-x: hidden;
   
 }
 
-/* Inner UL (if you want it nested) */
+/* Inner UL */
 #results-list ul {
   padding: 0;
   margin: 0;
@@ -261,7 +228,5 @@ button:active {
 #results-list li:last-child {
   border-bottom: none;
 }
-
-
 
 </style>

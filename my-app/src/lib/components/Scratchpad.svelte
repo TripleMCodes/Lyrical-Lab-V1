@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Tooltip from "./Tooltip.svelte";
+
 
     let {notes = $bindable(), viewNote, saveNote, delNote, note = $bindable(), makeNewNote} = $props()
 
@@ -15,17 +17,20 @@
 
     <div class="btn-container">
         <button class="scratch-save" onclick={saveNote}>
-            Save idea
+            <Tooltip text="Save note">
+                <img src="/icons8-save-64.png" alt="save icon" width="50" height="50">
+            </Tooltip>
         </button>
         <button class="scratch-save" onclick={makeNewNote}>
-            New Note
+           <Tooltip text="Create new note">
+                <img src="/icons8-add-file-64.png" alt="new song icon" width="50" height="50">
+            </Tooltip>
         </button>
     </div>
 
     <div class="scratch-history">
         <h4>Older ideas</h4>
 
-        <!-- example items -->
         <div class="note-container">
         {#if notes}
             {#each notes as note (note.id)}
@@ -194,13 +199,14 @@
 
 /* Save button */
 .scratch-save {
-    align-self: flex-end;
+    align-self: flex-start;
 
     background: rgba(168, 85, 247, 0.18);
     border: 1px solid rgba(168, 85, 247, 0.35);
     border-radius: 999px;
 
     padding: 0.35rem 0.9rem;
+    margin:0.35rem;
 
     color: rgba(245, 233, 255, 0.95);
     font-size: 0.75rem;

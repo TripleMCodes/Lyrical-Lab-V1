@@ -1,58 +1,28 @@
 <script lang="ts">
     // @ts-ignore
-    import { text } from "@sveltejs/kit";
-    // @ts-ignore
     import Editor from '../../lib/components/SplitEditor.svelte'
     import Controls from '../../lib/components/Controls.svelte'
     import SongPanel from '../../lib/components/SongPanel.svelte'  
     import Notification from '../../lib/components/Notification.svelte'
-
     import WritingTimer from "../../lib/components/WritingTimer.svelte";
     import {fetchWords} from '../../lib/api/client'
-    import { FileWatcherEventKind } from "typescript";
     import {fetchRhymes} from '$lib/api/lyric_tools'
-    import { onMount } from 'svelte';
     import { get } from 'svelte/store';
-    import { goto } from "$app/navigation";
-    import { replaceState } from '$app/navigation';
     import type { PageData } from "../$types";
-    // import { effect } from 'svelte';
     import { editingSong } from '$lib/stores/editingSong';
-     import { currentSong } from '$lib/stores/song';
-
-  // import { words } from "../sverdle/words.server";
-
 
   let saved_song_id: Number = $state();
   let song_data;
-
-  
-
   let { data } = $props<{ data: PageData }>();
-
-  // let song = currentSong;
-  // console.log('the current song is', song)
-  // $inspect(song)
-
   let song = $state(null);
 
-    // $effect(() => {
-    //     currentSong.subscribe(value => {
-    //         if (value) {
-    //             editingSong.set(value);
-    //             song = value;
-    //             console.log('this is the current value',song)
-    //             $inspect(song);
-    //         }
-    //     });
-    // });
-    editingSong.subscribe(value => {
+  editingSong.subscribe(value => {
     if (value) {
         song = value;
         console.log('current editing song:', song);
     }
-});
-    $effect(() => {
+  });
+  $effect(() => {
     console.log('the value of song is', song);
 });
 
@@ -70,7 +40,6 @@
   let wordSearched = $state("")
   let wordList = $state<Array<{ word: string }>>([])
   let debounceTimer;
-
 
   let selectedValue = $state("")
   let selectedGenre = $state("Pop")
@@ -232,9 +201,6 @@
 
   function createNewSong(){
     editingSong.set(null);
-   
-    // replaceState('/lyrical-lab');
-    // goto('/lyrical-lab');
   }
 
   function handleTextSelection(e) {
@@ -242,8 +208,6 @@
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;
         selectedText = textarea.value.substring(start, end);
-        // console.log("Selected text:", selectedText);
-        // return selectedText
     }
 
     async function handleTextSelectionWrapper(){
@@ -314,11 +278,14 @@
             }
           );
           const resData = await res.json();
-          //add a better way to deal with res
+
           console.log("draft saved");
         }catch (err){
-          //add a better catch
+          notificationMessage = "Draft not saved - Pleased login again";
+          notificationType = "error";
+          showNotification = true;
           console.log("draft not saved - ", err);
+          return
         }
       }, 3000)
     }
@@ -473,7 +440,6 @@
     padding: 1rem;
     box-sizing: border-box;
   }
-
 
   .word-counter {
   display: flex;

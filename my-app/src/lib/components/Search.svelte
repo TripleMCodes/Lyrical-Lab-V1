@@ -1,4 +1,6 @@
 <script>
+  import Tooltip from "./Tooltip.svelte";
+
 
     let {display = $bindable(), results = $bindable() } = $props()
 
@@ -12,7 +14,11 @@
       class="search-input"
       placeholder="Search songs… (title, artist, album)"
     />
-    <button class="search-btn" type="button">Search</button>
+    <button class="search-btn" type="button">
+      <Tooltip text="Search for song">
+                <img src="/icons8-find-64.png" alt="search icon" width="50" height="50">
+      </Tooltip>
+    </button>
   </div>
 </section>
 
@@ -97,28 +103,33 @@
 }
 
 /* Search button */
-.search-btn {
-  background: rgba(168, 85, 247, 0.18);
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  border-radius: 999px;
-
-  padding: 0.55rem 1rem;
-
-  color: rgba(245, 233, 255, 0.95);
-  font-size: 0.75rem;
-  font-weight: 600;
-
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-
+.search-btn button, button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin-top: 5px;
+  padding: 7px;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+.search-btn button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+      0 12px 28px rgba(180, 90, 255, 0.45),
+      0 0 0 1px rgba(220, 160, 255, 0.5);
 }
 
-.search-btn:hover {
-  background: rgba(168, 85, 247, 0.28);
-  box-shadow: 0 0 14px rgba(168, 85, 247, 0.3);
-}
+.search-btn button:active {
+  transform: translateY(0);
+  box-shadow:
+      0 6px 14px rgba(140, 70, 200, 0.4);
+  }
 
 /* Results section */
 .display-results {
