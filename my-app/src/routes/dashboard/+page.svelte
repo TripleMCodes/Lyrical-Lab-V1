@@ -9,10 +9,9 @@
     import type { PageData } from "../$types";
     import { goto } from '$app/navigation'
     import { editingSong } from "$lib/stores/editingSong";
-  import { derived } from "svelte/store";
-  import { isExpressionWithTypeArguments } from "typescript";
-  import {fetchWords} from '$lib/api/client'
+    import {fetchRhymes} from '$lib/api/lyric_tools'
 //   import SigilSpinner from '$lib/components/SigilSpinner.svelte';
+
 
     let { data } = $props<{ data: PageData }>();
 
@@ -141,20 +140,13 @@
         console.log("rime button click!")
         rime_list = []
         isLoading = true
-        const lst = await fetchWords("rhyme", rhyme)
-        rime_list = lst
+        const lst = await fetchRhymes(rhyme)
+        console.log("the rhyme list is", lst)
+        rime_list = lst.message
         isLoading = false
     }
-
-    // function cancelSearch(){
-    //     isLoading = false
-    // }
-
     $inspect(recentSongs)
-
-
 </script>
-
 
 <section class="container">
     <div class="main scrollable">
@@ -196,23 +188,11 @@
 
 /* ===== Container ===== */
 .container {
-    /* display: flex;
-    gap: 1rem;
-    padding: 1rem;
-
-    width: 100%;
-    height: 100vh;
-
-    /* THIS is the fix */
     margin-left:1rem;
     margin-right:1rem;
-    /* gap: 1rem; */
     flex: 1;
     display: flex;
-
     width: 130%;
-    /* height: 200%; */
-
     padding: 1rem;
     box-sizing: border-box;
     align-items: stretch;
@@ -220,44 +200,33 @@
 
 /* ===== Main panels ===== */
 .main {
-    flex: 1;                 /* equal width */
-    /* height: 100%;            /* equal height */ 
-    min-height: 0;           /* allows inner scrolling */
-
+    flex: 1;                 
+    min-height: 0;          
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
     background: linear-gradient(
         180deg,
         rgba(120, 50, 180, 0.25),
         rgba(25, 8, 40, 0.55)
     );
-
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-
     border-radius: 22px;
     border: 1px solid var(--glass-border);
-
     box-shadow:
         0 0 30px rgba(168, 85, 247, 0.18),
         inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-
     padding: 1.5rem;
-
     color: #f5e9ff;
-
-    /* Internal scroll instead of breaking height */
     overflow-y:scroll;
 }
 
-/* Optional: allow content scrolling */
 .main > * {
     flex-shrink: 0;
 }
 
-/* If one section should scroll (recommended) */
+/* If one section should scroll */
 .main.scrollable {
     overflow-y: auto;
 }
