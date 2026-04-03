@@ -1,6 +1,7 @@
 <script>
       import './home.css';
       import {fetchWords} from '../lib/api/client'
+      import {fetchRhymes} from '$lib/api/lyric_tools'
       // import SigilSpinner from '$lib/components/SigilSpinner.svelte';
       import SigilSpinner from '../lib/components/SigilSpinner.svelte';
 
@@ -14,20 +15,31 @@
    
       async function fetchWordsWrapper(){
             isLoading = true
-            const lst = await fetchWords(selected, word)
-            wordList = lst
-            // console.log($state.snapshot(wordList))
-            if (wordList.length === 0){
-                  notify = "No results found"
+            if (selected === "rhyme"){
+                  const data = await fetchRhymes(word)
+                  console.log('the data is ', data)
+                  console.log('the data is ', data.message)
+                  wordList = data.message
+                  // notify = "rhymes found"
+                  word = ''
+                  isLoading = false
             }
-            word = ''
-            isLoading = false
+            else{
+                  const lst = await fetchWords(selected, word)
+                  wordList = lst
+                  // console.log($state.snapshot(wordList))
+                  if (wordList.length === 0){
+                        notify = "No results found"
+                  }
+                  word = ''
+                  isLoading = false
+            }
       }
 </script>
 
 
 <section class="intro">
-      <h2>Welcome to Lyrical Lab</h2>
+      <h2>Welcome to M-Prosody</h2>
       <p>Experiment with rhymes, synonyms, homophones, and related words. Build your lyrics, check your syllables, and save your creations in your personal notebook.</p>
       <a href="/lyrical-lab" class="cta-btn">Start Writing</a>
 </section>

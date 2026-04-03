@@ -10,7 +10,7 @@
     import WritingTimer from "../../lib/components/WritingTimer.svelte";
     import {fetchWords} from '../../lib/api/client'
     import { FileWatcherEventKind } from "typescript";
-
+    import {fetchRhymes} from '$lib/api/lyric_tools'
     import { onMount } from 'svelte';
     import { get } from 'svelte/store';
     import { goto } from "$app/navigation";
@@ -203,14 +203,22 @@
 
   async function fetchWordsWrapper(){
     isLoading = true
-    const lst = await fetchWords(wordSelected, wordSearched)
-    wordList = lst
-    console.log($state.snapshot(wordList))
-    if (wordList.length === 0){
-      notificationMessage = "No results found";
-      notificationType = "error";
-      showNotification = true;
-      isLoading = false
+    console.log("Fetch ", wordSelected)
+    if (wordSelected === "rhyme"){
+      const data = await fetchRhymes(wordSearched)
+      // console.log('the data is ', data)
+      // console.log('the data is ', data.message)
+      wordList = data.message
+    }else{
+      const lst = await fetchWords(wordSelected, wordSearched)
+      wordList = lst
+      console.log($state.snapshot(wordList))
+      if (wordList.length === 0){
+        notificationMessage = "No results found";
+        notificationType = "error";
+        showNotification = true;
+        isLoading = false
+      }
     }
 
     let textList = ""
@@ -402,7 +410,6 @@
      const draft = song.draft_data;
     title = song.song_name ?? '';
     editorContent = song.song_lyrics ?? '';
-    // console.log(editorContent)
     genre = song.song_genre ?? '';
     mood = song.song_mood ?? '';
     artist = song.song_artist ?? '';
