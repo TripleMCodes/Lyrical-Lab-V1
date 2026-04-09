@@ -120,6 +120,6 @@ rebuilt2 = engine.index(docs)
 print(rebuilt,rebuilt1, rebuilt2) 
 print("Rebuilt index?", rebuilt)
 
-print(engine.search("heat", top_k=5, with_snippets=True))
+print(engine.search("counting sheep", top_k=5, with_snippets=True))
 
 # store.clear()

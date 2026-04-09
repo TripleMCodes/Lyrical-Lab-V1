@@ -38,9 +38,13 @@
     .song-infor {
         display:flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content:center;
+        /* align-items: center; */
+        width: 125%;
 
         padding: 20px 24px;
+        /* padding-bottom: 10px;
+        padding-top: 10px; */
         border-radius: 18px;
 
         background: linear-gradient(145deg, #0b0518, #130a24);
@@ -51,12 +55,13 @@
             0 14px 34px rgba(0, 0, 0, 0.6);
 
         color: #efe6ff;
+        margin:20px;
         }
     
     .song-infor > div {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        /* gap: 6px; */
         }
 
     .song-infor label {
@@ -70,7 +75,11 @@
         background: #160c2b;
         border: 1px solid rgba(190, 120, 255, 0.25);
         border-radius: 14px;
-        padding: 10px 14px;
+        /* padding: 10px 12px; */
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-left: 5px;
+        text-align: start;
 
         color: #f5ecff;
         font-size: 0.9rem;

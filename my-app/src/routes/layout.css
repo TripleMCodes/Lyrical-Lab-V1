@@ -67,13 +67,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding: 100px 80px; */
-    /* background: radial-gradient(
-        circle at center,
-        #1a0026 0%,
-        #0b0014 60%,
-        #050008 100%
-    ); */
 }
 
 .logo-1 {
@@ -340,9 +333,6 @@ nav li[aria-current='page'] a {
 		0 0 10px rgba(199, 125, 255, 0.9);
 }
 
-
-
-
 a {
 	color: var(--color-theme-1);
 	text-decoration: none;
@@ -363,24 +353,6 @@ h1 {
 		0 0 20px rgba(123, 44, 255, 0.3);
 }
 
-/* h2 { */
-	/* font-size: 1rem; */
-	/* color: #d7c8ff; */
-/* } */
-
-/* pre {
-	
-	font-family: var(--font-mono);
-	background-color: rgba(30, 20, 50, 0.75);
-	border-radius: 6px;
-	padding: 0.75em;
-	overflow-x: auto;
-	color: #f4eeff;
-	box-shadow:
-		0 0 0 1px rgba(199, 125, 255, 0.15),
-		0 0 18px rgba(123, 44, 255, 0.35);
-} */
-
 .text-column {
 	display: flex;
 	max-width: 48rem;
@@ -392,8 +364,6 @@ h1 {
 
 input,
 button {
-	/* font-size: inherit; */
-	/* font-family: inherit; */
 	background-color: hsl(260, 40%, 12%);
 	color: var(--color-text);
 	border: 1px solid rgba(199, 125, 255, 0.3);
@@ -408,21 +378,3 @@ button:hover {
 button:focus:not(:focus-visible) {
 	outline: none;
 }
-
-@media (min-width: 720px) {
-	h1 {
-		/* font-size: 2.4rem; */
-	}
-}
-
-/* .visually-hidden {
-	border: 0;
-	clip: rect(0 0 0 0);
-	height: auto;
-	margin: 0;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	width: 1px;
-	white-space: nowrap;
-} */

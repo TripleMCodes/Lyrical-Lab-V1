@@ -225,6 +225,12 @@ class LLSearchEngine:
             return np.zeros(len(self.docs), dtype=float)
 
         qvec = self.embedding_provider.embed([query])[0]  # (dim,)
+        norm = np.linalg.norm(qvec)
+        if norm == 0:
+            return np.zeros(len(self.docs))
+
+        qvec = qvec / norm
+        
         candidates = self._semantic_index.search(qvec, top_k=self.semantic_top_k)
 
         scores = np.zeros(len(self.docs), dtype=float)

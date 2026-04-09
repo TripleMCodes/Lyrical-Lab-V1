@@ -45,19 +45,11 @@
     text-shadow: 0 0 10px rgba(199, 125, 255, 0.6);
 }
 
-
-/* .songs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 2fr));
-    gap: 1.5rem;
-} */
-
 :global(.songs-grid) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 }
-
 
 .song-card {
     background: linear-gradient(160deg, #0b0014, #16001f);

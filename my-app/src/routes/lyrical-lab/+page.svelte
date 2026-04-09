@@ -434,7 +434,7 @@
     flex: 1;
     display: flex;
 
-    width: 150%;
+    width: 130%;
     height: 200%;
 
     padding: 1rem;

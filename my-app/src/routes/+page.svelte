@@ -2,7 +2,6 @@
       import './home.css';
       import {fetchWords} from '../lib/api/client'
       import {fetchRhymes} from '$lib/api/lyric_tools'
-      // import SigilSpinner from '$lib/components/SigilSpinner.svelte';
       import SigilSpinner from '../lib/components/SigilSpinner.svelte';
 
 	let isLoading = $state(false);
@@ -11,8 +10,6 @@
       let wordList = $state([])
       let notify = $state('No words searhed yet')
 
-      
-   
       async function fetchWordsWrapper(){
             isLoading = true
             if (selected === "rhyme"){
@@ -20,7 +17,6 @@
                   console.log('the data is ', data)
                   console.log('the data is ', data.message)
                   wordList = data.message
-                  // notify = "rhymes found"
                   word = ''
                   isLoading = false
             }
@@ -50,11 +46,9 @@
             <input type="text" id="word-input" placeholder="Generate lyrics..." bind:value={word}>
             <select id="search-type" bind:value={selected} onchange={() => console.log(selected)}>
                   <option value="rhyme">Rhyme</option>
-                  <!-- <option value="nearRhyme">nearRhyme</option> -->
                   <option value="synonym">Synonym</option>
                   <option value="related">Related</option>
                   <option value="homophone">Homophone</option>
-                  <!-- <option value="gen-lyrics">Generate lyrics</option> -->
             </select>
             <button id="search-btn" onclick={fetchWordsWrapper}>Find Words</button>
       </div>

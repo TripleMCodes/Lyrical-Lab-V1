@@ -7,6 +7,7 @@ from app.database import engine, get_db
 from app.models import Base, Users
 from .routers import auth, user
 from .routers.lyrical_tools import lyrical_lab
+from .routers import lyric_search
 # from app.lyrics_n_summarization import OpenRouterClient
 
 app = FastAPI()
@@ -29,6 +30,8 @@ app.add_middleware(
 app.include_router(user.router)
 app.include_router(auth.router) 
 app.include_router(lyrical_lab.router)
+app.include_router(lyric_search.router)
+
 
 @app.get("/")
 async def index():
