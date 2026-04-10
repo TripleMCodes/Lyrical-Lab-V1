@@ -34,8 +34,32 @@ def build_lyric_docs(db: Session, user_id: int) -> List[LyricDoc]:
 
     return docs
 
+engine_cache = {}
 
 
+def get_engine(user_id: int, db: Session):
+
+    if user_id in engine_cache:
+        return engine_cache[user_id]
+
+    docs = build_lyric_docs(db, user_id)
+
+    store = SQLiteFeedbackStore("ll_feedback.db")
+
+    engine = LLSearchEngine(
+        feedback_store=store,
+        field_weights=FieldWeights(
+            title=2.5,
+            chorus=2.0,
+            verses=1.0,
+        ),
+    )
+
+    engine.index(docs)
+
+    engine_cache[user_id] = engine
+
+    return engine
 
 
 def search_user_lyrics(
