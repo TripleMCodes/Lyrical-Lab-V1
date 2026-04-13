@@ -24,4 +24,31 @@ export async function fetchRhymes(word) {
     } catch (err) {
         return err
     }
+}
+
+
+
+export async function searchLyrics(query, topK = 5) {
+    let url = `http://localhost:8000/api/lyrics-search/?q=${encodeURIComponent(query)}&top_k=${topK}`;
+
+    try {
+        const res = await fetch(url, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            return data;
+        } else {
+            const error = await res.json();
+            throw new Error(error.detail || `Search failed: ${res.status}`);
+        }
+    } catch (err) {
+        console.error("Search error:", err);
+        throw err;
+    }
 } 

@@ -1,9 +1,56 @@
 <script>
   import Tooltip from "./Tooltip.svelte";
+  import { searchLyrics } from "$lib/api/lyric_tools";
 
+  let {display = $bindable(), results = $bindable(), openSong} = $props()
 
-    let {display = $bindable(), results = $bindable() } = $props()
+  let searchQuery = $state("");
+  let isLoading = $state(false);
+  let error = $state("");
 
+  async function performSearch() {
+    if (!searchQuery.trim()) {
+      error = "Please enter a search query";
+      return;
+    }
+
+    isLoading = true;
+    error = "";
+
+    try {
+      const response = await searchLyrics(searchQuery.trim(), 10);
+      results = response.results || [];
+      display = true;
+    } catch (err) {
+      error = err.message || "Search failed";
+      results = [];
+      display = false;
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      performSearch();
+    }
+  }
+
+  function clearSearch() {
+    searchQuery = "";
+    results = [];
+    display = false;
+    error = "";
+  }
+
+  // function openSong(song) {
+  //   if (openSong) {
+  //     openSong(song);
+  //   } else {
+  //     // Fallback: just log the song data
+  //     console.log("Open song:", song);
+  //   }
+  // }
 </script>
 
 <section class="song-search">
@@ -13,13 +60,31 @@
       name="song-search"
       class="search-input"
       placeholder="Search songs… (title, artist, album)"
+      bind:value={searchQuery}
+      onkeypress={handleKeyPress}
+      disabled={isLoading}
     />
-    <button class="search-btn" type="button">
+    <button class="search-btn" type="button" onclick={performSearch} disabled={isLoading || !searchQuery.trim()}>
       <Tooltip text="Search for song">
-                <img src="/icons8-find-64.png" alt="search icon" width="50" height="50">
+        {#if isLoading}
+          <div class="spinner"></div>
+        {:else}
+          <img src="/icons8-find-64.png" alt="search icon" width="50" height="50">
+        {/if}
       </Tooltip>
     </button>
+    {#if searchQuery}
+      <button class="clear-btn" type="button" onclick={clearSearch} title="Clear search">
+        ✕
+      </button>
+    {/if}
   </div>
+
+  {#if error}
+    <div class="error-message">
+      {error}
+    </div>
+  {/if}
 </section>
 
 <section class="display-results">
@@ -28,19 +93,28 @@
       {#each results as song}
         <div class="result-card">
           <div class="result-meta">
-            <p class="meta-line"><span class="meta-label">Artist</span>{song.artist}</p>
-            <p class="meta-line"><span class="meta-label">Title</span>{song.title}</p>
+            <p class="meta-line"><span class="meta-label">Artist</span>{song.artist || 'Unknown'}</p>
+            <p class="meta-line"><span class="meta-label">Title</span>{song.title || 'Untitled'}</p>
             {#if song.album}
               <p class="meta-line"><span class="meta-label">Album</span>{song.album}</p>
             {/if}
+            <p class="meta-line"><span class="meta-label">Score</span>{song.score?.toFixed(3) || 'N/A'}</p>
           </div>
 
-          <button class="open-btn" type="button">Open in studio</button>
+          {#if song.snippet}
+            <div class="snippet">
+              <p class="snippet-text">"{song.snippet}"</p>
+            </div>
+          {/if}
+
+          <button class="open-btn" type="button" onclick={() => openSong(song)}>Open in studio</button>
         </div>
       {/each}
     </div>
-  {:else}
-    <p class="empty">No results to display</p>
+  {:else if display && !isLoading}
+    <p class="empty">No results found for "{searchQuery}"</p>
+  {:else if !display && !isLoading}
+    <p class="empty">Search your lyrics to get started</p>
   {/if}
 </section>
 
@@ -130,6 +204,63 @@
   box-shadow:
       0 6px 14px rgba(140, 70, 200, 0.4);
   }
+
+.search-btn button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Clear button */
+.clear-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  background: rgba(168, 85, 247, 0.1);
+  color: rgba(245, 233, 255, 0.8);
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+/* Spinner */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(168, 85, 247, 0.3);
+  border-top: 2px solid rgba(168, 85, 247, 0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error message */
+.error-message {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  border-radius: 8px;
+  color: rgba(255, 193, 193, 0.9);
+  font-size: 0.9rem;
+}
 
 /* Results section */
 .display-results {
@@ -221,6 +352,23 @@
 .open-btn:hover {
   background: rgba(168, 85, 247, 0.24);
   box-shadow: 0 0 14px rgba(168, 85, 247, 0.28);
+}
+
+/* Snippet */
+.snippet {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(15, 5, 25, 0.4);
+  border-radius: 8px;
+  border-left: 3px solid rgba(168, 85, 247, 0.5);
+}
+
+.snippet-text {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(233, 213, 255, 0.8);
+  font-style: italic;
+  line-height: 1.4;
 }
 
 /* Empty state */
