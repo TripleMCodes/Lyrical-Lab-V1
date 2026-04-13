@@ -1,5 +1,4 @@
-from embeddings import SentenceTransformerProvider
+from sentence_transformers import SentenceTransformer
 
-emb = SentenceTransformerProvider()
-v = emb.embed(["midnight echoes in my head"])
-print(v.shape)
+model = SentenceTransformer("all-MiniLM-L6-v2")
+model.save("models/all-MiniLM-L6-v2")

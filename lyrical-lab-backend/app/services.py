@@ -147,6 +147,7 @@ def search_user_lyrics(
         raise ValueError("top_k must be between 1 and 20")
 
     try:
+        print("performing query")
         # Use the cached engine
         engine = get_engine(user_id, db)
         
@@ -159,4 +160,5 @@ def search_user_lyrics(
         return results
         
     except Exception as e:
+        print("an occurred in services.")
         raise RuntimeError(f"Lyric search failed for user {user_id}: {e}")

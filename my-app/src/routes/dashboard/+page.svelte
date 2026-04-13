@@ -43,6 +43,9 @@
     let rime_list = $state([])
     let isLoading = $state(false)
 
+    let searchDisplay = $state(false)
+    let searchResults = $state([])
+
 
     let showNotification = $state(false);
     let notificationMessage = $state("");
@@ -53,6 +56,31 @@
     function openStudio (){
        editingSong.set(data.draft)
        goto('/lyrical-lab')
+    }
+
+    async function openSongFromSearch(song) {
+        // Fetch the full song data from the backend using the doc_id
+        try {
+            const songId = parseInt(song.doc_id);
+            const res = await fetch(`http://localhost:8000/api/lyric-tools/user-songs/${songId}`, {
+                method: "GET",
+                credentials: "include"
+            });
+
+            if (res.ok) {
+                const songData = await res.json();
+                editingSong.set(songData);
+                goto('/lyrical-lab');
+            } else {
+                notificationMessage = "Failed to load song";
+                notificationType = "error";
+                showNotification = true;
+            }
+        } catch (error) {
+            notificationMessage = "Error loading song";
+            notificationType = "error";
+            showNotification = true;
+        }
     }
 
     function viewNote(note_content, note_id){
@@ -150,7 +178,7 @@
 
 <section class="container">
     <div class="main scrollable">
-        <Search/>
+        <Search bind:display={searchDisplay} bind:results={searchResults} openSong={openSongFromSearch}/>
 
         <Scratchpad viewNote={viewNote} makeNewNote={createNote} delNote={delNote} saveNote={saveNote} bind:notes={notes} bind:note={note} />
 
