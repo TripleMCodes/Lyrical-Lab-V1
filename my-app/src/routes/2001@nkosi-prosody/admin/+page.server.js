@@ -1,0 +1,52 @@
+import { fail, redirect } from '@sveltejs/kit';
+import { dev } from '$app/environment';
+
+export const actions = {
+    admin_login: async ({ request, fetch, cookies }) => {
+        const formData = await request.formData();
+
+        const username = formData.get('username');
+        const password = formData.get('password');
+
+        if (!username || !password) {
+            return fail(400, { message: 'Missing admin name or password' });
+        }
+
+        const body = new URLSearchParams();
+        body.set('username', username.toString());
+        body.set('password', password.toString());
+
+        const res = await fetch('http://127.0.0.1:8000/api/admin/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body.toString()
+        });
+
+        if (!res.ok) {
+            return fail(400, { message: 'Admin login failed. Invalid credentials.' });
+        }
+
+        const data = await res.json();
+
+        cookies.set('access_token', data.access_token, {
+            httpOnly: true,
+            secure: !dev,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 15
+        });
+
+        cookies.set('refresh_token', data.refresh_token, {
+            httpOnly: true,
+            secure: !dev,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7
+        });
+
+        // Success → redirect to admin dashboard
+        throw redirect(303, '/admin/dashboard');
+    }
+};
