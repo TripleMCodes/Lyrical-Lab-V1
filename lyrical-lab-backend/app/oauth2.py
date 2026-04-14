@@ -41,9 +41,10 @@ def verify_access_token(token: str, credential_exception):
         token = token.strip()
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         uid = payload.get("uid")
-        if uid is None:
+        admin_id = payload.get("admin_id")
+        if uid is None and admin_id is None:
             raise credential_exception
-        return schemas.TokenData(uid=uid)
+        return schemas.TokenData(uid=uid, admin_id=admin_id)
     except JWTError as e:
         logging.debug(e)
         raise credential_exception
@@ -63,3 +64,19 @@ def get_current_user(access_token: str = Cookie(), db: Session = Depends(databas
     # print(f'this is the user: {user}')
 
     return user
+
+def get_current_admin(access_token: str = Cookie(), db: Session = Depends(database.get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate admin credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    token = verify_access_token(access_token, credential_exception=credentials_exception)
+
+    if token.admin_id is None:
+        raise credentials_exception
+
+    admin = db.query(models.Admin).filter(models.Admin.admin_id == token.admin_id).first()
+
+    return admin

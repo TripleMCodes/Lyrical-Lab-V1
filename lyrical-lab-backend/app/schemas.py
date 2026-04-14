@@ -18,7 +18,8 @@ class Token(BaseModel):
     token_type: str
 
 class TokenData(BaseModel):
-    uid: int
+    uid: Optional[int] = None
+    admin_id: Optional[int] = None
 
 class NewSong(BaseModel):
     song_id: Optional[int] = None

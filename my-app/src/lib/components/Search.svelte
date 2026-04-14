@@ -43,14 +43,6 @@
     error = "";
   }
 
-  // function openSong(song) {
-  //   if (openSong) {
-  //     openSong(song);
-  //   } else {
-  //     // Fallback: just log the song data
-  //     console.log("Open song:", song);
-  //   }
-  // }
 </script>
 
 <section class="song-search">
