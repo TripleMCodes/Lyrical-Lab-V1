@@ -1,13 +1,15 @@
-<script>
+<script lang="ts">
     import { page } from '$app/stores';
-    export let users = [];
+    // export let users = [];
 
-    let selectedUser = '';
-    let newPassword = '';
-    let confirmPassword = '';
-    let showAll = false;
+    let { users = $bindable() } = $props()
 
-    $: userCount = users.length;
+    let selectedUser = $state("")
+    let newPassword = $state("");
+    let confirmPassword = $state("");
+    let showAll = $state(false);
+
+    let userCount = $state(users.length);
 </script>
 
 <section class="user-card">
@@ -18,7 +20,7 @@
             <p class="label">Number of users</p>
             <p class="value">{userCount}</p>
         </div>
-        <button type="button" on:click={() => (showAll = !showAll)}>{showAll ? 'Hide all users' : 'Show all users'}</button>
+        <button type="button" onclick={() => (showAll = !showAll)}>{showAll ? 'Hide all users' : 'Show all users'}</button>
     </div>
 
     {#if showAll}

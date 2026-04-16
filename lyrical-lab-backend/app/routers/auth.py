@@ -107,7 +107,9 @@ def admin_list_users(
     current_admin: models.Admin = Depends(oauth2.get_current_admin),
     db: Session = Depends(get_db),
 ):
-    return db.query(models.Users).all()
+    data = db.query(models.Users).all()
+    print(data)
+    return data
 
 @router.patch('/api/admin/users/{user_id}/password')
 def admin_change_user_password(
@@ -124,20 +126,35 @@ def admin_change_user_password(
     db.commit()
     return {"message": "User password updated successfully."}
 
-@router.patch('/api/admin/users/{user_id}/block')
-def admin_block_user(
-    user_id: int,
-    payload: schemas.UserBlockUpdate,
+@router.get('/api/admin/songs', response_model=list[schemas.AdminLyricOut])
+def admin_list_songs(
     current_admin: models.Admin = Depends(oauth2.get_current_admin),
     db: Session = Depends(get_db),
 ):
-    user = db.query(models.Users).filter(models.Users.uid == user_id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
+    lyrics = db.query(
+        models.Lyrics.song_id,
+        models.Lyrics.song_name,
+        models.Lyrics.song_artist,
+        models.Lyrics.song_lyrics,
+        models.Lyrics.date_created,
+        models.Users.artist_name.label('user_name')
+    ).join(models.Users, models.Lyrics.user_id == models.Users.uid).all()
 
-    user.blocked = payload.blocked
+    return [schemas.AdminLyricOut(**dict(row)) for row in lyrics]
+
+@router.delete('/api/admin/songs/{song_id}')
+def admin_delete_song(
+    song_id: int,
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    song = db.query(models.Lyrics).filter(models.Lyrics.song_id == song_id).first()
+    if not song:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Song not found.')
+
+    db.delete(song)
     db.commit()
-    return {"message": f"User {'blocked' if payload.blocked else 'unblocked'} successfully."}
+    return {"message": "Song deleted successfully."}
 
 
 @router.post("/refresh")

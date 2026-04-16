@@ -1,7 +1,18 @@
-<script>
-    import { page } from '$app/stores';
+<script lang="ts">
     import AdminSettings from '$lib/components/admin/AdminSettings.svelte';
     import UserSettings from '$lib/components/admin/UserSettings.svelte';
+    import SongsAdmin from '$lib/components/admin/SongsAdmin.svelte';
+  
+
+    // import type { PageData } from "../$types";
+    let { data } = $props();
+    // console.log(data);
+    // let users = $derived.by(() => data.users || [])    let songs = $derived.by(() => data.songs || [])    // console.log(users)
+
+    // export let data;
+    console.log(data)
+    // let users = $state()
+    // const { } = data;
 </script>
 
 <div class="admin-dashboard-page">
@@ -14,7 +25,8 @@
     </div>
 
     <AdminSettings />
-    <UserSettings users={$page.data.users ?? []} />
+    <UserSettings users={data.users} />
+    <SongsAdmin songs={data.songs} />
 </div>
 
 <style>

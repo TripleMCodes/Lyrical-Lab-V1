@@ -22,16 +22,54 @@ function backendHeaders(cookies) {
 }
 
 export const load = async ({ fetch, cookies }) => {
-  const res = await fetch('http://127.0.0.1:8000/api/admin/users', {
-    headers: backendHeaders(cookies),
-  });
+  try {
+    const usersRes = await fetch('http://127.0.0.1:8000/api/admin/users', {
+      headers: backendHeaders(cookies),
+    });
+    let users = [];
+    if (usersRes.ok) {
+      users = await usersRes.json();
+    }
 
-  if (!res.ok) {
-    return { users: [] };
+    const songsRes = await fetch('http://127.0.0.1:8000/api/admin/songs', {
+      headers: backendHeaders(cookies),
+    });
+    let songs = [];
+    if (songsRes.ok) {
+      songs = await songsRes.json();
+    }
+
+    return { 
+      users,
+      songs,
+      logo: {
+        title: 'Lyrical Lab',
+        tagline: 'Unleash your words, craft your flow 🎤'
+      },
+      urls: {
+        writing: false,
+        login: false,
+        signup: false,
+        songs: false
+      }
+    };
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+    return { 
+      users: [],
+      songs: [],
+      logo: {
+        title: 'Lyrical Lab',
+        tagline: 'Unleash your words, craft your flow 🎤'
+      },
+      urls: {
+        writing: false,
+        login: false,
+        signup: false,
+        songs: false
+      }
+    };
   }
-
-  const users = await res.json();
-  return { users };
 };
 
 async function forwardRequest({ request, cookies, path, method = 'PATCH' }) {
@@ -122,5 +160,25 @@ export const actions = {
     }
 
     return { message: data.message || 'User block state updated successfully.' };
+  },
+
+  admin_delete_song: async ({ request, cookies }) => {
+    const formData = await request.formData();
+    const songId = formData.get('song_id');
+    if (!songId) {
+      return fail(400, { message: 'Song ID is required.' });
+    }
+
+    const res = await fetch(`http://127.0.0.1:8000/api/admin/songs/${songId}`, {
+      method: 'DELETE',
+      headers: backendHeaders(cookies),
+    });
+
+    const data = await res.json().catch(() => ({ message: 'Backend request failed.' }));
+    if (!res.ok) {
+      return fail(res.status, { message: data.detail || data.message || 'Request failed.' });
+    }
+
+    return { message: data.message || 'Song deleted successfully.' };
   },
 };
