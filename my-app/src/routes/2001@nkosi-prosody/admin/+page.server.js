@@ -46,7 +46,7 @@ export const actions = {
             maxAge: 60 * 60 * 24 * 7
         });
 
-        // Success → redirect to admin dashboard
-        throw redirect(303, '/admin/dashboard');
+        // Success → redirect to the admin dashboard path
+        throw redirect(303, '/2001@nkosi-prosody/admin/dashboard');
     }
 };
