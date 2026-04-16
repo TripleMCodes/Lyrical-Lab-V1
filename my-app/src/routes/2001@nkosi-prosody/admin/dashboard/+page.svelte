@@ -1,12 +1,7 @@
 <script>
+    import { page } from '$app/stores';
     import AdminSettings from '$lib/components/admin/AdminSettings.svelte';
     import UserSettings from '$lib/components/admin/UserSettings.svelte';
-
-    const users = [
-        { id: 1, name: 'alice', blocked: false },
-        { id: 2, name: 'bob', blocked: true },
-        { id: 3, name: 'charlie', blocked: false }
-    ];
 </script>
 
 <div class="admin-dashboard-page">
@@ -19,7 +14,7 @@
     </div>
 
     <AdminSettings />
-    <UserSettings {users} />
+    <UserSettings users={$page.data.users ?? []} />
 </div>
 
 <style>

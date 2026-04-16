@@ -1,36 +1,13 @@
 <script>
+    import { page } from '$app/stores';
     export let users = [];
 
     let selectedUser = '';
     let newPassword = '';
     let confirmPassword = '';
-    let actionMessage = '';
     let showAll = false;
 
     $: userCount = users.length;
-
-    function changePassword(event) {
-        event.preventDefault();
-
-        if (!selectedUser || !newPassword || !confirmPassword) {
-            actionMessage = 'Choose a user and enter both password fields.';
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            actionMessage = 'Passwords do not match.';
-            return;
-        }
-
-        actionMessage = `Password updated for ${selectedUser}.`;
-        newPassword = '';
-        confirmPassword = '';
-    }
-
-    function toggleBlocked(user) {
-        user.blocked = !user.blocked;
-        actionMessage = `${user.name} is now ${user.blocked ? 'blocked' : 'unblocked'}.`;
-    }
 </script>
 
 <section class="user-card">
@@ -48,30 +25,34 @@
         <div class="user-table">
             {#each users as user}
                 <div class="user-row">
-                    <span>{user.name}</span>
+                    <span>{user.artist_name}</span>
                     <span>{user.blocked ? 'Blocked' : 'Active'}</span>
-                    <button type="button" on:click={() => toggleBlocked(user)}>{user.blocked ? 'Unblock' : 'Block'}</button>
+                    <form method="POST" action="?/admin_toggle_user_block">
+                        <input type="hidden" name="user_id" value={user.uid} />
+                        <input type="hidden" name="blocked" value={!user.blocked} />
+                        <button type="submit">{user.blocked ? 'Unblock' : 'Block'}</button>
+                    </form>
                 </div>
             {/each}
         </div>
     {/if}
 
-    <form class="form-card" on:submit|preventDefault={changePassword}>
+    <form class="form-card" method="POST" action="?/admin_change_user_password">
         <label for="user-select">Change password</label>
-        <select id="user-select" bind:value={selectedUser}>
+        <select id="user-select" name="user_id" bind:value={selectedUser} required>
             <option value="">Select user</option>
             {#each users as user}
-                <option value={user.name}>{user.name}</option>
+                <option value={user.uid}>{user.artist_name}</option>
             {/each}
         </select>
 
-        <input type="password" bind:value={newPassword} placeholder="New password" />
-        <input type="password" bind:value={confirmPassword} placeholder="Confirm password" />
+        <input name="new_password" type="password" bind:value={newPassword} placeholder="New password" required />
+        <input name="confirm_password" type="password" bind:value={confirmPassword} placeholder="Confirm password" required />
         <button type="submit">Update password</button>
     </form>
 
-    {#if actionMessage}
-        <p class="message">{actionMessage}</p>
+    {#if $page.form?.message}
+        <p class="message">{$page.form.message}</p>
     {/if}
 </section>
 

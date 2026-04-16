@@ -1,88 +1,48 @@
 <script>
+    import { page } from '$app/stores';
     let adminName = '';
-    let oldPassword = '';
+    let currentPassword = '';
     let newPassword = '';
     let confirmPassword = '';
     let apiKey = '';
     let apiUrl = '';
-    let nameMessage = '';
-    let passwordMessage = '';
-    let apiMessage = '';
-
-    function updateName(event) {
-        event.preventDefault();
-        nameMessage = adminName.trim()
-            ? `Admin name changed to “${adminName.trim()}”`
-            : 'Please enter a valid admin name.';
-    }
-
-    function updatePassword(event) {
-        event.preventDefault();
-
-        if (!oldPassword || !newPassword || !confirmPassword) {
-            passwordMessage = 'Fill in all password fields.';
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            passwordMessage = 'New passwords do not match.';
-            return;
-        }
-
-        passwordMessage = 'Admin password updated successfully.';
-        oldPassword = '';
-        newPassword = '';
-        confirmPassword = '';
-    }
-
-    function updateApi(event) {
-        event.preventDefault();
-        apiMessage = apiKey.trim() || apiUrl.trim()
-            ? 'Admin API settings saved.'
-            : 'Enter a new API key or API URL to save.';
-    }
 </script>
 
 <section class="admin-card">
     <h2>Admin settings</h2>
 
-    <form class="form-card" on:submit|preventDefault={updateName}>
+    <form class="form-card" method="POST" action="?/admin_change_name">
         <label for="admin-name">Change name</label>
-        <input id="admin-name" type="text" bind:value={adminName} placeholder="New admin name" />
+        <input id="admin-name" name="admin_name" type="text" bind:value={adminName} placeholder="New admin name" required />
         <button type="submit">Save name</button>
-        {#if nameMessage}
-            <p class="message">{nameMessage}</p>
-        {/if}
     </form>
 
-    <form class="form-card" on:submit|preventDefault={updatePassword}>
+    <form class="form-card" method="POST" action="?/admin_change_password">
         <label for="admin-old-password">Current password</label>
-        <input id="admin-old-password" type="password" bind:value={oldPassword} placeholder="Current password" />
+        <input id="admin-old-password" name="current_password" type="password" bind:value={currentPassword} placeholder="Current password" required />
 
         <label for="admin-new-password">New password</label>
-        <input id="admin-new-password" type="password" bind:value={newPassword} placeholder="New password" />
+        <input id="admin-new-password" name="new_password" type="password" bind:value={newPassword} placeholder="New password" required />
 
         <label for="admin-confirm-password">Confirm new password</label>
-        <input id="admin-confirm-password" type="password" bind:value={confirmPassword} placeholder="Confirm password" />
+        <input id="admin-confirm-password" name="confirm_password" type="password" bind:value={confirmPassword} placeholder="Confirm password" required />
 
         <button type="submit">Change password</button>
-        {#if passwordMessage}
-            <p class="message">{passwordMessage}</p>
-        {/if}
     </form>
 
-    <form class="form-card" on:submit|preventDefault={updateApi}>
+    <form class="form-card" method="POST" action="?/admin_change_api">
         <label for="admin-api-key">Change API key</label>
-        <input id="admin-api-key" type="text" bind:value={apiKey} placeholder="New API key" />
+        <input id="admin-api-key" name="api_key" type="text" bind:value={apiKey} placeholder="New API key" />
 
         <label for="admin-api-url">Change API URL</label>
-        <input id="admin-api-url" type="url" bind:value={apiUrl} placeholder="New API URL" />
+        <input id="admin-api-url" name="api_url" type="url" bind:value={apiUrl} placeholder="New API URL" />
 
         <button type="submit">Save API settings</button>
-        {#if apiMessage}
-            <p class="message">{apiMessage}</p>
-        {/if}
     </form>
+
+    {#if $page.form?.message}
+        <p class="message">{$page.form.message}</p>
+    {/if}
 </section>
 
 <style>

@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from app.database import engine, get_db
 from .. import models, schemas, utils, oauth2
+from typing import Optional
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -58,6 +59,85 @@ def admin_login(admin_credentials: OAuth2PasswordRequestForm = Depends(), db: Se
     "refresh_token": refresh_token,
     "token_type": "bearer"
         }
+
+@router.patch('/api/admin/settings/name')
+def admin_change_name(
+    payload: schemas.AdminNameUpdate,
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    existing = db.query(models.Admin).filter(models.Admin.admin_name == payload.admin_name).first()
+    if existing and existing.admin_id != current_admin.admin_id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Admin name is already taken.')
+
+    current_admin.admin_name = payload.admin_name
+    db.commit()
+    db.refresh(current_admin)
+    return {"message": "Admin name updated successfully."}
+
+@router.patch('/api/admin/settings/password')
+def admin_change_password(
+    payload: schemas.AdminPasswordUpdate,
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    if not utils.verify(payload.current_password, current_admin.password):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Current password is incorrect.')
+
+    current_admin.password = utils.hash(payload.new_password)
+    db.commit()
+    return {"message": "Admin password updated successfully."}
+
+@router.patch('/api/admin/settings/api')
+def admin_change_api(
+    payload: schemas.AdminApiUpdate,
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    if payload.api_key is not None:
+        current_admin.api_key = payload.api_key
+    if payload.api_url is not None:
+        current_admin.api_url = payload.api_url
+
+    db.commit()
+    return {"message": "Admin API settings updated successfully."}
+
+@router.get('/api/admin/users', response_model=list[schemas.UserOut])
+def admin_list_users(
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    return db.query(models.Users).all()
+
+@router.patch('/api/admin/users/{user_id}/password')
+def admin_change_user_password(
+    user_id: int,
+    payload: schemas.UserPasswordUpdate,
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.query(models.Users).filter(models.Users.uid == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
+
+    user.password = utils.hash(payload.new_password)
+    db.commit()
+    return {"message": "User password updated successfully."}
+
+@router.patch('/api/admin/users/{user_id}/block')
+def admin_block_user(
+    user_id: int,
+    payload: schemas.UserBlockUpdate,
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.query(models.Users).filter(models.Users.uid == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
+
+    user.blocked = payload.blocked
+    db.commit()
+    return {"message": f"User {'blocked' if payload.blocked else 'unblocked'} successfully."}
 
 
 @router.post("/refresh")

@@ -11,6 +11,24 @@ class UserOut(BaseModel):
     uid: int
     artist_name: str
     email: EmailStr
+    blocked: bool
+
+class AdminNameUpdate(BaseModel):
+    admin_name: str
+
+class AdminPasswordUpdate(BaseModel):
+    current_password: str
+    new_password: str
+
+class AdminApiUpdate(BaseModel):
+    api_key: Optional[str] = None
+    api_url: Optional[str] = None
+
+class UserPasswordUpdate(BaseModel):
+    new_password: str
+
+class UserBlockUpdate(BaseModel):
+    blocked: bool
 
 class Token(BaseModel):
     access_token: str

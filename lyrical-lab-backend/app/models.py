@@ -1,8 +1,8 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, func
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, func, Boolean
 from sqlalchemy.orm import relationship
 from app.database import Base
 from sqlalchemy import (
-    Column, Integer, String, Text, DateTime, ForeignKey, func, UniqueConstraint, Index, UUID
+    Column, Integer, String, Text, DateTime, ForeignKey, func, UniqueConstraint, Index, UUID, Boolean
 )
 import uuid
 
@@ -14,6 +14,7 @@ class Users(Base):
     age = Column(Integer, nullable=False)
     password = Column(String(255), nullable=False)
     email = Column(String(255), nullable=False, unique=True)
+    blocked = Column(Boolean, nullable=False, server_default='false')
     date_created = Column(DateTime, nullable=False, default=func.now())
 
     lyrics = relationship("Lyrics", back_populates="user", cascade="all, delete-orphan")
@@ -171,6 +172,8 @@ class Admin(Base):
     admin_id = Column(Integer, primary_key=True, autoincrement=True)
     admin_name = Column(String(150), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
+    api_key = Column(String(255), nullable=True)
+    api_url = Column(String(255), nullable=True)
 
 
 
