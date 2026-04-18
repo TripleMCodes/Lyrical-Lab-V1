@@ -12,7 +12,7 @@
 
     let { songs }: { songs: Song[] } = $props();
 
-    let totalSongs = $derived(() => songs.length);
+    let totalSongs = $derived.by(() => songs.length);
     let recentSongs = $derived.by(() => 
         songs
             .sort((a, b) => new Date(b.date_created).getTime() - new Date(a.date_created).getTime())
@@ -20,7 +20,7 @@
     );
 
     // Group songs by user
-    let songsByUser = $derived(() => {
+    let songsByUser = $derived.by(() => {
         const grouped: { [key: string]: Song[] } = {};
         songs.forEach(song => {
             if (!grouped[song.user_name]) {

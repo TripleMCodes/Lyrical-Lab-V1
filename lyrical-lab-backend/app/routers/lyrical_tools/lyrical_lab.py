@@ -26,8 +26,8 @@ def count_syllables(
     db: Session = Depends(database.get_db),
     current_user: schemas.TokenData = Depends(oauth2.get_current_user)
 ):  
-    # print("in the fire")
-    # print(data)
+    
+    
     syllable_counter = SyllableCounter()
     results = syllable_counter.count_syllables_in_text(data['message'])
 
@@ -149,10 +149,10 @@ def delete_song(
     db.commit()
     return {"message": "Song deleted successfully"}
 
-
+#schemas.UploadingSong
 @router.post('/upload-song', status_code=status.HTTP_200_OK)
 def upload_song(
-    data: schemas.UploadingSong,
+    data: dict,
     db: Session = Depends(database.get_db),
     current_user: models.Users = Depends(oauth2.get_current_user),
 ):

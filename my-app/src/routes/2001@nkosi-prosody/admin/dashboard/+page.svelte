@@ -26,7 +26,7 @@
 
     <AdminSettings />
     <UserSettings users={data.users} />
-    <SongsAdmin songs={data.songs} />
+    <SongsAdmin songs={data.totalSongs} />
 </div>
 
 <style>

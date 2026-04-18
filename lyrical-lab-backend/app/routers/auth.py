@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Response
+from fastapi import APIRouter, Depends, Query, status, HTTPException, Response
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
@@ -126,11 +126,31 @@ def admin_change_user_password(
     db.commit()
     return {"message": "User password updated successfully."}
 
+
+@router.patch('/api/admin/block/user/{user_id}')
+def admin_block_user(
+    data: dict,
+    user_id: int,
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.query(models.Users).filter(models.Users.uid == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
+
+    user.blocked = data['blocked']
+    db.commit()
+    return {"message": "User has been blocked successfully."}
+
 @router.get('/api/admin/songs', response_model=list[schemas.AdminLyricOut])
 def admin_list_songs(
     current_admin: models.Admin = Depends(oauth2.get_current_admin),
     db: Session = Depends(get_db),
+    page: int = Query(1, ge=1),
+    size: int = Query(4, ge=1, le=100),
 ):
+    
+    
     lyrics = db.query(
         models.Lyrics.song_id,
         models.Lyrics.song_name,
@@ -140,7 +160,10 @@ def admin_list_songs(
         models.Users.artist_name.label('user_name')
     ).join(models.Users, models.Lyrics.user_id == models.Users.uid).all()
 
-    return [schemas.AdminLyricOut(**dict(row)) for row in lyrics]
+    # print(lyrics)
+
+    # return [schemas.AdminLyricOut(**dict(row)) for row in lyrics]
+    return lyrics
 
 @router.delete('/api/admin/songs/{song_id}')
 def admin_delete_song(

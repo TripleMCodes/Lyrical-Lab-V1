@@ -34,14 +34,14 @@ export const load = async ({ fetch, cookies }) => {
     const songsRes = await fetch('http://127.0.0.1:8000/api/admin/songs', {
       headers: backendHeaders(cookies),
     });
-    let songs = [];
+    let totalSongs = [];
     if (songsRes.ok) {
-      songs = await songsRes.json();
+      totalSongs = await songsRes.json();
     }
 
     return { 
       users,
-      songs,
+      totalSongs,
       logo: {
         title: 'Lyrical Lab',
         tagline: 'Unleash your words, craft your flow 🎤'
@@ -148,7 +148,7 @@ export const actions = {
       return fail(400, { message: 'User is required.' });
     }
 
-    const res = await fetch(`http://127.0.0.1:8000/api/admin/users/${userId}/block`, {
+    const res = await fetch(`http://127.0.0.1:8000/api/admin/block/user/${userId}`, {
       method: 'PATCH',
       headers: backendHeaders(cookies),
       body: JSON.stringify({ blocked }),
