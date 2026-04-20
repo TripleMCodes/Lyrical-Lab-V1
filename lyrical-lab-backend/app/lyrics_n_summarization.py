@@ -7,11 +7,11 @@ import pronouncing
 logging.basicConfig(level=logging.DEBUG)
 
 
-# API_KEY = Path(__file__).parent / "secrets" / ".env"
-API_KEY = 'thisismyapikeynowfornow'
-# if not API_KEY.exists():
-#     logging.debug("API key not found")
-#     sys.exit()
+API_KEY = Path(__file__).parent / "secrets" / ".env"
+# API_KEY = 'thisismyapikeynowfornow'
+if not API_KEY.exists():
+    logging.debug("API key not found")
+    sys.exit()
 
 class OpenRouterClient:
     def __init__(self, model="meta-llama/llama-3-70b-instruct", app_title="Autodidex", referer="https://Autodidex.com"):

@@ -15,8 +15,11 @@ router = APIRouter(
     tags=['users']
 )
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=UserOut)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
+#, response_model=UserOut
+#UserCreate
+
+@router.post('/', status_code=status.HTTP_201_CREATED)
+def create_user(user: dict , db: Session = Depends(get_db)):
 
     #hash password
     hashed_password = utils.hash(user.password)
@@ -26,6 +29,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+    print(new_user)
 
     return new_user
 

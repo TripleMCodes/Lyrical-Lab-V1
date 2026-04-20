@@ -35,7 +35,7 @@ app.include_router(lyric_search.router)
 
 @app.get("/")
 async def index():
-    return {"Message": "Hello world!"}
+    return {"message": "Hello world!"}
 
 @app.get("/api/test")
 async def get_users(db: Session = Depends(get_db)):

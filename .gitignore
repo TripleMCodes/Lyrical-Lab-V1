@@ -1,4 +1,5 @@
 ./plan.md
 ./test.py
 embeddings.md
-lyrical-lab-backend\app\secrets
+lyrical-lab-backend/app/secrets/
+*.env
