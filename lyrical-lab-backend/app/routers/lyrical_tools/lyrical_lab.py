@@ -454,22 +454,84 @@ def generate_mode_content(
     current_user: models.Users = Depends(oauth2.get_current_user),
     db:Session = Depends(database.get_db)
 ):
+    # Check rate limit - 5 requests per day
+    MAX_REQUESTS_PER_DAY = 5
+    
+    now = datetime.utcnow()
+    start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    end_of_day = start_of_day + timedelta(days=1)
+    
+    # Get today's request count
+    today_limit = db.query(models.APIRequestLimit).filter(
+        models.APIRequestLimit.user_id == current_user.uid,
+        models.APIRequestLimit.date_created >= start_of_day,
+        models.APIRequestLimit.date_created < end_of_day,
+    ).first()
+    
+    if today_limit and today_limit.request_count >= MAX_REQUESTS_PER_DAY:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"You have reached your daily limit of {MAX_REQUESTS_PER_DAY} requests. Please try again tomorrow."
+        )
+    
+    # Increment request count
+    if today_limit:
+        today_limit.request_count += 1
+    else:
+        today_limit = models.APIRequestLimit(
+            user_id=current_user.uid,
+            request_count=1,
+            date_created=now
+        )
+        db.add(today_limit)
+    
+    db.commit()
+    
+    # Generate content
     ai = OpenRouterClient()
     logging.debug(f'Data: {data}')
     try:
         if data["mode"] == "gen-fos":
-            data = ai.cliches_phrase_quotes(data["content"], data["fos"])
-            # data = {"message": "It may not be clear\nBut fear not, I am here!"} # for testing
+            response = ai.cliches_phrase_quotes(data["content"], data["fos"])
+            # response = {"message": "It may not be clear\nBut fear not, I am here!"} # for testing
         elif data["mode"] == "gen-lyrics":
-            data = ai.generate_lyrics(data["content"], data["genre"])
-            # data = {"message": "To be or not to be that is the question\nViolence is the answer"} # for testing
+            response = ai.generate_lyrics(data["content"], data["genre"])
+            # response = {"message": "To be or not to be that is the question\nViolence is the answer"} # for testing
     except Exception as e:
         logging.debug(e)
-        data ={"message": "An error occurred, please try again."}
-        return data
+        response = {"message": "An error occurred, please try again."}
+        return response
     
-    # data = {"message": "Fear not for I am here!"}
-    return data
+    # response = {"message": "Fear not for I am here!"}
+    return response
+
+@router.get("/api-requests-remaining", status_code=status.HTTP_200_OK)
+def get_requests_remaining(
+    current_user: models.Users = Depends(oauth2.get_current_user),
+    db: Session = Depends(database.get_db)
+):
+    MAX_REQUESTS_PER_DAY = 5
+    
+    now = datetime.utcnow()
+    start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    end_of_day = start_of_day + timedelta(days=1)
+    
+    # Get today's request count
+    today_limit = db.query(models.APIRequestLimit).filter(
+        models.APIRequestLimit.user_id == current_user.uid,
+        models.APIRequestLimit.date_created >= start_of_day,
+        models.APIRequestLimit.date_created < end_of_day,
+    ).first()
+    
+    requests_used = today_limit.request_count if today_limit else 0
+    requests_remaining = max(0, MAX_REQUESTS_PER_DAY - requests_used)
+    
+    return {
+        "requests_used": requests_used,
+        "requests_remaining": requests_remaining,
+        "max_requests_per_day": MAX_REQUESTS_PER_DAY
+    }
+
 
 
 @router.get('/get-notes', status_code=status.HTTP_200_OK)
