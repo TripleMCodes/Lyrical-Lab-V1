@@ -454,15 +454,15 @@ def generate_mode_content(
     current_user: models.Users = Depends(oauth2.get_current_user),
     db:Session = Depends(database.get_db)
 ):
-    # ai = OpenRouterClient()
+    ai = OpenRouterClient()
     logging.debug(f'Data: {data}')
     try:
         if data["mode"] == "gen-fos":
-            # data = ai.cliches_phrase_quotes(data["content"], data["fos"])
-            data = {"message": "It may not be clear\nBut fear not, I am here!"} # for testing
+            data = ai.cliches_phrase_quotes(data["content"], data["fos"])
+            # data = {"message": "It may not be clear\nBut fear not, I am here!"} # for testing
         elif data["mode"] == "gen-lyrics":
-            # data = ai.generate_lyrics(data["content"], data["genre"])
-            data = {"message": "To be or not to be that is the question\nViolence is the answer"} # for testing
+            data = ai.generate_lyrics(data["content"], data["genre"])
+            # data = {"message": "To be or not to be that is the question\nViolence is the answer"} # for testing
     except Exception as e:
         logging.debug(e)
         data ={"message": "An error occurred, please try again."}

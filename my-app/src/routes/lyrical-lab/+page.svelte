@@ -353,7 +353,7 @@
 
       if (res.ok){
         isLoading = false
-        editor2Content = msg.message
+        editor2Content = msg
       }
     } catch (err){
       isLoading = false

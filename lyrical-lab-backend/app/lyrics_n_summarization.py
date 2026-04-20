@@ -7,15 +7,16 @@ import pronouncing
 logging.basicConfig(level=logging.DEBUG)
 
 
-API_KEY = Path(__file__).parent / "secrets" / ".env"
+API_KEY = Path(__file__).parent / "secrets/.env"
 # API_KEY = 'thisismyapikeynowfornow'
 if not API_KEY.exists():
     logging.debug("API key not found")
     sys.exit()
 
+# print(f"that API key is {API_KEY.read_text().strip()}")
 class OpenRouterClient:
-    def __init__(self, model="meta-llama/llama-3-70b-instruct", app_title="Autodidex", referer="https://Autodidex.com"):
-        self.api_key = API_KEY
+    def __init__(self, model="openrouter/free", app_title="m-prosody", referer="https://Autodidex.com"):
+        self.api_key = API_KEY.read_text().strip()
         self.model = model
         self.url = "https://openrouter.ai/api/v1/chat/completions"
         self.headers = {
@@ -195,11 +196,14 @@ class StressedSyllableAnotator():
      
 if __name__ == "__main__":
     
-    lst = [
-        'I am connor',
-        'I am con'
+    # lst = [
+    #     'I am connor',
+    #     'I am con'
         
-    ]
+    # ]
 
-    stress_syllables = StressedSyllableAnotator(lst)
-    print(stress_syllables.analyze_flow_on_stressed_syllables())
+    # stress_syllables = StressedSyllableAnotator(lst)
+    # print(stress_syllables.analyze_flow_on_stressed_syllables())
+    oc = OpenRouterClient()
+    res = oc.generate_lyrics("one last time I need to be the one who takes you home", "pop")
+    print(res.encode('utf-8').decode('utf-8', errors='replace'))
