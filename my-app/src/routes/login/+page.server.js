@@ -27,6 +27,10 @@ export const actions = {
         });
 
         if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            if (errorData.detail === 'Account is blocked') {
+                throw redirect(303, '/blocked');
+            }
             return fail(400, { message: 'Login failed' });
         }
 

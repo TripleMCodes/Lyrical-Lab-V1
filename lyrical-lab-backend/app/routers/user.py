@@ -129,12 +129,16 @@ def get_recent_songs(
 @router.get("/{id}", response_model=UserOut)
 def get_user(id:int, db: Session = Depends(get_db)):
 
-    user = db.query(models.Users).filter(models.Users.id == id).first()
+    user = db.query(models.Users).filter(models.Users.uid == id).first()
 
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with id: {id} not found")
     
     return user
+
+@router.get("/me", response_model=UserOut)
+def get_current_user(current_user: models.Users = Depends(oauth2.get_current_user)):
+    return current_user
 
 
 

@@ -26,6 +26,9 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session =
     if not utils.verify(user_credentials.password, user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f'Invalid credentials')
     
+    if user.blocked:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f'Account is blocked')
+    
     #create a token
     access_token = oauth2.create_access_token(data = {'uid': int(user.uid)})
     refresh_token = oauth2.create_refresh_token({"uid": int(user.uid)})
