@@ -18,8 +18,8 @@ router = APIRouter(
 #, response_model=UserOut
 #UserCreate
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
-def create_user(user: dict , db: Session = Depends(get_db)):
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=UserOut)
+def create_user(user: UserCreate , db: Session = Depends(get_db)):
 
     #hash password
     hashed_password = utils.hash(user.password)

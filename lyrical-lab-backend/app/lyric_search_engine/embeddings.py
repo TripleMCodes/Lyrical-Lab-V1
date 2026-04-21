@@ -17,6 +17,7 @@ class EmbeddingProvider:
 
 
 class SentenceTransformerProvider(EmbeddingProvider):
+    pass
 
     _model = None  # shared singleton
     _model_lock = Lock()
