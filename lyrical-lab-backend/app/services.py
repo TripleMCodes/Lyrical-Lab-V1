@@ -3,14 +3,23 @@ from typing import List
 from sqlalchemy.orm import Session
 import hashlib
 
-# from lyric_search_engine.models import LyricDoc
+
 from app.lyric_search_engine.models import LyricDoc
-# from lyric_search_engine.engine import LLSearchEngine, FieldWeights
 from app.lyric_search_engine.engine import LLSearchEngine, FieldWeights
-# from lyric_search_engine.storage import SQLiteFeedbackStore
+
 from app.lyric_search_engine.storage import SQLiteFeedbackStore
+from app.lyric_search_engine.embeddings import get_embedding_provider
 
 from app import models
+
+
+def initialize_embeddings():
+    """
+    Explicitly initialize the embedding provider at app startup.
+    This preloads the model into memory during startup instead of blocking
+    the first search request. Call this in your FastAPI startup event.
+    """
+    get_embedding_provider()
 
 
 def build_lyric_docs(db: Session, user_id: int) -> List[LyricDoc]:

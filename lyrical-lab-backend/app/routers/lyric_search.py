@@ -10,16 +10,7 @@ router = APIRouter(
 )
 
 
-# I am getting this error in the frontend:
-# :8000/api/lyrics-search/?q=city&top_k=10:1  Failed to load resource: the server responded with a status of 404 (Not Found)
-# lyric_tools.js:49 Search error: Error: Not Found
-#     at searchLyrics (lyric_tools.js:46:19)
-#     at async Module.track_reactivity_loss (async.js:150:14)
-#     at async HTMLButtonElement.performSearch [as __click] (Search.svelte:21:21)
-# searchLyrics @ lyric_tools.js:49
-# and this at the server:
-#  127.0.0.1:65083 - "OPTIONS /api/lyrics-search/?q=city&top_k=10 HTTP/1.1" 200 OK
-# INFO:     127.0.0.1:55546 - "GET /api/lyrics-search/?q=city&top_k=10 HTTP/1.1" 404 Not Found
+
 
 
 @router.get("/", status_code=status.HTTP_200_OK)

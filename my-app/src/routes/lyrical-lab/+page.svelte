@@ -26,6 +26,33 @@
     console.log('the value of song is', song);
 });
 
+  // Fetch remaining requests on component mount
+  async function fetchRequestsRemaining() {
+    try {
+      const res = await fetch(
+        "http://localhost:8000/api/lyric-tools/api-requests-remaining",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        requestsRemaining = data.requests_remaining;
+        maxRequests = data.max_requests_per_day;
+      }
+    } catch (err) {
+      console.log("Error fetching requests remaining:", err);
+    }
+  }
+
+  // Call on mount
+  fetchRequestsRemaining();
+
+
   let words = $state(0);
   let chars = $state(0);
   let editorContent = $state("");
@@ -49,6 +76,9 @@
   let isLoading = $state(false)
 
   let selectedText = $state("")
+  
+  let requestsRemaining = $state(5)
+  let maxRequests = $state(5)
 
   let showNotification = $state(false);
   let notificationMessage = $state("");
@@ -299,6 +329,14 @@
     console.log(selectedGenre)
     console.log(selectedFos)
 
+    // Check if user has requests remaining
+    if (requestsRemaining <= 0) {
+      notificationMessage = "You have reached your daily limit of 5 requests. Please try again tomorrow.";
+      notificationType = "error";
+      showNotification = true;
+      return
+    }
+
     let data = {}
 
     if (!genInput){
@@ -349,12 +387,24 @@
           body: JSON.stringify(data)
         }
       );
+      
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        isLoading = false
+        notificationMessage = errorData.detail || "An error occurred";
+        notificationType = "error";
+        showNotification = true;
+        return;
+      }
+      
       const msg = await res.json()
 
-      if (res.ok){
-        isLoading = false
-        editor2Content = msg
-      }
+      isLoading = false
+      editor2Content = msg
+      
+      // Update remaining requests
+      requestsRemaining = Math.max(0, requestsRemaining - 1);
+      
     } catch (err){
       isLoading = false
        notificationMessage = err.message;
@@ -417,6 +467,11 @@
   <div>
     <label for="chars">Characters: </label>
     <span>{chars}</span>
+  </div>
+
+  <div>
+    <label for="requests">AI Requests Left: </label>
+    <span class={requestsRemaining === 0 ? 'no-requests' : ''}>{requestsRemaining}/{maxRequests}</span>
   </div>
 </section>
 
@@ -484,6 +539,13 @@
   text-shadow:
     0 0 6px rgba(199, 125, 255, 0.45),
     0 0 14px rgba(199, 125, 255, 0.25);
+}
+
+.word-counter span.no-requests {
+  color: #ff6b6b;
+  text-shadow:
+    0 0 6px rgba(255, 107, 107, 0.45),
+    0 0 14px rgba(255, 107, 107, 0.25);
 }
 
 /* Optional emphasis when typing */

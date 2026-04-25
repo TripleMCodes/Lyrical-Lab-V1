@@ -13,7 +13,7 @@ from .preprocess import normalize
 from .storage import SQLiteFeedbackStore
 from .stopwords import DEFAULT_STOPWORDS
 from .fields import doc_fields
-from .embeddings import EmbeddingProvider, SentenceTransformerProvider
+from .embeddings import EmbeddingProvider, get_embedding_provider
 from .vector_index import FaissIndex
 
 
@@ -55,7 +55,7 @@ class LLSearchEngine:
         self.feedback_store = feedback_store
         self.field_weights = field_weights or FieldWeights()
 
-        self.embedding_provider = embedding_provider or SentenceTransformerProvider()
+        self.embedding_provider = embedding_provider or get_embedding_provider()
         self.hybrid_weights = hybrid_weights or HybridWeights()
         self.semantic_top_k = semantic_top_k
 
