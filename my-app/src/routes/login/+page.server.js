@@ -42,7 +42,7 @@ export const actions = {
             secure: !dev,
             sameSite: 'lax',
             path: '/',
-            maxAge: 60 * 15
+            maxAge: 60 * 30
             });
 
        

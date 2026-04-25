@@ -90,6 +90,7 @@
     showNotification = true;
   }
 
+
   async function handleSave() {
 
     
@@ -400,6 +401,7 @@
       const msg = await res.json()
 
       isLoading = false
+      console.log(msg)
       editor2Content = msg
       
       // Update remaining requests
@@ -443,7 +445,25 @@
     artist = draft.song_artist ?? '';
   }
 
+
+  //debouncer
+  function debounce<T extends (...args: any[]) => any>(
+    func: T,
+    delay: number
+  ): (...args: Parameters<T>) => void {
+    let timeout: ReturnType<typeof setTimeout>;
+    return function (...args: Parameters<T>) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  }
    
+  const dhandleSave = debounce(handleSave, 100);
+  const dgenerate = debounce(generate, 100);
+  const dfetchWordsWrapper = debounce(fetchWordsWrapper, 100);
+  const dhandleTextSelectionWrapper = debounce(handleTextSelectionWrapper, 100);
 </script>
 
 
@@ -452,7 +472,7 @@
 <WritingTimer idleSeconds={10} />
 <section  class="ll-container" >
 
-  <Controls onSave={handleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={handleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={generate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>
+  <Controls onSave={dhandleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={dfetchWordsWrapper} checkFlow={handleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={dgenerate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>
 
   <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction} saveDraft={autoSave}/>
 
