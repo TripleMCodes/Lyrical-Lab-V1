@@ -143,7 +143,7 @@
 <!-- onscroll={() => syncScroll(editorB, editorA)} -->
 
     <div class="textarea-wrapper" >
-      <textarea
+      <!-- <textarea
         class="editor"
         bind:value={editor2}
         bind:this={editorB}
@@ -153,7 +153,7 @@
           const overlay = document.querySelector('.html-overlay-bottom');
           if (overlay) overlay.scrollTop = e.target.scrollTop;
         }}
-      ></textarea>
+      ></textarea> -->
 
 
     {#if loading}

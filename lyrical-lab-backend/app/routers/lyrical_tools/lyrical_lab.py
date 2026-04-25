@@ -314,19 +314,50 @@ def find_rhymes(
     data: dict
 ):
     word = data["word"]
-    rhyme_list = []
+    word_rhymes_list = []
+    phrasal_rhymes_list = []
     
     try:
         results = find_rhymes_api(word)
-        for rime in results:
-            r, s = rime[0], rime[1]
-            word_rime = f"{r}" #redundant
-            temp_dict = {"word": word_rime, "score": s}
-            rhyme_list.append(temp_dict)
-        return {"message": rhyme_list}
+        
+        # Extract word rhymes from dictionary
+        if "word_rhymes" in results and isinstance(results["word_rhymes"], dict):
+            for input_word, rhymes in results["word_rhymes"].items():
+                for rhyme_word, score in rhymes:
+                    word_rhymes_list.append({
+                        "word": rhyme_word,
+                        "score": score,
+                        "type": "word",
+                        "input_word": input_word
+                    })
+        
+        # Extract phrasal rhymes
+        if "phrasal_rhymes" in results and isinstance(results["phrasal_rhymes"], list):
+            for phrasal_rhyme, score in results["phrasal_rhymes"]:
+                phrasal_rhymes_list.append({
+                    "phrase": phrasal_rhyme,
+                    "score": score,
+                    "type": "phrasal"
+                })
+        
+        # Sort by score (highest first)
+        word_rhymes_list.sort(key=lambda x: x["score"], reverse=True)
+        phrasal_rhymes_list.sort(key=lambda x: x["score"], reverse=True)
+        
+        # Combine results
+        combined_results = {
+            "word_rhymes": word_rhymes_list,
+            "phrasal_rhymes": phrasal_rhymes_list,
+            "total_word_rhymes": len(word_rhymes_list),
+            "total_phrasal_rhymes": len(phrasal_rhymes_list)
+        }
+        
+        logging.debug(f"Word rhymes found: {len(word_rhymes_list)}, Phrasal rhymes found: {len(phrasal_rhymes_list)}")
+        return combined_results
+        
     except Exception as e:
         logging.debug(e)
-        return {'message': "Error - Please check word and ensure it is not multi-phrasal."}
+        return {'error': "Error - Please check word and ensure it is not multi-phrasal."}
 
 
 @router.post('/check-flow')

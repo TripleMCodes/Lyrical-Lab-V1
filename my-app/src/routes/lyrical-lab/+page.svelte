@@ -207,9 +207,36 @@
     console.log("Fetch ", wordSelected)
     if (wordSelected === "rhyme"){
       const data = await fetchRhymes(wordSearched)
-      // console.log('the data is ', data)
-      // console.log('the data is ', data.message)
-      wordList = data.message
+      console.log('Rhyme data:', data)
+      
+      // Handle new rhyme response format with word_rhymes and phrasal_rhymes
+      let combinedList = []
+      
+      if (data.word_rhymes) {
+        combinedList.push(...data.word_rhymes.map(item => ({
+          word: item.word,
+          score: item.score,
+          type: 'word',
+          input_word: item.input_word
+        })))
+      }
+      
+      if (data.phrasal_rhymes) {
+        combinedList.push(...data.phrasal_rhymes.map(item => ({
+          word: item.phrase,
+          score: item.score,
+          type: 'phrasal'
+        })))
+      }
+      
+      wordList = combinedList
+      
+      if (wordList.length === 0){
+        notificationMessage = "No rhymes found";
+        notificationType = "error";
+        showNotification = true;
+        isLoading = false
+      }
     }else{
       const lst = await fetchWords(wordSelected, wordSearched)
       wordList = lst
@@ -225,7 +252,10 @@
     let textList = ""
     isLoading = false
     for (let index = 0; index < wordList.length; index++) {
-      textList += wordList[index]['word'] + '\n'
+      const item = wordList[index]
+      const score = item.score ? ` (${item.score.toFixed(2)})` : ''
+      const typeLabel = item.type && item.type === 'phrasal' ? ' [phrasal]' : ''
+      textList += item['word'] + score + typeLabel + '\n'
     }
     editor2Content = textList
   }
