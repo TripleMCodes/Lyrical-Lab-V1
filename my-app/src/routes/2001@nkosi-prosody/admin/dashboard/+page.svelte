@@ -10,7 +10,7 @@
     // let users = $derived.by(() => data.users || [])    let songs = $derived.by(() => data.songs || [])    // console.log(users)
 
     // export let data;
-    console.log(data)
+    // console.log(data)
     // let users = $state()
     // const { } = data;
 </script>

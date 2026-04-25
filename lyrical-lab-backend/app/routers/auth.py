@@ -168,6 +168,47 @@ def admin_list_songs(
     # return [schemas.AdminLyricOut(**dict(row)) for row in lyrics]
     return lyrics
 
+@router.get("/api/admin/messages")
+def admin_get_messages(
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+    page: int = Query(1, ge=1),
+    size: int = Query(10, ge=1, le=100),
+):
+    from sqlalchemy import func
+    
+    total = db.query(func.count(models.Message.id)).scalar() or 0
+    
+    messages = db.query(models.Message).order_by(
+        models.Message.date_created.desc()
+    ).offset((page - 1) * size).limit(size).all()
+    
+    pages = (total + size - 1) // size if size else 1
+    
+    return {
+        "items": messages,
+        "total": total,
+        "page": page,
+        "size": size,
+        "pages": pages,
+        "next_page": page + 1 if page < pages else None,
+        "prev_page": page - 1 if page > 1 else None,
+    }
+
+@router.delete("/api/admin/messages/{message_id}")
+def admin_delete_message(
+    message_id: int,
+    current_admin: models.Admin = Depends(oauth2.get_current_admin),
+    db: Session = Depends(get_db),
+):
+    message = db.query(models.Message).filter(models.Message.id == message_id).first()
+    if not message:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Message not found.')
+    
+    db.delete(message)
+    db.commit()
+    return {"message": "Message deleted successfully."}
+
 @router.delete('/api/admin/songs/{song_id}')
 def admin_delete_song(
     song_id: int,
