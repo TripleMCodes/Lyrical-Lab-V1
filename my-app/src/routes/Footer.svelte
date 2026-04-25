@@ -6,9 +6,9 @@
     <p>&copy; {date} Lyrical Lab</p>
 
     <div class="ft-container">
-        <a href="#">About</a>|
-        <a href="#">Contact</a>|
-        <a href="#">Privacy</a>
+        <a href="/about">About</a>|
+        <a href="/contact">Contact</a>|
+        <a href="/privacy">Privacy</a>
     </div>
 </footer>
 
