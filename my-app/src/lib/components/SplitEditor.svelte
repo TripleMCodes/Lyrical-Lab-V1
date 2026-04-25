@@ -140,16 +140,20 @@
     onkeydown={handleDividerKeydown}
   ></div>
 
+<!-- onscroll={() => syncScroll(editorB, editorA)} -->
 
-    <div class="textarea-wrapper" onscroll={() => syncScroll(editorB, editorA)}>
-      <!-- <textarea
+    <div class="textarea-wrapper" >
+      <textarea
         class="editor"
         bind:value={editor2}
         bind:this={editorB}
-        onscroll={() => syncScroll(editorB, editorA)}
         spellcheck="false"
         readonly
-      ></textarea> -->
+        onscroll={(e) => {
+          const overlay = document.querySelector('.html-overlay-bottom');
+          if (overlay) overlay.scrollTop = e.target.scrollTop;
+        }}
+      ></textarea>
 
 
     {#if loading}
@@ -158,7 +162,7 @@
             <button onclick={cancelRes}>Cancel</button>
         </div>
     {:else if loading === false}  
-        <div class="html-overlay editor"  
+        <div class="html-overlay html-overlay-bottom editor"  
             bind:this={editorB}>
             {@html editor2}
         </div>
@@ -209,10 +213,13 @@
         width: 100%;
         height: 100%;
         min-height: 0;
+        overflow: hidden;
     }
     
     .textarea-wrapper textarea{
         color: transparent;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
 
@@ -225,6 +232,7 @@
         padding: 1rem;
         border-radius: 10px;
         overflow-y: auto;
+        overflow-x: hidden;
         pointer-events: none;
         color: #e6ccff;
         font-size: 1.5rem;
