@@ -6,6 +6,7 @@
     import Search from "$lib/components/Search.svelte";
     import Notification from "$lib/components/Notification.svelte";
     import Chart from "$lib/components/Chart.svelte"
+    import {debounce} from "$lib/api/debounce"
     import type { PageData } from "../$types";
     import { goto } from '$app/navigation'
     import { editingSong } from "$lib/stores/editingSong";
@@ -166,23 +167,26 @@
 
     async function findRhyme(){
         console.log("rime button click!")
-        rime_list = []
-        isLoading = true
-        const lst = await fetchRhymes(rhyme)
-        console.log("the rhyme list is", lst)
-        rime_list = lst.message
-        isLoading = false
+        rime_list = [];
+        isLoading = true;
+        const lst = await fetchRhymes(rhyme);
+        console.log("the rhyme list is", lst);
+        rime_list = lst.message;
+        isLoading = false;
     }
-    $inspect(recentSongs)
+    $inspect(recentSongs);
+
+    const dfindRhyme = debounce(findRhyme, 100);
+    const dopenSongFromSearch = debounce(openSongFromSearch, 100)
 </script>
 
 <section class="container">
     <div class="main scrollable">
-        <Search bind:display={searchDisplay} bind:results={searchResults} openSong={openSongFromSearch}/>
+        <Search bind:display={searchDisplay} bind:results={searchResults} openSong={dopenSongFromSearch}/>
 
         <Scratchpad viewNote={viewNote} makeNewNote={createNote} delNote={delNote} saveNote={saveNote} bind:notes={notes} bind:note={note} />
 
-        <RimeSearch findRhyme={findRhyme} bind:rhyme={rhyme} bind:rime_list={rime_list} bind:isLoading={isLoading} />
+        <RimeSearch findRhyme={dfindRhyme} bind:rhyme={rhyme} bind:rime_list={rime_list} bind:isLoading={isLoading} />
     </div>
 
     <div class="main scrollable">

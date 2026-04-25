@@ -6,6 +6,7 @@
     import Notification from '../../lib/components/Notification.svelte'
     import WritingTimer from "../../lib/components/WritingTimer.svelte";
     import {fetchWords} from '../../lib/api/client'
+    import {debounce} from "$lib/api/debounce"
     import {fetchRhymes} from '$lib/api/lyric_tools'
     import { get } from 'svelte/store';
     import type { PageData } from "../$types";
@@ -447,18 +448,18 @@
 
 
   //debouncer
-  function debounce<T extends (...args: any[]) => any>(
-    func: T,
-    delay: number
-  ): (...args: Parameters<T>) => void {
-    let timeout: ReturnType<typeof setTimeout>;
-    return function (...args: Parameters<T>) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        func(...args);
-      }, delay);
-    };
-  }
+  // function debounce<T extends (...args: any[]) => any>(
+  //   func: T,
+  //   delay: number
+  // ): (...args: Parameters<T>) => void {
+  //   let timeout: ReturnType<typeof setTimeout>;
+  //   return function (...args: Parameters<T>) {
+  //     clearTimeout(timeout);
+  //     timeout = setTimeout(() => {
+  //       func(...args);
+  //     }, delay);
+  //   };
+  // }
    
   const dhandleSave = debounce(handleSave, 100);
   const dgenerate = debounce(generate, 100);
@@ -472,7 +473,7 @@
 <WritingTimer idleSeconds={10} />
 <section  class="ll-container" >
 
-  <Controls onSave={dhandleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={dfetchWordsWrapper} checkFlow={handleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={dgenerate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>
+  <Controls onSave={dhandleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={dfetchWordsWrapper} checkFlow={dhandleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={dgenerate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>
 
   <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction} saveDraft={autoSave}/>
 
