@@ -1,6 +1,7 @@
 <script>
   import Tooltip from "./Tooltip.svelte";
   import { searchLyrics } from "$lib/api/lyric_tools";
+  import {debounce} from "$lib/api/debounce"
 
   let {display = $bindable(), results = $bindable(), openSong} = $props()
 
@@ -43,6 +44,7 @@
     error = "";
   }
 
+  const dperformSearch = debounce(performSearch, 100)
 </script>
 
 <section class="song-search">
@@ -56,7 +58,7 @@
       onkeypress={handleKeyPress}
       disabled={isLoading}
     />
-    <button class="search-btn" type="button" onclick={performSearch} disabled={isLoading || !searchQuery.trim()}>
+    <button class="search-btn" type="button" onclick={dperformSearch} disabled={isLoading || !searchQuery.trim()}>
       <Tooltip text="Search for song">
         {#if isLoading}
           <div class="spinner"></div>
