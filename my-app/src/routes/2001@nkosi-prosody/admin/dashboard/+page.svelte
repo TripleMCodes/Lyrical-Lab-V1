@@ -22,6 +22,7 @@
             <p>Manage admin settings and user controls in one place.</p>
         </div>
         <a class="login-link" href="/2001@nkosi-prosody/admin">Back to login</a>
+        <a href="/2001@nkosi-prosody/admin/dashboard/contacts">View Messages</a>
     </div>
 
     <AdminSettings />

@@ -122,6 +122,10 @@
                         <strong>Message:</strong>
                         <p>{message.message}</p>
                     </div>
+                {:else}
+                    <div class="empty-state">
+                        <p>No messages found</p>
+                    </div>
                 {/if}
             {/each}
         </div>
@@ -167,6 +171,7 @@
                 Total: {totalMessages} messages | Showing {(currentPage - 1) * pageSize + 1}-{Math.min(currentPage * pageSize, totalMessages)}
             </div>
         </div>
+        
     {/if}
 </div>
 
