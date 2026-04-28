@@ -12,12 +12,12 @@
 
 		try {
 			// Replace with your actual API endpoint
-			const res = await fetch('/api/contact', {
+			const res = await fetch('http://localhost:8000/api/contact', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ email, subject, message })
+				body: JSON.stringify({ "email":email, "subject":subject, "message":message })
 			});
 
 			if (!res.ok) throw new Error('Failed to send message');
