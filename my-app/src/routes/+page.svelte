@@ -8,6 +8,7 @@
       let selected = $state('')
       let word = $state('')
       let wordList = $state([])
+      let phraseList = $state([])
       let notify = $state('No words searhed yet')
 
       async function fetchWordsWrapper(){
@@ -16,13 +17,16 @@
                   const data = await fetchRhymes(word)
                   console.log('the data is ', data)
                   console.log('the data is ', data.message)
-                  wordList = data.message
-                  word = ''
-                  isLoading = false
+                  wordList = data.word_rhymes;
+                  phraseList = data.phrasal_rhymes;
+                  console.log('the phrasal rhymes ', data.phrasal_rhymes);
+                  // wordList.push(...data.phrasal_rhymes)
+                  word = '';
+                  isLoading = false;
             }
             else{
-                  const lst = await fetchWords(selected, word)
-                  wordList = lst
+                  const lst = await fetchWords(selected, word);
+                  wordList = lst;
                   // console.log($state.snapshot(wordList))
                   if (wordList.length === 0){
                         notify = "No results found"
@@ -54,18 +58,32 @@
       </div>
 
       {#if isLoading}
-	      <SigilSpinner text="Consulting the lexicon…" />
-      {/if}
+            <SigilSpinner text="Consulting the lexicon…" />
+      {:else}
+
       {#if wordList.length > 0}
             <ul id="results-list">
+                  {#if phraseList.length > 0}
+                        {#each phraseList as lst (lst.phrase)}
+                              <li>{lst.phrase}</li>
+                        {/each}
+                  {/if}
                   {#each wordList as lst (lst.word)}
                         <li>{lst.word}</li>
                   {/each}
             </ul>
-      {:else if isLoading === false}
+      {/if}
+
+     
+
+      {#if wordList.length === 0 && phraseList.length === 0}
             <div class="notify">
                   <p>{notify}</p>
             </div>
       {/if}
+
+      {/if}
+
+      
 
 </section>

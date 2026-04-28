@@ -8,7 +8,7 @@ from app.models import Base, Users
 from .routers import auth, user
 from .routers.lyrical_tools import lyrical_lab
 from .routers import lyric_search
-from app.services import initialize_embeddings
+# from app.services import initialize_embeddings
 # from app.lyrics_n_summarization import OpenRouterClient
 
 app = FastAPI()
@@ -16,10 +16,10 @@ app = FastAPI()
 # Base.metadata.create_all(bind=engine)
 
 
-@app.on_event("startup")
-def on_startup():
-    """Initialize embeddings and other resources on app startup."""
-    initialize_embeddings()
+# @app.on_event("startup")
+# def on_startup():
+#     """Initialize embeddings and other resources on app startup."""
+#     initialize_embeddings()
 
 
 app.add_middleware(
@@ -33,7 +33,7 @@ app.add_middleware(
 app.include_router(user.router)
 app.include_router(auth.router) 
 app.include_router(lyrical_lab.router)
-app.include_router(lyric_search.router)
+# app.include_router(lyric_search.router)
 
 
 @app.get("/")

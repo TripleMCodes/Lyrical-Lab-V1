@@ -17,7 +17,7 @@ export const load:PageLoad = async () => {
 	
 	return {
 		logo: {
-			title: 'Lyrical Lab',
+			title: 'M-Prosody',
 			tagline: 'Unleash your words, craft your flow 🎤'
 		},
 		urls: {

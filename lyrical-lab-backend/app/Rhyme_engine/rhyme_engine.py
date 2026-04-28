@@ -439,14 +439,14 @@ def find_rhymes_api(
     *,
     db_path: Optional[Path] = None,
     g2p_cache_path: Optional[Path] = None,
-    top_n: int = 30,
+    top_n: int = 100,
     threshold: float = 0.8,
     strict_length: bool = False,
     max_syll_diff_loose: int = 2,
     max_syllables: Optional[int] = None,
     use_g2p: bool = True,
-    top_phrases: int = 50,
-    min_phrase_score: float = 0.8
+    top_phrases: int = 100,
+    min_phrase_score: float = 0.9
 ) -> Dict[str, Any]:
 
     default_db = Path(__file__).parent / "stress_dictionary.json"

@@ -80,37 +80,118 @@
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(128, 0, 255, 0.4); /* soft neon glow */
   /* max-width: 400px; */
-  max-height: 400px;
+  max-height: 200px;
   overflow-y: scroll;
   overflow-x: hidden;
   
 }
 
-/* Inner UL (if you want it nested) */
+/* Container */
+#results-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  background: linear-gradient(145deg, #140824, #1f0d36);
+  border-radius: 14px;
+
+  /* softer, layered glow */
+  box-shadow:
+    0 0 12px rgba(128, 0, 255, 0.25),
+    inset 0 0 10px rgba(128, 0, 255, 0.1);
+
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scroll-behavior: smooth;
+}
+
+/* Optional nested UL reset */
 #results-list ul {
   padding: 0;
   margin: 0;
 }
 
-/* Each result item */
-#results-list li, .notify {
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid rgba(128, 0, 255, 0.2);
-  color: #d8b3ff; /* light neon purple */
+/* Items */
+#results-list li,
+.notify {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(128, 0, 255, 0.15);
+  color: #e2c6ff;
+
   font-family: 'Fira Mono', monospace;
-  font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+
+  transition: all 0.2s ease;
   cursor: pointer;
+  position: relative;
 }
 
-/* Hover glow effect */
-#results-list li:hover, .notify {
-  background-color: rgba(128, 0, 255, 0.2);
-  text-shadow: 0 0 10px #d8b3ff;
-  transform: translateX(5px);
+/* Subtle left glow bar on hover */
+#results-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0px;
+  background: linear-gradient(to bottom, #a855f7, #7c3aed);
+  transition: width 0.2s ease;
+  border-radius: 0 4px 4px 0;
 }
 
-/* Last item: no border */
+/* Hover state */
+#results-list li:hover {
+  background: rgba(128, 0, 255, 0.18);
+  text-shadow: 0 0 6px rgba(216, 179, 255, 0.6);
+  transform: translateX(6px);
+}
+
+#results-list li:hover::before {
+  width: 4px;
+}
+
+/* Last item cleanup */
 #results-list li:last-child {
   border-bottom: none;
+}
+
+/*  Notification styling (slightly distinct) */
+.notify {
+  text-align: center;
+  color: #c084fc;
+  font-style: italic;
+  background: rgba(128, 0, 255, 0.08);
+  cursor: default;
+}
+
+.notify:hover {
+  transform: none;
+  text-shadow: none;
+}
+
+/*  Scrollbar (WebKit: Chrome, Edge, etc.) */
+#results-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+#results-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#results-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c3aed, #a855f7);
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(168, 85, 247, 0.6);
+}
+
+#results-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #9333ea, #c084fc);
+}
+
+/*  Firefox scrollbar */
+#results-list {
+  scrollbar-width: thin;
+  scrollbar-color: #a855f7 transparent;
 }
