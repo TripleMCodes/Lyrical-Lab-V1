@@ -41,6 +41,19 @@
 <section class="intro">
       <h2>Welcome to M-Prosody</h2>
       <p>Experiment with rhymes, synonyms, homophones, and related words. Build your lyrics, check your syllables, and save your creations in your personal notebook.</p>
+      <h3>A Brief About The Rhyme Engine</h3>
+
+      <p>
+      M-Prosody's rhyme engine doesn’t look at how words are spelled—it listens to how they sound.
+      </p>
+
+      <p>
+      It matches rhythm, stress, and vowel flow to find rhymes that actually feel right, then ranks them by strength.
+      </p>
+
+      <p>
+      The engine is still evolving. For now, it understands <strong>sound</strong>, not <strong>meaning</strong>.
+      </p>
       <a href="/lyrical-lab" class="cta-btn">Start Writing</a>
 </section>
 

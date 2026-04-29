@@ -50,6 +50,9 @@
 					<a href={`${resolve('/lyrical-lab/songs-library')}?page=1&size=4`}>Songs</a>
 				</li>
 				{/if}
+				<li aria-current={page.url.pathname === '/public-rhyme-engine'}>
+					<a href={`${resolve('/public-rhyme-engine')}`}>Rhyme Api</a>
+				</li>
 
 
 			</ul>
