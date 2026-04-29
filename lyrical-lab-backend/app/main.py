@@ -10,6 +10,7 @@ from app.models import Base, Users, ContactMessages
 from .routers import auth, user
 from .routers.lyrical_tools import lyrical_lab
 from .routers import lyric_search
+from app.routers.lyrical_tools.lyrical_lab import find_rhymes
 # from app.services import initialize_embeddings
 # from app.lyrics_n_summarization import OpenRouterClient
 
@@ -40,7 +41,7 @@ app.include_router(lyrical_lab.router)
 
 @app.get("/")
 async def index():
-    return {"message": "Hello world!"}
+    return {"message": "Hello world! This is M-Prosody"}
 
 @app.post("/api/contact")
 async def get_users(msg:dict, db: Session = Depends(get_db)):
@@ -55,3 +56,8 @@ async def get_users(msg:dict, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Message received!"}
+
+@app.post("/api/public/get-rhymes")
+async def find_rhymes_public(data: dict):
+    res = find_rhymes(data)
+    return res

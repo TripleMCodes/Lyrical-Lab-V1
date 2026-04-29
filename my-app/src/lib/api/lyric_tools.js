@@ -1,7 +1,7 @@
 import { get_url } from "$lib/url_vars/urls_vars";
 
 export async function fetchRhymes(word) {
-    let url = `${get_url()}/api/lyric-tools/find-rhymes`;
+    let url = `${get_url()}/api/public/get-rhymes`;
 
     console.log("rhyme query ", word)
     try {

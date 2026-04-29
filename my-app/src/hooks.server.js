@@ -1,5 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import { dev } from '$app/environment';
+import {get_url} from '$lib/url_vars/urls_vars'
 
 export async function handle({ event, resolve }) {
   const accessToken = event.cookies.get('access_token');
@@ -15,7 +16,7 @@ export async function handle({ event, resolve }) {
 
   //if access token expired
   if (response.status === 401 && refreshToken) {
-    const refreshRes = await fetch('http://localhost:8000/api/refresh', {
+    const refreshRes = await fetch(`${get_url()}/api/refresh`, {
       method: 'POST',
       headers: {
         Cookie: `refresh_token=${refreshToken}`

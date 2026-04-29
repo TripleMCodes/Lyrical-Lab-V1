@@ -311,7 +311,8 @@ def upload_song(
 
 @router.post('/find-rhymes')
 def find_rhymes(
-    data: dict
+    data: dict,
+    current_user: models.Users = Depends(oauth2.get_current_user)
 ):
     word = data["word"]
     word_rhymes_list = []
