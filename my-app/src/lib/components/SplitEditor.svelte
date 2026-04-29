@@ -2,6 +2,7 @@
 
     let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable(), selectedText = $bindable() , onSelected, loading = $bindable(), cancelRes, saveDraft} = $props()
     import SigilSpinner from '../../lib/components/SigilSpinner.svelte';
+    import {get_url} from '$lib/url_vars/urls_vars'
     // let editor2 = $state("");
     
    
@@ -25,7 +26,7 @@
         debounceTimer = setTimeout(async () => {
             try{
                 const res = await fetch(
-                    "http://localhost:8000/api/lyric-tools/syllabe-counter",
+                    `${get_url()}/api/lyric-tools/syllabe-counter`,
                     {
                         method: "POST",
                         credentials: "include", 

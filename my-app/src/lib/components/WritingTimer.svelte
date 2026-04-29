@@ -1,9 +1,11 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
+  import {get_url} from "$lib/url_vars/urls_vars"
 
   export let idleSeconds = 10; // stop counting after this much inactivity
   export let float = true;     // float bottom-right
   export let compact = true;   // start collapsed
+
 
   // Optional: if you want to track only a specific element, pass it in
   // Example usage: <WritingTimer bind:trackEl={textareaEl} />
@@ -111,7 +113,7 @@
       const headers: any = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const res = await fetch('http://localhost:8000/api/lyric-tools/save-writing-seconds', {
+      const res = await fetch(`${get_url()}/api/lyric-tools/save-writing-seconds`, {
         method: 'POST',
         credentials: 'include',
         headers:{

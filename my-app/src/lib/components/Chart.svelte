@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import Chart from "chart.js/auto";
+  import {get_url} from "$lib/url_vars/urls_vars"
 
   let canvas: HTMLCanvasElement;
   let chart: Chart | null = null;
@@ -11,7 +12,7 @@
   let days = 30;
 
   async function load() {
-    const res = await fetch(`http://localhost:8000/api/users/dashboard/writing-stats`, {
+    const res = await fetch(`${get_url()}/api/users/dashboard/writing-stats`, {
       credentials: "include"
     });
     if (!res.ok) throw new Error("Failed to load stats");
@@ -25,7 +26,7 @@
     const writingTime = data.map(d => d.writing_time);
     const sessions = data.map(d => d.sessions);
 
-    // destroy existing chart before recreating (avoids duplicates)
+    // destroy existing chart before recreating
     if (chart) chart.destroy();
 
     chart = new Chart(canvas, {
