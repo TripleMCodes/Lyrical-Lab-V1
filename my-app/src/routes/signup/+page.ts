@@ -1,7 +1,7 @@
 export const load = () => {
     return {
         logo: {
-            title: 'Lyrical Lab',
+            title: 'M-Prosody',
             tagline: 'Create an account and create an account of lyricism'
         },
         urls:{

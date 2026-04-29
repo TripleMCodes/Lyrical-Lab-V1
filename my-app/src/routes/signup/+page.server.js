@@ -1,4 +1,5 @@
 import { fail, json, redirect } from '@sveltejs/kit';
+import { get_url } from '$lib/url_vars/urls_vars.js';
 
 export const actions = {
     signup: async ({ request, fetch }) => {
@@ -19,7 +20,7 @@ export const actions = {
       return fail(400, { message: 'Passwords do not match' });
     }
 
-    const res = await fetch('http://localhost:8000/api/users', {
+    const res = await fetch(`${get_url()}/api/users`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ artist_name, age, password, email })
