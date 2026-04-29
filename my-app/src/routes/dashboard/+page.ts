@@ -1,4 +1,5 @@
 import type { PageLoad } from "../$types";
+import {get_url} from "$lib/url_vars/urls_vars"
 
 export const ssr = false;
 
@@ -19,27 +20,27 @@ export const load: PageLoad = async ({ fetch }) => {
 
     let notes_data: Array<Object> = []
     
-    const res = await fetch("http://localhost:8000/api/users/stats", {
+    const res = await fetch(`${get_url()}/api/users/stats`, {
         method: "GET",
         credentials: "include",
     });
 
-    const res2 = await fetch("http://localhost:8000/api/users/song-quantity", {
+    const res2 = await fetch(`${get_url()}/api/users/song-quantity`, {
         method: "GET",
         credentials: "include"
     });
 
-    const res3 = await fetch("http://localhost:8000/api/users/draft", {
+    const res3 = await fetch(`${get_url()}/api/users/draft`, {
         method: "GET",
         credentials: "include"
     });
 
-    const res4 = await fetch("http://localhost:8000/api/users/recent-songs", {
+    const res4 = await fetch(`${get_url()}/api/users/recent-songs`, {
         method: "GET",
         credentials: "include"
     });
 
-    const res5 = await fetch("http://localhost:8000/api/lyric-tools/get-notes", {
+    const res5 = await fetch(`${get_url()}/api/lyric-tools/get-notes`, {
         method: "GET",
         credentials: "include"
     });

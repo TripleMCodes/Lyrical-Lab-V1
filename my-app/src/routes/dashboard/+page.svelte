@@ -11,6 +11,7 @@
     import { goto } from '$app/navigation'
     import { editingSong } from "$lib/stores/editingSong";
     import {fetchRhymes} from '$lib/api/lyric_tools'
+    import {get_url} from '$lib/url_vars/urls_vars'
 //   import SigilSpinner from '$lib/components/SigilSpinner.svelte';
 
 
@@ -63,7 +64,7 @@
         // Fetch the full song data from the backend using the doc_id
         try {
             const songId = parseInt(song.doc_id);
-            const res = await fetch(`http://localhost:8000/api/lyric-tools/user-songs/${songId}`, {
+            const res = await fetch(`${get_url()}/api/lyric-tools/user-songs/${songId}`, {
                 method: "GET",
                 credentials: "include"
             });
@@ -90,7 +91,7 @@
     }
 
     async function updateSongsList() {
-        const res5 = await fetch("http://localhost:8000/api/lyric-tools/get-notes", {
+        const res5 = await fetch(`${get_url()}/api/lyric-tools/get-notes`, {
         method: "GET",
         credentials: "include"
     });
@@ -111,7 +112,7 @@
 
         try{
             const res = await fetch(
-                "http://localhost:8000/api/lyric-tools/save-note",
+                `${get_url()}/api/lyric-tools/save-note`,
                 {
                     method: 'POST', 
                     credentials: 'include',
@@ -140,7 +141,7 @@
         console.log(id)
         // id = Number(id)
         try{
-            const res = await fetch(`http://localhost:8000/api/lyric-tools/notes/${id}`,
+            const res = await fetch(`${get_url()}/api/lyric-tools/notes/${id}`,
                 {
                     method: 'DELETE',
                     credentials: 'include'
