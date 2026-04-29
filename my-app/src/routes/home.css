@@ -1,134 +1,134 @@
+/* =========================================
+   SEARCH SECTION & LAYOUT
+   ========================================= */
 .search-section {
-        display:flex;
-        justify-content:space-evenly;
-        align-items: space-evenly;
-        flex-direction: column;
-        max-width: 100%;
-        max-height: 100%;
-}
-
-.intro{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content:center;
-   
-}
-
-.intro p{
-    max-width: 40%;
-}
-
-.search-box input, 
-.search-box select {
-  padding: 0.5rem;
-  font-size: 1rem;
-  flex: 1 1 100%; /* full width on small screens */
-  border-radius: 5px;
-  border: none;
-  background-color: #443360;
-  color: #f5f5f5;
-}
-
-.search-box button, .intro a {
-  padding: 0.5rem 1rem;
-  background-color: #dcb6ff;
-  color: #2b1e3c;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-  flex: 1 1 auto;
-  text-decoration: none;
-}
-
-.search-box {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap; /* allows wrapping on small screens */
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center; 
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
 }
-
-.search-box button:hover {
-  background-color: #c29cff;
-}
-
 
 .intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   margin-bottom: 3rem;
-}
-
-.intro {
-  color: #dcb6ff;
-  margin-bottom: 1rem;
+  color: var(--color-theme-1, #c77dff);
 }
 
 .intro p {
+  max-width: 40%;
   color: #e0c8ff;
   margin-bottom: 1.5rem;
 }
 
-
-/* Container styling */
-#results-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-  background-color: #1a0a2b; /* very dark purple */
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(128, 0, 255, 0.4); /* soft neon glow */
-  /* max-width: 400px; */
-  max-height: 200px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  
+/* =========================================
+   SEARCH BOX & CONTROLS
+   ========================================= */
+.search-box {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  width: 100%;
+  max-width: 600px;
 }
 
-/* Container */
+.search-box input,
+.search-box select {
+  flex: 1 1 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: var(--font-body, sans-serif);
+  border-radius: 6px;
+  border: 1px solid rgba(199, 125, 255, 0.3);
+  background-color: hsl(260, 40%, 12%); /* Aligned with dark purple theme */
+  color: #f5f5f5;
+  transition: all 0.2s ease;
+}
+
+.search-box input:focus,
+.search-box select:focus {
+  outline: none;
+  border-color: #c77dff;
+  box-shadow: 0 0 12px rgba(199, 125, 255, 0.4);
+}
+
+.search-box button,
+.intro a {
+  flex: 1 1 auto;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  border: 1px solid rgba(199, 125, 255, 0.5);
+  background-color: rgba(199, 125, 255, 0.15);
+  color: #e2c2ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-box button:hover,
+.intro a:hover {
+  background-color: rgba(199, 125, 255, 0.3);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(199, 125, 255, 0.6);
+  border-color: #c77dff;
+}
+
+/* =========================================
+   RESULTS LIST & ITEMS
+   ========================================= */
 #results-list {
   list-style: none;
   padding: 0;
   margin: 1rem 0;
-  background: linear-gradient(145deg, #140824, #1f0d36);
-  border-radius: 14px;
-
-  /* softer, layered glow */
-  box-shadow:
-    0 0 12px rgba(128, 0, 255, 0.25),
-    inset 0 0 10px rgba(128, 0, 255, 0.1);
-
+  background: linear-gradient(145deg, hsl(260, 40%, 9%), hsl(270, 45%, 11%));
+  border-radius: 12px;
   max-height: 220px;
   overflow-y: auto;
   overflow-x: hidden;
-
   scroll-behavior: smooth;
+  width: 60%;
+  
+  /* Layered neon glow */
+  box-shadow:
+    0 0 15px rgba(128, 0, 255, 0.25),
+    inset 0 0 10px rgba(128, 0, 255, 0.1);
 }
 
 /* Optional nested UL reset */
 #results-list ul {
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
-/* Items */
 #results-list li,
 .notify {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(128, 0, 255, 0.15);
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(199, 125, 255, 0.15);
   color: #e2c6ff;
-
-  font-family: 'Fira Mono', monospace;
+  font-family: var(--font-mono, 'Fira Mono', monospace);
   font-size: 0.95rem;
   letter-spacing: 0.03em;
-
   transition: all 0.2s ease;
   cursor: pointer;
   position: relative;
 }
 
-/* Subtle left glow bar on hover */
+/* Remove border from last item */
+#results-list li:last-child {
+  border-bottom: none;
+}
+
+/* Subtle left glow bar for list items */
 #results-list li::before {
   content: "";
   position: absolute;
@@ -141,10 +141,9 @@
   border-radius: 0 4px 4px 0;
 }
 
-/* Hover state */
 #results-list li:hover {
-  background: rgba(128, 0, 255, 0.18);
-  text-shadow: 0 0 6px rgba(216, 179, 255, 0.6);
+  background: rgba(199, 125, 255, 0.12);
+  text-shadow: 0 0 8px rgba(216, 179, 255, 0.6);
   transform: translateX(6px);
 }
 
@@ -152,12 +151,9 @@
   width: 4px;
 }
 
-/* Last item cleanup */
-#results-list li:last-child {
-  border-bottom: none;
-}
-
-/*  Notification styling (slightly distinct) */
+/* =========================================
+   NOTIFICATIONS
+   ========================================= */
 .notify {
   text-align: center;
   color: #c084fc;
@@ -171,7 +167,16 @@
   text-shadow: none;
 }
 
-/*  Scrollbar (WebKit: Chrome, Edge, etc.) */
+/* =========================================
+   CUSTOM SCROLLBARS
+   ========================================= */
+/* Firefox */
+#results-list {
+  scrollbar-width: thin;
+  scrollbar-color: #a855f7 transparent;
+}
+
+/* WebKit (Chrome, Edge, Safari) */
 #results-list::-webkit-scrollbar {
   width: 8px;
 }
@@ -183,15 +188,10 @@
 #results-list::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #7c3aed, #a855f7);
   border-radius: 10px;
-  box-shadow: 0 0 6px rgba(168, 85, 247, 0.6);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 #results-list::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #9333ea, #c084fc);
-}
-
-/*  Firefox scrollbar */
-#results-list {
-  scrollbar-width: thin;
-  scrollbar-color: #a855f7 transparent;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.8);
 }
