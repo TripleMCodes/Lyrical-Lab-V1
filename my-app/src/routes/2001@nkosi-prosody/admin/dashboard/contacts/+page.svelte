@@ -1,5 +1,6 @@
 <script>
     import { goto } from '$app/navigation';
+    import {get_url} from "$lib/url_vars/urls_vars.js"
     let { data } = $props();
     
     let messages = $state(data.messages);
@@ -29,7 +30,7 @@
         isDeleting = true;
         
         try {
-            const res = await fetch(`http://127.0.0.1:8000/api/admin/messages/${messageId}`, {
+            const res = await fetch(`${get_url()}/api/admin/messages/${messageId}`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {

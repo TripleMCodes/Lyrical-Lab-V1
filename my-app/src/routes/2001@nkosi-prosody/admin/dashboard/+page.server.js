@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { fail } from '@sveltejs/kit';
+import { get_url } from '$lib/url_vars/urls_vars.js';
 
 function backendHeaders(cookies) {
   const accessToken = cookies.get('access_token');
@@ -23,7 +24,7 @@ function backendHeaders(cookies) {
 
 export const load = async ({ fetch, cookies }) => {
   try {
-    const usersRes = await fetch('http://127.0.0.1:8000/api/admin/users', {
+    const usersRes = await fetch(`${get_url()}/api/admin/users`, {
       headers: backendHeaders(cookies),
     });
     let users = [];
@@ -31,7 +32,7 @@ export const load = async ({ fetch, cookies }) => {
       users = await usersRes.json();
     }
 
-    const songsRes = await fetch('http://127.0.0.1:8000/api/admin/songs', {
+    const songsRes = await fetch(`${get_url()}/api/admin/songs`, {
       headers: backendHeaders(cookies),
     });
     let totalSongs = [];
@@ -43,7 +44,7 @@ export const load = async ({ fetch, cookies }) => {
       users,
       totalSongs,
       logo: {
-        title: 'Lyrical Lab',
+        title: 'M-Prosody',
         tagline: 'Unleash your words, craft your flow 🎤'
       },
       urls: {
@@ -59,7 +60,7 @@ export const load = async ({ fetch, cookies }) => {
       users: [],
       songs: [],
       logo: {
-        title: 'Lyrical Lab',
+        title: 'M-Prosody',
         tagline: 'Unleash your words, craft your flow 🎤'
       },
       urls: {
@@ -85,7 +86,7 @@ async function forwardRequest({ request, cookies, path, method = 'PATCH' }) {
     }
   }
 
-  const url = `http://127.0.0.1:8000${path}`;
+  const url = `${get_url()}${path}`;
   const body = JSON.stringify(payload);
   const res = await fetch(url, {
     method,
@@ -125,7 +126,7 @@ export const actions = {
       new_password: formData.get('new_password'),
     };
 
-    const res = await fetch(`http://127.0.0.1:8000/api/admin/users/${userId}/password`, {
+    const res = await fetch(`${get_url()}/api/admin/users/${userId}/password`, {
       method: 'PATCH',
       headers: backendHeaders(cookies),
       body: JSON.stringify(payload),
@@ -148,7 +149,7 @@ export const actions = {
       return fail(400, { message: 'User is required.' });
     }
 
-    const res = await fetch(`http://127.0.0.1:8000/api/admin/block/user/${userId}`, {
+    const res = await fetch(`${get_url()}/api/admin/block/user/${userId}`, {
       method: 'PATCH',
       headers: backendHeaders(cookies),
       body: JSON.stringify({ blocked }),
@@ -169,7 +170,7 @@ export const actions = {
       return fail(400, { message: 'Song ID is required.' });
     }
 
-    const res = await fetch(`http://127.0.0.1:8000/api/admin/songs/${songId}`, {
+    const res = await fetch(`${get_url()}/api/admin/songs/${songId}`, {
       method: 'DELETE',
       headers: backendHeaders(cookies),
     });
