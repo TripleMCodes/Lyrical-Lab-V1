@@ -1,4 +1,3 @@
-<!-- M-Prosody Contact Page (Svelte 5 with Runes) -->
 <script>
 	let email = $state('');
 	let subject = $state('');
@@ -11,7 +10,7 @@
 		status = '';
 
 		try {
-			// Replace with your actual API endpoint
+
 			const res = await fetch('http://localhost:8000/api/contact', {
 				method: 'POST',
 				headers: {

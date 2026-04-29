@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { dev } from '$app/environment';
+import { get_url } from '$lib/url_vars/urls_vars';
 
 
 export const actions = {
@@ -18,7 +19,7 @@ export const actions = {
         body.set('username', email.toString());
         body.set('password', password.toString());
 
-        const res = await fetch('http://127.0.0.1:8000/api/login', {
+        const res = await fetch(`${get_url()}/api/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
