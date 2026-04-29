@@ -1,4 +1,6 @@
 <script>
+
+	import {get_url} from "$lib/url_vars/urls_vars"
 	let email = $state('');
 	let subject = $state('');
 	let message = $state('');
@@ -11,7 +13,7 @@
 
 		try {
 
-			const res = await fetch('http://localhost:8000/api/contact', {
+			const res = await fetch(`${get_url()}/api/contact`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

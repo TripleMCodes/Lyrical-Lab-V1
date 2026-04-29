@@ -3,3 +3,5 @@
 embeddings.md
 lyrical-lab-backend/app/secrets/
 *.env
+./src/routes/sverdle
+./src/routes/test

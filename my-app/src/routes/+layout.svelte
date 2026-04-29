@@ -7,22 +7,6 @@
 	let { children } = $props();
 </script>
 
-<!-- <div class="app">
-	<Particles />
-
-	<div class="app">
-	<slot />
-	</div>
-
-	<Header />
-
-	<main>
-		{@render children()}
-	</main>
-
-	<Footer />
-</div> -->
-
 
 <Particles />
 
