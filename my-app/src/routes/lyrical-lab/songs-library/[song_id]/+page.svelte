@@ -2,7 +2,8 @@
     import type { PageData } from './$types';
     import { goto } from '$app/navigation';
     import { editingSong } from '$lib/stores/editingSong';
-  import { redirect } from '@sveltejs/kit';
+    import { redirect } from '@sveltejs/kit';
+    import {get_url} from "$lib/url_vars/urls_vars"
 
     let { data } = $props<{ data: PageData }>();
     let song = $derived(data.song);
@@ -16,7 +17,7 @@
     function delete_song() {
         song_id = Number(song_id);
         if (confirm('Are you sure you want to delete this song? This action cannot be undone.')) {
-            fetch(`http://localhost:8000/api/lyric-tools/delete-song/${song_id}`, {
+            fetch(`${get_url()}/api/lyric-tools/delete-song/${song_id}`, {
                 method: 'DELETE',
                 credentials: "include"
 

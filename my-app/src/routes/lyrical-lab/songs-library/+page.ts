@@ -1,6 +1,6 @@
 
 import type { PageLoad } from './$types';
-
+import { get_url } from '$lib/url_vars/urls_vars';
 export const ssr = false;
 export const prerender = false;
 
@@ -11,7 +11,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
   const page = Number(url.searchParams.get('page')) || DEFAULT_PAGE;
   const size = Number(url.searchParams.get('size')) || DEFAULT_SIZE;
 
-  const endpoint = new URL('http://localhost:8000/api/lyric-tools/user-songs');
+  const endpoint = new URL(`${get_url()}/api/lyric-tools/user-songs`);
   endpoint.searchParams.set('page', String(page));
   endpoint.searchParams.set('size', String(size));
 

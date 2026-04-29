@@ -3,6 +3,7 @@
   import type { PageData } from './$types';
   import { writable } from 'svelte/store';
   import { slide } from 'svelte/transition';
+  import {get_url} from "$lib/url_vars/urls_vars"
 
   let { data } = $props<{ data: PageData }>();
 
@@ -28,7 +29,7 @@
   const delete_song = async () => {
     if (confirm('Are you sure you want to delete this song? This action cannot be undone.')) {
       try {
-        const response = await fetch(`/api/songs/${song.id}`, { method: 'DELETE' });
+        const response = await fetch(`${get_url()}/api/songs/${song.id}`, { method: 'DELETE' });
         if (response.ok) goto('/lyrical-lab/songs-library');
         else alert('Failed to delete the song.');
       } catch (err) {

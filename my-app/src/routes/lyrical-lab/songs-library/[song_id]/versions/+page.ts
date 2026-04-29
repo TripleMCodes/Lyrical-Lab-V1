@@ -1,4 +1,5 @@
 import type { PageLoad } from './$types';
+import {get_url} from '$lib/url_vars/urls_vars'
 
 export const load: PageLoad = async ({ fetch, params }) => {
     const { song_id } = params;
@@ -7,7 +8,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 
     
     try { 
-        const response = await fetch(`http://localhost:8000/api/lyric-tools/songs-library/${song_id}/versions`, {
+        const response = await fetch(`${get_url()}/api/lyric-tools/songs-library/${song_id}/versions`, {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json'

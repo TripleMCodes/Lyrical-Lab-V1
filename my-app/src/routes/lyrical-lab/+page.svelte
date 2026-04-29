@@ -11,6 +11,7 @@
     import { get } from 'svelte/store';
     import type { PageData } from "../$types";
     import { editingSong } from '$lib/stores/editingSong';
+    import {get_url} from '$lib/url_vars/urls_vars';
 
   let saved_song_id: Number = $state();
   let song_data;
@@ -31,7 +32,7 @@
   async function fetchRequestsRemaining() {
     try {
       const res = await fetch(
-        "http://localhost:8000/api/lyric-tools/api-requests-remaining",
+        `${get_url()}/api/lyric-tools/api-requests-remaining`,
         {
           method: "GET",
           credentials: "include",
@@ -146,7 +147,7 @@
 
     try {
         const res = await fetch(
-            "http://localhost:8000/api/lyric-tools/save-song",
+            `${get_url()}/api/lyric-tools/save-song`,
             {
                 method: "POST",
                 credentials: "include",
@@ -186,7 +187,7 @@
 
   async function increment_session_count(){
     try{
-      const res = await fetch("http://localhost:8000/api/lyric-tools/increment-session", {
+      const res = await fetch(`${get_url()}/api/lyric-tools/increment-session`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -291,7 +292,7 @@
       
       try{
         const res = await fetch(
-        "http://localhost:8000/api/lyric-tools/check-flow",
+        `${get_url()}/api/lyric-tools/check-flow`,
         {
           method: 'POST',
           credentials: 'include',
@@ -329,7 +330,7 @@
       debounceTimer = setTimeout( async () => {
         try{
           const res = await fetch(
-            "http://localhost:8000/api/lyric-tools/save-draft",
+            `${get_url()}/api/lyric-tools/save-draft`,
             {
               method: "POST",
               credentials: "include",
@@ -409,7 +410,7 @@
     isLoading = true
     try{
       const res = await fetch(
-        "http://localhost:8000/api/lyric-tools/generate",
+        `${get_url()}/api/lyric-tools/generate`,
         {
           method: "POST",
           credentials: "include",
@@ -476,20 +477,6 @@
     artist = draft.song_artist ?? '';
   }
 
-
-  //debouncer
-  // function debounce<T extends (...args: any[]) => any>(
-  //   func: T,
-  //   delay: number
-  // ): (...args: Parameters<T>) => void {
-  //   let timeout: ReturnType<typeof setTimeout>;
-  //   return function (...args: Parameters<T>) {
-  //     clearTimeout(timeout);
-  //     timeout = setTimeout(() => {
-  //       func(...args);
-  //     }, delay);
-  //   };
-  // }
    
   const dhandleSave = debounce(handleSave, 100);
   const dgenerate = debounce(generate, 100);

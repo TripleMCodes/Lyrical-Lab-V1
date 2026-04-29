@@ -1,4 +1,5 @@
 import type { PageLoad } from "../$types";
+import {get_url} from "$lib/url_vars/urls_vars"
 
 export const ssr = false;
 
@@ -7,7 +8,7 @@ export const load: PageLoad = async ({ fetch }) => {
     let draft_data: Object = {};
 
     try {
-        const response = await fetch('http://localhost:8000/api/lyric-tools/get-draft', {
+        const response = await fetch(`${get_url()}/api/lyric-tools/get-draft`, {
             method: "GET",
             credentials: "include",
         });
@@ -22,7 +23,7 @@ export const load: PageLoad = async ({ fetch }) => {
     return {
         draft_data: draft_data,
         logo: {
-            title: 'Lyrical Lab',
+            title: 'M-Prosody',
             tagline: 'Drop science in the lab'
         },
         urls: {
