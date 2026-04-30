@@ -334,3 +334,265 @@ input:focus, button:focus {
     animation: none !important;
   }
 }
+
+
+/* =========================================
+   MEDIA QUERIES — Mobile-first, 5 breakpoints
+   xs: < 375px  (small phones: SE, older Android)
+   sm: 375px    (standard phones: iPhone 14, Pixel)
+   md: 640px    (large phones / small tablets)
+   lg: 1024px   (tablets / small laptops)
+   xl: 1280px   (desktops)
+   2xl: 1600px  (large / wide monitors)
+   ========================================= */
+
+/* -----------------------------------------
+   XS — Very small phones (< 375px)
+   ----------------------------------------- */
+@media (max-width: 374px) {
+  :root {
+    --column-width: 100%;
+    --column-margin-top: 2rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+
+  main {
+    padding: 1rem 0.75rem;
+  }
+
+  header, footer {
+    padding: 1.25rem 0.75rem;
+  }
+
+  nav {
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px; /* pill becomes compact rect on tiny screens */
+  }
+
+  nav ul {
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav a {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  .logo-1 {
+    width: 90px;
+  }
+
+  .logo p {
+    font-size: 0.9rem;
+  }
+
+  .text-column {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  input, button {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* -----------------------------------------
+   SM — Standard phones (375px – 639px)
+   ----------------------------------------- */
+@media (min-width: 375px) and (max-width: 639px) {
+  :root {
+    --column-width: 100%;
+    --column-margin-top: 2.5rem;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    line-height: 1.25;
+  }
+
+  main {
+    padding: 1.5rem 1rem;
+  }
+
+  header, footer {
+    padding: 1.5rem 1rem;
+  }
+
+  nav {
+    padding: 0.3rem 0.8rem;
+  }
+
+  nav ul {
+    gap: 0.6rem;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  .logo-1 {
+    width: 110px;
+  }
+
+  .text-column {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  /* Reduce starfield blur cost on mobile */
+  body::before,
+  body::after {
+    filter: none;
+  }
+
+  input, button {
+    width: 100%;
+  }
+}
+
+/* -----------------------------------------
+   MD — Large phones / small tablets (640px – 1023px)
+   ----------------------------------------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  :root {
+    --column-width: 36rem;
+    --column-margin-top: 3rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  main {
+    padding: 2rem 1.5rem;
+  }
+
+  header, footer {
+    padding: 1.75rem 1.5rem;
+  }
+
+  nav ul {
+    gap: 0.9rem;
+  }
+
+  nav a {
+    font-size: 0.9rem;
+  }
+
+  .logo-1 {
+    width: 120px;
+  }
+
+  .text-column {
+    max-width: var(--column-width);
+    flex: 0.8;
+  }
+
+  .logo-container::before {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* -----------------------------------------
+   LG — Tablets / small laptops (1024px – 1279px)
+   ----------------------------------------- */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  :root {
+    --column-width: 40rem;
+    --column-margin-top: 3.5rem;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  main {
+    padding: 2rem;
+  }
+
+  .text-column {
+    max-width: var(--column-width);
+    flex: 0.65;
+  }
+
+  nav ul {
+    gap: 1rem;
+  }
+}
+
+/* -----------------------------------------
+   XL — Standard desktops (1280px – 1599px)
+   ----------------------------------------- */
+@media (min-width: 1280px) {
+  /* Your base styles are already tuned for this range —
+     only minor refinements needed. */
+
+  :root {
+    --column-width: 42rem;       /* matches your original */
+    --column-margin-top: 4rem;
+  }
+
+  main {
+    padding: 2rem;
+  }
+
+  .text-column {
+    max-width: var(--column-width);
+    flex: 0.6;
+  }
+}
+
+/* -----------------------------------------
+   2XL — Large / wide monitors (1600px+)
+   ----------------------------------------- */
+@media (min-width: 1600px) {
+  :root {
+    --column-width: 52rem;
+    --column-margin-top: 5rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  .logo-1 {
+    width: 160px;
+  }
+
+  .logo p {
+    font-size: 1.35rem;
+  }
+
+  nav {
+    padding: 0.45rem 1.6rem;
+  }
+
+  nav a {
+    font-size: 1.05rem;
+    padding: 0.55rem 1.1rem;
+  }
+
+  main {
+    padding: 2.5rem;
+  }
+
+  .text-column {
+    flex: 0.55;
+    max-width: var(--column-width);
+  }
+
+  .logo-container::before {
+    width: 260px;
+    height: 260px;
+  }
+}
