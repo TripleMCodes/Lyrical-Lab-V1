@@ -170,14 +170,13 @@
 
     async function findRhyme(){
         console.log("rime button click!")
-        // rime_list = [];
+        
         isLoading = true;
         const lst = await fetchRhymes(rhyme);
         console.log("the rhyme list is", lst);
-        console.log('the data is ', data)
-        console.log('the data is ', data.message)
-        wordList = data.word_rhymes;
-        phraseList = data.phrasal_rhymes;
+       
+        wordList = lst.word_rhymes;
+        phraseList = lst.phrasal_rhymes;
         isLoading = false;
     }
     $inspect(recentSongs);

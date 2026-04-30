@@ -1,7 +1,7 @@
 import { get_url } from "$lib/url_vars/urls_vars";
 
 export async function fetchRhymes(word) {
-    let url = `${get_url()}/api/public/get-rhymes`;
+    let url = `${get_url()}/api/lyric-tools/find-rhymes`;
 
     console.log("rhyme query ", word)
     try {
@@ -9,6 +9,7 @@ export async function fetchRhymes(word) {
             url,
             {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },

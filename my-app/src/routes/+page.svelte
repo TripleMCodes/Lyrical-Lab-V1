@@ -3,6 +3,7 @@
       import {fetchWords} from '../lib/api/client'
       import {fetchRhymes} from '$lib/api/lyric_tools'
       import SigilSpinner from '../lib/components/SigilSpinner.svelte';
+      import {get_url} from '$lib/url_vars/urls_vars'
 
 	let isLoading = $state(false);
       let selected = $state('')
@@ -14,15 +15,30 @@
       async function fetchWordsWrapper(){
             isLoading = true
             if (selected === "rhyme"){
-                  const data = await fetchRhymes(word)
-                  console.log('the data is ', data)
-                  console.log('the data is ', data.message)
-                  wordList = data.word_rhymes;
-                  phraseList = data.phrasal_rhymes;
-                  console.log('the phrasal rhymes ', data.phrasal_rhymes);
-                  // wordList.push(...data.phrasal_rhymes)
-                  word = '';
-                  isLoading = false;
+                 
+                  try {
+			const res = await fetch(`${get_url()}/api/public/get-rhymes`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ word: word })
+			});
+
+                        const data = await res.json();
+                        console.log('the data is ', data)
+                        console.log('the data is ', data.message)
+                        wordList = data.word_rhymes;
+                        phraseList = data.phrasal_rhymes;
+                        console.log('the phrasal rhymes ', data.phrasal_rhymes);
+                        // wordList.push(...data.phrasal_rhymes)
+                        word = '';
+                        isLoading = false;
+                  } catch (err) {
+                       const data = { error: 'Request failed' };
+                  } finally {
+                        isLoading = false;
+		      }
+                  
+                  
             }
             else{
                   const lst = await fetchWords(selected, word);

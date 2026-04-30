@@ -213,6 +213,13 @@
       // Handle new rhyme response format with word_rhymes and phrasal_rhymes
       let combinedList = []
       
+      if (data.phrasal_rhymes) {
+        combinedList.push(...data.phrasal_rhymes.map(item => ({
+          word: item.phrase,
+          score: item.score,
+          type: 'phrasal'
+        })))
+      }
       if (data.word_rhymes) {
         combinedList.push(...data.word_rhymes.map(item => ({
           word: item.word,
@@ -222,13 +229,6 @@
         })))
       }
       
-      if (data.phrasal_rhymes) {
-        combinedList.push(...data.phrasal_rhymes.map(item => ({
-          word: item.phrase,
-          score: item.score,
-          type: 'phrasal'
-        })))
-      }
       
       wordList = combinedList
       

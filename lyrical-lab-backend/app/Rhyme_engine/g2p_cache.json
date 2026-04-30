@@ -28,5 +28,37 @@
       ],
       "syllables": 3
     }
+  ],
+  "wastefully": [
+    {
+      "stress": [
+        1,
+        0,
+        0
+      ],
+      "vowels": [
+        "EY",
+        "AH",
+        "IY"
+      ],
+      "syllables": 3
+    }
+  ],
+  "extravagent": [
+    {
+      "stress": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "vowels": [
+        "IH",
+        "AE",
+        "AH",
+        "AH"
+      ],
+      "syllables": 4
+    }
   ]
 }
