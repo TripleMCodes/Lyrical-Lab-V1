@@ -40,7 +40,7 @@
         flex-direction: row;
         justify-content:center;
         /* align-items: center; */
-        width: 125%;
+        width: 127%;
 
         padding: 20px 24px;
         /* padding-bottom: 10px;

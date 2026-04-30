@@ -183,7 +183,8 @@
 
 <section class="container">
     <div class="main scrollable">
-        <Search bind:display={searchDisplay} bind:results={searchResults} openSong={dopenSongFromSearch}/>
+        <!-- search coming soon -->
+        <!-- <Search bind:display={searchDisplay} bind:results={searchResults} openSong={dopenSongFromSearch}/> -->
 
         <Scratchpad viewNote={viewNote} makeNewNote={createNote} delNote={delNote} saveNote={saveNote} bind:notes={notes} bind:note={note} />
 

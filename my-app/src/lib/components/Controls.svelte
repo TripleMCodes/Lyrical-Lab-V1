@@ -79,11 +79,11 @@
             </Tooltip>
         </button>
 
-        <button >
+        <!-- <button >
             <Tooltip text="criticise lyrics">
                 <img src="/icons8-brain-64.png" alt="criticise icon">
             </Tooltip>
-        </button> 
+        </button>  -->
 
         <button onclick={createNewSong}>
             <Tooltip text="Create new song">

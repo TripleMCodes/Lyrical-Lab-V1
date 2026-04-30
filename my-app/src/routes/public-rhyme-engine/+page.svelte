@@ -40,48 +40,6 @@
 	<h1>Public Rhyme API</h1>
 	<p class="tagline">Turn words into echoes. Find what resonates.</p>
 
-	<section>
-		<h2>Endpoint</h2>
-		<code>/api/public/get-rhymes</code>
-	</section>
-
-	<section>
-		<h2>Request</h2>
-		<p>Send a POST request with JSON:</p>
-		<pre>{`{ "word": "example" }`}</pre>
-	</section>
-
-	<section>
-		<h2>Response</h2>
-		<pre>{`{
-  "word_rhymes": [...],
-  "phrasal_rhymes": [...],
-  "total_word_rhymes": 0,
-  "total_phrasal_rhymes": 0
-}`}</pre>
-	</section>
-
-	<section>
-		<h2>Try it</h2>
-		<input bind:value={exampleWord} placeholder="Enter a word..." />
-		<button onclick={tryExample} disabled={loading}>
-			{loading ? 'Searching…' : 'Find Rhymes'}
-		</button>
-
-		{#if response}
-			<pre class="response">{JSON.stringify(response, null, 2)}</pre>
-		{/if}
-	</section>
-
-	<section>
-		<h2>Examples</h2>
-
-		<h3>cURL</h3>
-		<pre>{curlExample}</pre>
-
-		<h3>JavaScript</h3>
-		<pre>{jsExample}</pre>
-	</section>
 
 	<section class="rhyme-engine">
 	<h2>How the rhyme engine works</h2>
@@ -127,6 +85,51 @@
 			It follows the rhythm behind them.
 		</p>
 	</section>
+
+	<section>
+		<h2>Endpoint</h2>
+		<code>/api/public/get-rhymes</code>
+	</section>
+
+	<section>
+		<h2>Request</h2>
+		<p>Send a POST request with JSON:</p>
+		<pre>{`{ "word": "example" }`}</pre>
+	</section>
+
+	<section>
+		<h2>Response</h2>
+		<pre>{`{
+  "word_rhymes": [...],
+  "phrasal_rhymes": [...],
+  "total_word_rhymes": 0,
+  "total_phrasal_rhymes": 0
+}`}</pre>
+	</section>
+
+	<section>
+		<h2>Try it</h2>
+		<input bind:value={exampleWord} placeholder="Enter a word..." />
+		<button onclick={tryExample} disabled={loading}>
+			{loading ? 'Searching…' : 'Find Rhymes'}
+		</button>
+
+		{#if response}
+			<pre class="response">{JSON.stringify(response, null, 2)}</pre>
+		{/if}
+	</section>
+
+	<section>
+		<h2>Examples</h2>
+
+		<h3>cURL</h3>
+		<pre>{curlExample}</pre>
+
+		<h3>JavaScript</h3>
+		<pre>{jsExample}</pre>
+	</section>
+
+	
 </div>
 
 <style>

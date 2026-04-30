@@ -264,6 +264,14 @@
 
   function createNewSong(){
     editingSong.set(null);
+    editorContent = "";
+    editor2Content = "";
+    saved_song_id = null;
+    title = "";
+    artist = "";
+    album = "";
+    mood = "";
+    genre = "";
   }
 
   function handleTextSelection(e) {

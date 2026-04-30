@@ -67,7 +67,7 @@ async def find_rhymes_public(
     public: int = 2,
     db: Session = Depends(database.get_db)
 ):
-    MAX_REQUESTS_PER_DAY = 10 # FOR TESTING
+    MAX_REQUESTS_PER_DAY = 500 
 
     now = datetime.utcnow()
     start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -83,7 +83,7 @@ async def find_rhymes_public(
     if today_limit and today_limit.request_count >= MAX_REQUESTS_PER_DAY:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            detail=f"You have reached your daily limit of {MAX_REQUESTS_PER_DAY} requests. Please try again tomorrow."
+            detail=f"We sorry to imform you the rquests to this public rhyme end have depleted for today. Please try again tomorrow."
         )
     
     # Increment request count
