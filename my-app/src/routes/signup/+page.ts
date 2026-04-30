@@ -2,7 +2,7 @@ export const load = () => {
     return {
         logo: {
             title: 'M-Prosody',
-            tagline: 'Create an account and create an account of lyricism'
+            tagline: 'Create an account and create an account of your lyricism'
         },
         urls:{
             writing: false,

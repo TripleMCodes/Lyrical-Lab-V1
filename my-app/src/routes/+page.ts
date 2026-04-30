@@ -18,7 +18,7 @@ export const load:PageLoad = async () => {
 	return {
 		logo: {
 			title: 'M-Prosody',
-			tagline: 'Unleash your words, craft your flow 🎤'
+			tagline: 'Unleash your words, craft your flow!'
 		},
 		urls: {
 			writing: false,

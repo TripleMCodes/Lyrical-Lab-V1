@@ -77,7 +77,7 @@ export const load: PageLoad = async ({ fetch }) => {
         notes: notes_data,
         logo: {
             title: "Dashboard",
-            tagline: "Drop science in the lab"
+            tagline: "See your progress over time."
         },
         urls: {
             writing: true,

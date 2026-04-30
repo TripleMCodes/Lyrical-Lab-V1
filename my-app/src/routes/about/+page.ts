@@ -2,7 +2,7 @@ export const load = () => {
     return {
         logo: {
             title: 'M-Prosody',
-            tagline: 'Login and get locked in!'
+            tagline: 'Here is our about, we hope that we are about it.'
         },
          urls: {
             writing: false,
