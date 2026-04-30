@@ -58,9 +58,9 @@
 </section>
 
 <section id="search" class="search-section">
-      <h2>Lyric Tools</h2>
+      <h2>Lexical Tools</h2>
       <div class="search-box">
-            <input type="text" id="word-input" placeholder="Generate lyrics..." bind:value={word}>
+            <input type="text" id="word-input" placeholder="Enter search here..." bind:value={word}>
             <select id="search-type" bind:value={selected} onchange={() => console.log(selected)}>
                   <option value="rhyme">Rhyme</option>
                   <option value="synonym">Synonym</option>

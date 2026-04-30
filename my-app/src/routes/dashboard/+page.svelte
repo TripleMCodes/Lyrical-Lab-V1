@@ -23,8 +23,9 @@
 
     let minutes = $derived(Math.floor(writing_time / 60))
     let seconds = $derived(writing_time % 60)
+    let hours = $derived(Math.floor(minutes / 60))
 
-    let formatted_time = $derived(`${minutes}m ${seconds}s`)
+    let formatted_time = $derived(`${hours}h ${minutes % 60}m ${seconds}s`)
 
     let writing_sessions = $state(data.stats.writing_sessions)
     let new_songs = $state(data.songs_stats.new_songs)
@@ -42,7 +43,8 @@
     let currentNoteId = $state("")
 
     let rhyme = $state("")
-    let rime_list = $state([])
+    let wordList = $state([])
+    let phraseList = $state([])
     let isLoading = $state(false)
 
     let searchDisplay = $state(false)
@@ -168,11 +170,14 @@
 
     async function findRhyme(){
         console.log("rime button click!")
-        rime_list = [];
+        // rime_list = [];
         isLoading = true;
         const lst = await fetchRhymes(rhyme);
         console.log("the rhyme list is", lst);
-        rime_list = lst.message;
+        console.log('the data is ', data)
+        console.log('the data is ', data.message)
+        wordList = data.word_rhymes;
+        phraseList = data.phrasal_rhymes;
         isLoading = false;
     }
     $inspect(recentSongs);
@@ -188,7 +193,7 @@
 
         <Scratchpad viewNote={viewNote} makeNewNote={createNote} delNote={delNote} saveNote={saveNote} bind:notes={notes} bind:note={note} />
 
-        <RimeSearch findRhyme={dfindRhyme} bind:rhyme={rhyme} bind:rime_list={rime_list} bind:isLoading={isLoading} />
+        <RimeSearch findRhyme={dfindRhyme} bind:rhyme={rhyme} bind:rime_list={wordList} bind:phraseList={phraseList} bind:isLoading={isLoading} />
     </div>
 
     <div class="main scrollable">

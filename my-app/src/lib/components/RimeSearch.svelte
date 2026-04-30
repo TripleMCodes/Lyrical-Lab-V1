@@ -2,7 +2,7 @@
     import SigilSpinner from '$lib/components/SigilSpinner.svelte';
   import Tooltip from './Tooltip.svelte';
 
-    let {rhyme = $bindable(), rime_list = $bindable(), isLoading = $bindable() , findRhyme} = $props();
+    let {rhyme = $bindable(), rime_list = $bindable(), phraseList = $bindable(), isLoading = $bindable() , findRhyme} = $props();
 
 </script>
 <section class="sider-items">
@@ -31,8 +31,14 @@
 
       {#if rime_list.length > 0}
         <ul id="results-list" class="results-list">
+          {#if phraseList.length > 0}
+            {#each phraseList as lst (lst.phrase)}
+                  <li>{lst.phrase}</li>
+            {/each}
+          {/if}
           {#each rime_list as rime (rime.word)}
             <li>{rime.word}</li>
+
           {/each}
         </ul>
       {:else if isLoading === false}
