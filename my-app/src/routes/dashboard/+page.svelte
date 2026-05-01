@@ -313,7 +313,7 @@
    ----------------------------------------- */
 @media (max-width: 374px) {
   .container {
-    flex-direction: column;   /* Two panels stack vertically */
+    flex-direction: column-reverse;   /* Two panels stack vertically */
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -341,7 +341,7 @@
    ----------------------------------------- */
 @media (min-width: 375px) and (max-width: 639px) {
   .container {
-    flex-direction: column;
+    flex-direction: column-reverse;
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -369,7 +369,7 @@
    ----------------------------------------- */
 @media (min-width: 640px) and (max-width: 1023px) {
   .container {
-    flex-direction: column;   /* Still stacked — not enough width for two panels */
+    flex-direction: column-reverse;   /* Still stacked — not enough width for two panels */
     width: 100%;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
