@@ -265,4 +265,468 @@
 		text-align: center;
 		color: #c084fc;
 	}
+
+
+
+	/* =========================================
+   MEDIA QUERIES — Public Rhyme API Page
+   xs: < 375px  |  sm: 375–639px  |  md: 640–1023px
+   lg: 1024–1279px  |  xl: 1280+  |  2xl: 1600+
+   ========================================= */
+
+/* -----------------------------------------
+   XS — Very small phones (< 375px)
+   ----------------------------------------- */
+@media (max-width: 374px) {
+  .api-container {
+    max-width: 100%;
+    margin: 0.75rem 0.5rem;
+    padding: 1rem 0.875rem;
+    border-radius: 10px;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .tagline {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  section {
+    margin-bottom: 1.1rem;
+  }
+
+  /* h2 inside sections */
+  section h2 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  section h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+
+  section p {
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  section ul {
+    margin: 0.5rem 0 0.75rem 1rem;
+  }
+
+  section li {
+    font-size: 0.82rem;
+    margin-bottom: 0.3rem;
+  }
+
+  code {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.4rem;
+    /* Allow wrapping on very narrow screens */
+    word-break: break-all;
+  }
+
+  pre {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.72rem;
+    border-radius: 8px;
+    /* Horizontal scroll is intentional for code blocks */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  input {
+    font-size: 0.82rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    margin-bottom: 0.6rem;
+  }
+
+  button {
+    width: 100%;              /* Full-width tap target on xs */
+    padding: 0.6rem 0.875rem;
+    font-size: 0.82rem;
+    border-radius: 6px;
+  }
+
+  .response {
+    max-height: 220px;
+    font-size: 0.72rem;
+    padding: 0.6rem;
+    border-radius: 8px;
+    margin-top: 0.75rem;
+  }
+
+  .response::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* Rhyme engine card */
+  .rhyme-engine {
+    max-width: 100%;
+    margin: 1.5rem 0;
+    padding: 1rem 0.875rem;
+    border-radius: 10px;
+  }
+
+  .rhyme-engine h2 {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .rhyme-engine p {
+    font-size: 0.82rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.55;
+  }
+
+  .rhyme-engine ul {
+    margin: 0.4rem 0 0.75rem 1rem;
+  }
+
+  .rhyme-engine li {
+    font-size: 0.82rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .rhyme-engine .closing {
+    font-size: 0.82rem;
+    margin-top: 1rem;
+  }
+}
+
+/* -----------------------------------------
+   SM — Standard phones (375px – 639px)
+   ----------------------------------------- */
+@media (min-width: 375px) and (max-width: 639px) {
+  .api-container {
+    max-width: 100%;
+    margin: 1rem 0.75rem;
+    padding: 1.1rem 1rem;
+    border-radius: 11px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  .tagline {
+    font-size: 0.85rem;
+    margin-bottom: 1.1rem;
+  }
+
+  section {
+    margin-bottom: 1.25rem;
+  }
+
+  section h2 {
+    font-size: 1rem;
+  }
+
+  section h3 {
+    font-size: 0.9rem;
+  }
+
+  section p,
+  section li {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  code {
+    font-size: 0.82rem;
+    word-break: break-all;
+  }
+
+  pre {
+    font-size: 0.76rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  input {
+    font-size: 0.85rem;
+    padding: 0.55rem 0.65rem;
+  }
+
+  button {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.65rem 1rem;
+  }
+
+  .response {
+    max-height: 240px;
+    font-size: 0.76rem;
+    padding: 0.65rem;
+  }
+
+  .response::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .rhyme-engine {
+    max-width: 100%;
+    margin: 1.75rem 0;
+    padding: 1.1rem 1rem;
+    border-radius: 11px;
+  }
+
+  .rhyme-engine h2 {
+    font-size: 1rem;
+  }
+
+  .rhyme-engine p,
+  .rhyme-engine li {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .rhyme-engine .closing {
+    font-size: 0.85rem;
+    margin-top: 1.1rem;
+  }
+}
+
+/* -----------------------------------------
+   MD — Large phones / small tablets (640px – 1023px)
+   ----------------------------------------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .api-container {
+    max-width: 92%;
+    margin: 1.5rem auto;
+    padding: 1.25rem 1.1rem;
+    border-radius: 12px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .tagline {
+    font-size: 0.9rem;
+  }
+
+  section h2 {
+    font-size: 1.1rem;
+  }
+
+  section h3 {
+    font-size: 0.95rem;
+  }
+
+  section p,
+  section li {
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  code {
+    font-size: 0.85rem;
+  }
+
+  pre {
+    font-size: 0.8rem;
+    padding: 0.7rem 0.875rem;
+  }
+
+  input {
+    font-size: 0.88rem;
+  }
+
+  button {
+    font-size: 0.88rem;
+    padding: 0.65rem 1.1rem;
+  }
+
+  .response {
+    max-height: 260px;
+    font-size: 0.8rem;
+  }
+
+  .rhyme-engine {
+    max-width: 100%;
+    margin: 2rem auto;
+    padding: 1.25rem 1.1rem;
+  }
+
+  .rhyme-engine h2 {
+    font-size: 1.1rem;
+  }
+
+  .rhyme-engine p,
+  .rhyme-engine li {
+    font-size: 0.88rem;
+  }
+
+  .rhyme-engine .closing {
+    font-size: 0.88rem;
+  }
+}
+
+/* -----------------------------------------
+   LG — Tablets / small laptops (1024px – 1279px)
+   ----------------------------------------- */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .api-container {
+    max-width: 660px;
+    margin: 1.75rem auto;
+    padding: 1.4rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  section h2 {
+    font-size: 1.15rem;
+  }
+
+  pre {
+    font-size: 0.83rem;
+  }
+
+  .response {
+    max-height: 280px;
+    font-size: 0.83rem;
+  }
+
+  .rhyme-engine {
+    max-width: 620px;
+    margin: 2.5rem auto;
+    padding: 1.4rem;
+  }
+
+  .rhyme-engine h2 {
+    font-size: 1.15rem;
+  }
+}
+
+/* -----------------------------------------
+   XL — Standard desktops (1280px – 1599px)
+   ----------------------------------------- */
+@media (min-width: 1280px) {
+  /* Base styles are tuned for this range — preserved.
+     api-container max-width: 700px,
+     rhyme-engine max-width: 650px,
+     padding: 1.5rem are all intentional. */
+
+  button {
+    /* Restore auto width — full-width only needed on mobile */
+    width: auto;
+  }
+}
+
+/* -----------------------------------------
+   2XL — Large / wide monitors (1600px+)
+   ----------------------------------------- */
+@media (min-width: 1600px) {
+  .api-container {
+    max-width: 800px;
+    margin: 2.5rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+  }
+
+  h1 {
+    font-size: 2.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  section {
+    margin-bottom: 1.875rem;
+  }
+
+  section h2 {
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  section p,
+  section li {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  code {
+    font-size: 0.95rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  pre {
+    font-size: 0.9rem;
+    padding: 1rem 1.1rem;
+    border-radius: 12px;
+  }
+
+  input {
+    font-size: 0.95rem;
+    padding: 0.75rem 0.875rem;
+    border-radius: 10px;
+    margin-bottom: 0.9rem;
+  }
+
+  button {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+
+  .response {
+    max-height: 340px;
+    font-size: 0.9rem;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-top: 1.1rem;
+  }
+
+  .response::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .rhyme-engine {
+    max-width: 750px;
+    margin: 3.5rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+  }
+
+  .rhyme-engine h2 {
+    font-size: 1.35rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .rhyme-engine p {
+    font-size: 1rem;
+    margin-bottom: 1.1rem;
+    line-height: 1.65;
+  }
+
+  .rhyme-engine li {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .rhyme-engine .closing {
+    font-size: 1rem;
+    margin-top: 1.75rem;
+  }
+}
 </style>
