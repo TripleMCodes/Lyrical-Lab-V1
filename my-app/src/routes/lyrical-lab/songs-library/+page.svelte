@@ -86,8 +86,22 @@
 
 <DisplaySongs bind:filteredSongs={filteredSongs} handleSongClick={handleSongClick} />
 
-<div>
+<div class="pagi-nav">
   <button onclick={prevPage} disabled={!meta.prev_page}>prev</button>
   <span>page {meta.page} / {meta.pages}</span>
   <button onclick={nextPage} disabled={!meta.next_page}>next</button>
 </div>
+
+<style>
+
+  @media(max-width: 769px){
+
+    .pagi-nav{
+      display:flex;
+      margin: 2rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+</style>

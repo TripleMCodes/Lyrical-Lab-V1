@@ -302,5 +302,172 @@
         scrollbar-color: #c77dff rgba(20, 0, 40, 0.6);
         }  
 
+/* =========================================
+   MEDIA QUERIES — Dashboard / Home Layout
+   xs: < 375px  |  sm: 375–639px  |  md: 640–1023px
+   lg: 1024–1279px  |  xl: 1280+  |  2xl: 1600+
+   ========================================= */
+
+/* -----------------------------------------
+   XS — Very small phones (< 375px)
+   ----------------------------------------- */
+@media (max-width: 374px) {
+  .container {
+    flex-direction: column;   /* Two panels stack vertically */
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .main {
+    flex: 0 0 auto;           /* Let content define height when stacked */
+    min-height: 60dvh;        /* Enough room to be useful */
+    padding: 1rem;
+    border-radius: 14px;
+    gap: 0.75rem;
+    backdrop-filter: blur(8px);   /* Reduce blur cost on low-end phones */
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .main::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+
+/* -----------------------------------------
+   SM — Standard phones (375px – 639px)
+   ----------------------------------------- */
+@media (min-width: 375px) and (max-width: 639px) {
+  .container {
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .main {
+    flex: 0 0 auto;
+    min-height: 65dvh;        /* Each panel gets enough vertical room */
+    padding: 1.1rem;
+    border-radius: 16px;
+    gap: 0.875rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .main::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
+/* -----------------------------------------
+   MD — Large phones / small tablets (640px – 1023px)
+   ----------------------------------------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .container {
+    flex-direction: column;   /* Still stacked — not enough width for two panels */
+    width: 100%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0.875rem;
+    gap: 0.875rem;
+  }
+
+  .main {
+    flex: 0 0 auto;
+    min-height: 55dvh;        /* Shorter — two panels visible on screen together */
+    padding: 1.25rem;
+    border-radius: 18px;
+    gap: 1rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .main::-webkit-scrollbar {
+    width: 7px;
+  }
+}
+
+/* -----------------------------------------
+   LG — Tablets / small laptops (1024px – 1279px)
+   ----------------------------------------- */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .container {
+    flex-direction: row;      /* Side-by-side panels return at tablet landscape */
+    width: 110%;              /* Step down from 130% */
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+    padding: 0.875rem;
+    gap: 0.875rem;
+    align-items: stretch;
+  }
+
+  .main {
+    flex: 1;
+    min-height: 0;
+    padding: 1.25rem;
+    border-radius: 20px;
+    gap: 0.875rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .main::-webkit-scrollbar {
+    width: 8px;
+  }
+}
+
+/* -----------------------------------------
+   XL — Standard desktops (1280px – 1599px)
+   ----------------------------------------- */
+@media (min-width: 1280px) {
+  /* Base styles are tuned for this range — preserved.
+     width: 130%, flex-direction: row, padding: 1rem,
+     margin: 1rem are all intentional. */
+
+  .container {
+    gap: 1rem;                /* Explicit gap between the two .main panels */
+  }
+
+  .main {
+    padding: 1.5rem;          /* Matches base */
+    border-radius: 22px;
+    gap: 1rem;
+  }
+
+  .main::-webkit-scrollbar {
+    width: 10px;              /* Matches base */
+  }
+}
+
+/* -----------------------------------------
+   2XL — Large / wide monitors (1600px+)
+   ----------------------------------------- */
+@media (min-width: 1600px) {
+  .container {
+    width: 120%;              /* Expand slightly on large monitors */
+    padding: 1.25rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    gap: 1.25rem;
+  }
+
+  .main {
+    padding: 2rem;
+    border-radius: 26px;
+    gap: 1.25rem;
+    box-shadow:
+      0 0 40px rgba(168, 85, 247, 0.22),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .main::-webkit-scrollbar {
+    width: 12px;
+  }
+}
 
 </style>
