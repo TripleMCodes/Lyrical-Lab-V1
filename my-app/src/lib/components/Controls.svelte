@@ -43,6 +43,7 @@
         </div> 
     </section>
 
+    <div class="r-n-l-container">
     <section class="r-n-l" >
         <label for="r-n-l">Rhymes and Lexicon</label>
         <input type="text" name="word" id="word" placeholder="Enter worrd here..." bind:value={word}>
@@ -58,6 +59,7 @@
             </Tooltip>
         </button>
     </section>
+    </div>
 
     <section class="control-btns">
 
@@ -402,6 +404,498 @@
     .controls-section {
         transition: width 0.25s ease, padding 0.25s ease;
     }
+
+    /* =========================================
+   MEDIA QUERIES — Lyrics Generator & Controls
+   xs: < 375px  |  sm: 375–639px  |  md: 640–1023px
+   lg: 1024–1279px  |  xl: 1280+  |  2xl: 1600+
+   ========================================= */
+
+/* -----------------------------------------
+   XS — Very small phones (< 375px)
+   ----------------------------------------- */
+@media (max-width: 374px) {
+  .l-n-fos-gen {
+    /* padding: 14px; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  .l-n-fos-gen label {
+    font-size: 0.72rem;
+    margin-bottom: 8px;
+  }
+
+  .lyrics-gen {
+    gap: 10px;
+  }
+
+  .lyrics-gen input[type="text"],
+  .lyrics-gen input[type="Enter prompt"] {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+
+  /* Stack selects vertically — too cramped side by side */
+  .configs {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .configs select {
+    font-size: 0.82rem;
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+
+  /* Stack mode radio options vertically */
+  .mode {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+
+  .mode span {
+    font-size: 0.78rem;
+  }
+
+  .lyrics-gen button {
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Controls sidebar becomes full-width bar at bottom */
+  .controls-section {
+    flex: 0 0 auto;
+    flex-direction: row;        /* Horizontal on mobile */
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  .control-btns {
+    gap: 8px;
+    padding: 8px;
+    border-radius: 12px;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    width:100%;
+    justify-content: space-evenly;
+  }
+
+  .control-btns button {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  .control-btns button img {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* r-n-l panel */
+  .r-n-l {
+    /* display: none; */
+    padding: 14px;
+    border-radius: 12px;
+    /* flex-direction:row; */
+    gap: 10px;
+    width:110%;
+  }
+
+  .r-n-l label {
+    font-size: 0.72rem;
+    margin-bottom: 5px;
+  }
+
+  .r-n-l input[type="text"] {
+    padding: 9px 12px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+
+  .r-n-l select {
+    padding: 9px 12px;
+    font-size: 0.82rem;
+    border-radius: 10px;
+  }
+
+  .r-n-l button {
+    padding: 10px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+  }
+}
+
+/* -----------------------------------------
+   SM — Standard phones (375px – 639px)
+   ----------------------------------------- */
+@media (min-width: 375px) and (max-width: 639px) {
+
+   .controls-section{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: center */
+   }
+
+   .r-n-l-container{
+    display:flex;
+    flex-direction:column;
+   }
+  .l-n-fos-gen {
+    padding: 16px;
+    border-radius: 14px;
+    width: 100%;
+  }
+
+  .l-n-fos-gen label {
+    font-size: 0.78rem;
+    margin-bottom: 10px;
+  }
+
+  .lyrics-gen {
+    gap: 12px;
+  }
+
+  .lyrics-gen input[type="text"],
+  .lyrics-gen input[type="Enter prompt"] {
+    padding: 11px 14px;
+    font-size: 0.88rem;
+    border-radius: 12px;
+  }
+
+  /* Configs: allow wrapping but try to stay in a row */
+  .configs {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .configs select {
+    flex: 1 1 45%;            /* Two per row if space allows */
+    font-size: 0.85rem;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+
+  .mode {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 14px;
+  }
+
+  .mode span {
+    font-size: 0.82rem;
+  }
+
+  .lyrics-gen button {
+    padding: 11px;
+    font-size: 0.9rem;
+    border-radius: 14px;
+  }
+
+  .controls-section {
+    flex: 0 0 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0.875rem;
+    width: 100%;
+  }
+
+  .control-btns {
+    gap: 10px;
+    padding: 10px;
+    border-radius: 14px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%
+  }
+
+  .control-btns button {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+
+  .control-btns button img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .r-n-l {
+    /* display:flex; */
+    flex-direction: column;
+    padding: 16px;
+    border-radius: 14px;
+    width: 125%;
+    gap: 12px;
+  }
+
+  .r-n-l label {
+    font-size: 0.78rem;
+    margin-bottom: 6px;
+  }
+
+  .r-n-l input[type="text"] {
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    border-radius: 12px;
+  }
+
+  .r-n-l select {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+  }
+
+  .r-n-l button {
+    padding: 12px;
+    font-size: 0.88rem;
+  }
+}
+
+
+
+/* -----------------------------------------
+   MD — Large phones / small tablets (640px – 1023px)
+   ----------------------------------------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .l-n-fos-gen {
+    padding: 18px;
+    border-radius: 16px;
+    max-width: 100%;
+  }
+
+  .lyrics-gen {
+    gap: 14px;
+  }
+
+  .lyrics-gen input[type="text"],
+  .lyrics-gen input[type="Enter prompt"] {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+
+  .configs {
+    gap: 10px;
+  }
+
+  .configs select {
+    font-size: 0.875rem;
+    padding: 11px 13px;
+  }
+
+  .mode {
+    padding: 11px 14px;
+  }
+
+  /* Controls sidebar: narrow column beside main content */
+  .controls-section {
+    flex: 0 0 22%;            /* Slightly narrower than the 28% base */
+    gap: 0.65rem;
+    padding: 0.875rem;
+  }
+
+  .control-btns {
+    gap: 10px;
+    padding: 10px;
+    justify-content: space-evenly;
+  }
+
+  .control-btns button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .r-n-l {
+    padding: 18px;
+    border-radius: 16px;
+    max-width: 100%;
+    gap: 14px;
+  }
+
+  .r-n-l button {
+    padding: 13px;
+  }
+}
+
+/* -----------------------------------------
+   LG — Tablets / small laptops (1024px – 1279px)
+   ----------------------------------------- */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .l-n-fos-gen {
+    padding: 20px;
+    max-width: 580px;
+  }
+
+  .lyrics-gen {
+    gap: 15px;
+  }
+
+  .configs select {
+    font-size: 0.88rem;
+  }
+
+  /* controls-section starts returning to its desktop role */
+  .controls-section {
+    flex: 0 0 25%;
+    gap: 0.7rem;
+  }
+
+  .control-btns button {
+    width: 46px;
+    height: 46px;
+  }
+
+  .r-n-l {
+    padding: 20px;
+    max-width: 460px;
+    gap: 15px;
+  }
+}
+
+/* -----------------------------------------
+   XL — Standard desktops (1280px – 1599px)
+   ----------------------------------------- */
+@media (min-width: 1280px) {
+  /* Base styles are tuned for this range — preserved. */
+
+  .l-n-fos-gen {
+    max-width: 640px;         /* Matches your base */
+    padding: 24px;
+  }
+
+  .controls-section {
+    flex: 0 0 28%;            /* Matches your base */
+  }
+
+  .control-btns button {
+    width: 48px;              /* Matches your base */
+    height: 48px;
+  }
+
+  .r-n-l {
+    max-width: 500px;         /* Matches your base */
+    padding: 24px;
+  }
+}
+
+/* -----------------------------------------
+   2XL — Large / wide monitors (1600px+)
+   ----------------------------------------- */
+@media (min-width: 1600px) {
+  .l-n-fos-gen {
+    padding: 30px;
+    border-radius: 22px;
+    max-width: 720px;
+  }
+
+  .l-n-fos-gen label {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+
+  .lyrics-gen {
+    gap: 20px;
+  }
+
+  .lyrics-gen input[type="text"],
+  .lyrics-gen input[type="Enter prompt"] {
+    padding: 16px 18px;
+    font-size: 1rem;
+    border-radius: 16px;
+  }
+
+  .configs {
+    gap: 14px;
+  }
+
+  .configs select {
+    font-size: 0.95rem;
+    padding: 14px 16px;
+    border-radius: 16px;
+  }
+
+  .mode {
+    padding: 14px 18px;
+    border-radius: 18px;
+  }
+
+  .mode span {
+    font-size: 0.9rem;
+    gap: 10px;
+  }
+
+  .lyrics-gen button {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .controls-section {
+    flex: 0 0 26%;            /* Pull in slightly — prevents over-stretch */
+    gap: 0.9rem;
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+
+  .control-btns {
+    gap: 14px;
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .control-btns button {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+  }
+
+  .control-btns button img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .r-n-l {
+    padding: 30px;
+    border-radius: 22px;
+    max-width: 580px;
+    gap: 20px;
+  }
+
+  .r-n-l label {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .r-n-l input[type="text"] {
+    padding: 14px 18px;
+    font-size: 1rem;
+    border-radius: 16px;
+  }
+
+  .r-n-l select {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border-radius: 16px;
+  }
+
+  .r-n-l button {
+    padding: 16px;
+    font-size: 1rem;
+    border-radius: 18px;
+  }
+}
 
 
 </style>

@@ -106,4 +106,196 @@
     font-weight: 500;
     }
 
+    /* =========================================
+   MEDIA QUERIES — Song Info Component
+   xs: < 375px  |  sm: 375–639px  |  md: 640–1023px
+   lg: 1024–1279px  |  xl: 1280+  |  2xl: 1600+
+   ========================================= */
+
+/* -----------------------------------------
+   XS — Very small phones (< 375px)
+   ----------------------------------------- */
+@media (max-width: 374px) {
+  section div {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .song-infor {
+    flex-direction: column;  /* Stack fields vertically */
+    width: 95%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin: 10px 0;
+    gap: 10px;
+  }
+
+  .song-infor > div {
+    width: 100%;
+  }
+
+  .song-infor label {
+    font-size: 0.65rem;
+    margin-bottom: 3px;
+  }
+
+  .song-infor input[type="text"] {
+    width: 100%;
+    font-size: 0.82rem;
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
+}
+
+/* -----------------------------------------
+   SM — Standard phones (375px – 639px)
+   ----------------------------------------- */
+@media (min-width: 375px) and (max-width: 639px) {
+  section div {
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+  }
+
+  .song-infor {
+    flex-direction: column;  /* Still stacked — too cramped side-by-side */
+    width: 95%;
+    padding: 1rem;
+    border-radius: 14px;
+    /* margin: 12px 0; */
+    gap: 12px;
+  }
+
+  .song-infor > div {
+    width: 100%;
+  }
+
+  .song-infor label {
+    font-size: 0.68rem;
+    margin-bottom: 4px;
+  }
+
+  .song-infor input[type="text"] {
+    width: 100%;
+    font-size: 0.875rem;
+    padding: 9px 10px;
+    border-radius: 12px;
+  }
+}
+
+/* -----------------------------------------
+   MD — Large phones / small tablets (640px – 1023px)
+   ----------------------------------------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  section div {
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+  }
+
+  .song-infor {
+    flex-direction: row;     /* Fields return to a row at this size */
+    flex-wrap: wrap;         /* But wrap gracefully if there are many */
+    width: 90%;
+    padding: 16px 18px;
+    border-radius: 16px;
+    margin: 14px 0;
+    gap: 12px;
+  }
+
+  .song-infor > div {
+    flex: 1 1 40%;           /* Each field takes ~half width, wraps if needed */
+    min-width: 140px;
+  }
+
+  .song-infor label {
+    font-size: 0.7rem;
+  }
+
+  .song-infor input[type="text"] {
+    width: 100%;
+    font-size: 0.88rem;
+  }
+}
+
+/* -----------------------------------------
+   LG — Tablets / small laptops (1024px – 1279px)
+   ----------------------------------------- */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  section div {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    /* flex: 1; */
+  }
+
+  
+
+  .song-infor {
+    width: 100%;             /* Step down from the 127% base */
+    /* padding: 18px 20px; */
+    /* margin: 16px; */
+    /* gap: 10px; */
+  }
+
+  /* .song-infor > div {
+    flex: 1 1 auto;
+  } */
+
+  .song-name, .song-genre, .song-mood, .song-artist, .song-album {
+    margin:0.04rem;
+    gap: 4px;
+  }
+
+  .song-infor input[type="text"] {
+    font-size: 0.88rem;
+  }
+}
+
+/* -----------------------------------------
+   XL — Standard desktops (1280px – 1599px)
+   ----------------------------------------- */
+@media (min-width: 1280px) {
+  /* Base styles are tuned for this range.
+     width: 127% is intentional in its parent
+     flex context — preserved here. */
+
+  section div {
+    margin-left: 2rem;       /* Matches your base */
+    margin-right: 2rem;
+  }
+
+  .song-infor {
+    padding: 20px 24px;
+    border-radius: 18px;
+    margin: 20px;
+  }
+}
+
+/* -----------------------------------------
+   2XL — Large / wide monitors (1600px+)
+   ----------------------------------------- */
+@media (min-width: 1600px) {
+  section div {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
+
+  .song-infor {
+    padding: 24px 30px;
+    border-radius: 20px;
+    margin: 22px;
+    gap: 16px;
+  }
+
+  .song-infor label {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+  }
+
+  .song-infor input[type="text"] {
+    font-size: 0.95rem;
+    padding: 12px 14px;
+    border-radius: 16px;
+  }
+}
+
 </style>

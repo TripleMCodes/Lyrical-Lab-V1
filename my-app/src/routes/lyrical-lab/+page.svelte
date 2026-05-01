@@ -500,8 +500,9 @@
 
   <Controls onSave={dhandleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={dfetchWordsWrapper} checkFlow={dhandleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={dgenerate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>
 
-  <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction} saveDraft={autoSave}/>
-
+  
+    <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction} saveDraft={autoSave}/>
+  
 </section>
 
 <section class="word-counter">
@@ -625,4 +626,192 @@
   }
 }
 
+/* =========================================
+   MEDIA QUERIES — Main Page Layout
+   xs: < 375px  |  sm: 375–639px  |  md: 640–1023px
+   lg: 1024–1279px  |  xl: 1280+  |  2xl: 1600+
+   ========================================= */
+
+/* -----------------------------------------
+   XS — Very small phones (< 375px)
+   ----------------------------------------- */
+@media (max-width: 374px) {
+  .ll-container {
+    flex-direction: column-reverse;   /* Controls stacks above Editor */
+    width: 100%;
+    height: auto;             /* Let content define height */
+    min-height: 100dvh;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .editor-container{
+    height: 100%;
+  }
+
+  .word-counter {
+    flex-direction: column;   /* Stack stat blocks vertically */
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-top: 0.5rem;
+  }
+
+  .word-counter > div {
+    width: 100%;
+    justify-content: space-between; /* Label left, number right */
+    gap: 0;
+  }
+
+  .word-counter label {
+    font-size: 0.68rem;
+  }
+
+  .word-counter span {
+    font-size: 1rem;
+  }
+}
+
+/* -----------------------------------------
+   SM — Standard phones (375px – 639px)
+   ----------------------------------------- */
+@media (min-width: 375px) and (max-width: 639px) {
+  .ll-container {
+    flex-direction: column-reverse;
+    width: 100%;
+    /* height: auto; */
+    height: 400%;
+    padding: 0.75rem;
+    gap: 0.75rem;
+    flex: none;
+  }
+
+  .editor-container{
+    height: 500% !important;
+  }
+
+  .word-counter {
+    flex-wrap: wrap;          /* Stats wrap to a 2-col grid if needed */
+    gap: 12px 20px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    margin-top: 0.75rem;
+    height: 200%;
+  }
+
+  .word-counter > div {
+    flex: 1 1 auto;
+    min-width: 80px;
+  }
+
+  .word-counter label {
+    font-size: 0.68rem;
+  }
+
+  .word-counter span {
+    font-size: 1rem;          /* Already handled by your 500px rule */
+  }
+}
+
+/* -----------------------------------------
+   MD — Large phones / small tablets (640px – 1023px)
+   ----------------------------------------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .ll-container {
+    flex-direction: column-reverse;   /* Still stacked — Controls as toolbar above Editor */
+    width: 100%;
+    height: auto;
+    min-height: 100dvh;
+    padding: 0.875rem;
+    gap: 0.875rem;
+  }
+
+  .word-counter {
+    flex-wrap: nowrap;        /* All three stats in one row from here up */
+    gap: 18px;
+    padding: 13px 18px;
+    border-radius: 14px;
+    margin-top: 0.875rem;
+  }
+
+  .word-counter > div {
+    flex: 1 1 auto;
+  }
+
+  .word-counter label {
+    font-size: 0.69rem;
+  }
+
+  .word-counter span {
+    font-size: 1.05rem;
+  }
+}
+
+/* -----------------------------------------
+   LG — Tablets / small laptops (1024px – 1279px)
+   ----------------------------------------- */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .ll-container {
+    flex-direction: row;      /* Controls | Editor side-by-side returns here */
+    width: 100%;              /* Step down from 130% */
+    height: 175%;
+    padding: 0.875rem;
+    gap: 0;
+  }
+
+  .word-counter {
+    gap: 20px;
+    padding: 13px 18px;
+    margin-top: 1rem;
+  }
+
+  .word-counter span {
+    font-size: 1.05rem;
+  }
+}
+
+/* -----------------------------------------
+   XL — Standard desktops (1280px – 1599px)
+   ----------------------------------------- */
+@media (min-width: 1280px) {
+  /* Base styles are intentional at this range.
+     width: 130%, height: 200%, flex-direction: row
+     are all preserved — no overrides needed. */
+
+  .word-counter {
+    gap: 24px;                /* Matches base */
+    padding: 14px 20px;
+    margin-top: 1rem;
+  }
+}
+
+/* -----------------------------------------
+   2XL — Large / wide monitors (1600px+)
+   ----------------------------------------- */
+@media (min-width: 1600px) {
+  .ll-container {
+    padding: 1.25rem;
+  }
+
+  .word-counter {
+    gap: 32px;
+    padding: 16px 24px;
+    border-radius: 18px;
+    margin-top: 1.25rem;
+  }
+
+  .word-counter > div {
+    gap: 10px;
+  }
+
+  .word-counter label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .word-counter span {
+    font-size: 1.2rem;
+  }
+}
 </style> 
