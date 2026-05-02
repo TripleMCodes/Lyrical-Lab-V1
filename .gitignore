@@ -1,7 +1,8 @@
 ./plan.md
 ./test.py
 embeddings.md
-lyrical-lab-backend/app/secrets/
+lyrical_lab_backend/app/secrets/
+lyrical_lab_backend/app/lib
 *.env
 ./src/routes/sverdle
 ./src/routes/test
