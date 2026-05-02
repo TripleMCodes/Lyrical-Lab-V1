@@ -48,8 +48,8 @@
 
 
 
-    let editorA;
-    let editorB;
+    let editorA = $state(null);
+    let editorB = $state(null);
     let isSyncing = false;
     let isResizing = $state(false);
 
