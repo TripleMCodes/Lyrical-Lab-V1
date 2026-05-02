@@ -17,6 +17,9 @@ from app import schemas, oauth2, models, database
 # from app.services import initialize_embeddings
 # from app.lyrics_n_summarization import OpenRouterClient
 
+
+print("🚀 Starting FastAPI app...")
+
 app = FastAPI()
 # Base.metadata.drop_all(bind=engine)
 # Base.metadata.create_all(bind=engine)
