@@ -64,3 +64,4 @@ pronouncing
 pyphen
 nltk
 g2p
+requests
