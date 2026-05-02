@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 
 	import {get_url} from "$lib/url_vars/urls_vars"
 	let email = $state('');
@@ -47,7 +49,8 @@
 		M-Prosody is still evolving, and every message shapes it.
 	</p>
 
-	<form on:submit|preventDefault={handleSubmit}>
+	<form onsubmit={handleSubmit}>
+	
 		<label>
 			Email Address
 			<input type="email" bind:value={email} placeholder="you@example.com" required />

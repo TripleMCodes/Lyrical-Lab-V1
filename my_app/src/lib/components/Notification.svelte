@@ -35,7 +35,7 @@
     <span class="message">{message}</span>
     <button
       class="close-btn"
-      on:click={hideNotification}
+      onclick={hideNotification}
       aria-label="Close notification"
     >
       ×

@@ -17,6 +17,7 @@
 
     let { data } = $props<{ data: PageData }>();
 
+    // svelte-ignore state_referenced_locally
     let writing_time = $state(data.stats.writing_time)
 
     console.log("WRITING TIME:", writing_time)
@@ -27,17 +28,22 @@
 
     let formatted_time = $derived(`${hours}h ${minutes % 60}m ${seconds}s`)
 
+    // svelte-ignore state_referenced_locally
     let writing_sessions = $state(data.stats.writing_sessions)
+    // svelte-ignore state_referenced_locally
     let new_songs = $state(data.songs_stats.new_songs)
+    // svelte-ignore state_referenced_locally
     let num_songs = $state(data.songs_stats.num_songs)
 
-    
+    // svelte-ignore state_referenced_locally    
     let draft_artist = $state(data.draft.song_artist)
+    // svelte-ignore state_referenced_locally
     let draft_title = $state(data.draft.song_name)
+    // svelte-ignore state_referenced_locally
     let draft_album = $state(data.draft.song_album)
-
+    // svelte-ignore state_referenced_locally
     let recentSongs = $state(data.recent_songs)
-
+    // svelte-ignore state_referenced_locally
     let notes = $state(data.notes)
     let note = $state("")
     let currentNoteId = $state("")
@@ -260,9 +266,9 @@
     overflow-y:scroll;
 }
 
-.main > * {
+/* .main > * {
     flex-shrink: 0;
-}
+} */
 
 /* If one section should scroll */
 .main.scrollable {

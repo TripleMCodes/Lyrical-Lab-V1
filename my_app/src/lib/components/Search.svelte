@@ -171,7 +171,7 @@
 }
 
 /* Search button */
-.search-btn button, button {
+/* .search-btn button, button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -184,9 +184,9 @@
   background-color: transparent;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
+  } */
 
-.search-btn button:hover {
+/* .search-btn button:hover {
   transform: translateY(-1px);
   box-shadow:
       0 12px 28px rgba(180, 90, 255, 0.45),
@@ -204,7 +204,7 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
-}
+} */
 
 /* Clear button */
 .clear-btn {

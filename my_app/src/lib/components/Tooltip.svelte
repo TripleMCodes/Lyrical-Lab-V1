@@ -1,11 +1,12 @@
 <script>
-    let {text} = $props();
+    let { children, text } = $props();
 
 
 </script>
 
 <span class="tooltip">
-  <slot />
+  {@render children?.()}
+
   <span class="tooltip-text">{text}</span>
 </span>
 

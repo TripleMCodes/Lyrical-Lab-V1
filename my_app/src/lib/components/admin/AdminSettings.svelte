@@ -1,11 +1,11 @@
 <script>
     import { page } from '$app/stores';
-    let adminName = '';
-    let currentPassword = '';
-    let newPassword = '';
-    let confirmPassword = '';
-    let apiKey = '';
-    let apiUrl = '';
+    let adminName = $state('');
+    let currentPassword = $state('');
+    let newPassword = $state('');
+    let confirmPassword = $state('');
+    let apiKey = $state('');
+    let apiUrl = $state('');
 </script>
 
 <section class="admin-card">

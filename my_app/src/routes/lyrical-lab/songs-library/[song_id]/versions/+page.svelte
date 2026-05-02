@@ -66,6 +66,8 @@
         <h3>Other Versions</h3>
         {#each versions as version (version.version)}
           <div class="version-card">
+            <!-- svelte-ignore a11y_click_events_have_key_events -->
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
             <div class="version-header" onclick={() => toggleVersion(version.version)}>
               <h4>Version {version.version}</h4>
               <span class="toggle-icon">

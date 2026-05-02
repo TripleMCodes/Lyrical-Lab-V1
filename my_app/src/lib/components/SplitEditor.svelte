@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 
     let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable(), selectedText = $bindable() , onSelected, loading = $bindable(), cancelRes, saveDraft} = $props()
     import SigilSpinner from '../../lib/components/SigilSpinner.svelte';
@@ -132,6 +134,8 @@
     oninput={saveDraft}
   ></textarea>
 
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
   <div
     class="divider"
     role="separator"
@@ -190,7 +194,7 @@
         min-width: 10%;
 	}
 
-    .ll-container {
+    /* .ll-container {
         flex: 1;
         display: flex;
 
@@ -199,7 +203,7 @@
 
         padding: 1rem;
         box-sizing: border-box;
-        }
+        } */
 
 
      .writing-section {
@@ -532,11 +536,11 @@
    MD — Large phones / small tablets (640px – 1023px)
    ----------------------------------------- */
 @media (min-width: 640px) and (max-width: 1023px) {
-  .ll-container {
+  /* .ll-container {
     width: 100%;
     height: 100dvh;
     padding: 0.875rem;
-  }
+  } */
 
   .writing-section {
     grid-template-rows: 10fr 5px 2fr;
@@ -632,9 +636,9 @@
    2XL — Large / wide monitors (1600px+)
    ----------------------------------------- */
 @media (min-width: 1600px) {
-  .ll-container {
+  /* .ll-container {
     padding: 1.25rem;
-  }
+  } */
 
   .writing-section {
     padding: 1.25rem;

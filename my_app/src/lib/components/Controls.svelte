@@ -131,8 +131,7 @@
         gap: 16px;
         }
     
-    .lyrics-gen input[type="text"],
-    .lyrics-gen input[type="Enter prompt"] {
+    .lyrics-gen input[type="text"] {
     background: #160c2b;
     border: 1px solid rgba(190, 120, 255, 0.25);
     border-radius: 14px;
@@ -434,8 +433,7 @@
     gap: 10px;
   }
 
-  .lyrics-gen input[type="text"],
-  .lyrics-gen input[type="Enter prompt"] {
+  .lyrics-gen input[type="text"] {
     padding: 10px 12px;
     font-size: 0.85rem;
     border-radius: 10px;
@@ -568,8 +566,7 @@
     gap: 12px;
   }
 
-  .lyrics-gen input[type="text"],
-  .lyrics-gen input[type="Enter prompt"] {
+  .lyrics-gen input[type="text"] {
     padding: 11px 14px;
     font-size: 0.88rem;
     border-radius: 12px;
@@ -681,8 +678,7 @@
     gap: 14px;
   }
 
-  .lyrics-gen input[type="text"],
-  .lyrics-gen input[type="Enter prompt"] {
+  .lyrics-gen input[type="text"] {
     padding: 12px 14px;
     font-size: 0.9rem;
   }
@@ -810,8 +806,7 @@
     gap: 20px;
   }
 
-  .lyrics-gen input[type="text"],
-  .lyrics-gen input[type="Enter prompt"] {
+  .lyrics-gen input[type="text"] {
     padding: 16px 18px;
     font-size: 1rem;
     border-radius: 16px;

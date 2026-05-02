@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
     import { goto } from '$app/navigation';
     import {get_url} from "$lib/url_vars/urls_vars.js"
     let { data } = $props();
     
-    let messages = $state(data.messages);
-    let currentPage = $state(data.page);
-    let totalPages = $state(data.pages);
-    let totalMessages = $state(data.total);
-    let pageSize = $state(data.size);
+    let messages = $derived(data.messages);
+    let currentPage = $derived(data.page);
+    let totalPages = $derived(data.pages);
+    let totalMessages = $derived(data.total);
+    let pageSize = $derived(data.size);
     let isDeleting = $state(false);
     let showNotification = $state(false);
     let notificationMessage = $state("");

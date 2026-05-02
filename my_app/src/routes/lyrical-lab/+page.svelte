@@ -254,9 +254,10 @@
     isLoading = false
     for (let index = 0; index < wordList.length; index++) {
       const item = wordList[index]
-      const score = item.score ? ` (${item.score.toFixed(2)})` : ''
-      const typeLabel = item.type && item.type === 'phrasal' ? ' [phrasal]' : ''
-      textList += item['word'] + score + typeLabel + '\n'
+      // const score = item.score ? ` (${item.score.toFixed(2)})` : ''
+      // const typeLabel = item.type && item.type === 'phrasal' ? ' [phrasal]' : ''
+      // textList += item['word'] + score + typeLabel + '\n'
+      textList += item['word'] + '\n'
     }
     editor2Content = textList
   }
@@ -465,6 +466,7 @@
   }
 
 
+  // svelte-ignore state_referenced_locally
   if (song && song != null){
      const draft = song.draft_data;
     title = song.song_name ?? '';
@@ -596,9 +598,9 @@
 }
 
 /* Optional emphasis when typing */
-.word-counter.active span {
+/* .word-counter.active span {
   animation: pulseGlow 1.2s ease-in-out infinite;
-}
+} */
 
 /* Glow animation */
 @keyframes pulseGlow {
@@ -645,9 +647,9 @@
     gap: 0.5rem;
   }
 
-  .editor-container{
+  /* .editor-container{
     height: 100%;
-  }
+  } */
 
   .word-counter {
     flex-direction: column;   /* Stack stat blocks vertically */
@@ -687,9 +689,9 @@
     flex: none;
   }
 
-  .editor-container{
+  /* .editor-container{
     height: 500% !important;
-  }
+  } */
 
   .word-counter {
     flex-wrap: wrap;          /* Stats wrap to a 2-col grid if needed */
