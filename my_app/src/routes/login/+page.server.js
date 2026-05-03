@@ -57,9 +57,10 @@ export const actions = {
             maxAge: 60 * 60 * 24 * 7
             });
         
-        return { success: true };
+        // return { success: true };
 
         // Success → redirect
+        redirect(303, '/lyrical-lab');
         // throw redirect(303, '/lyrical-lab');
     }
 };
