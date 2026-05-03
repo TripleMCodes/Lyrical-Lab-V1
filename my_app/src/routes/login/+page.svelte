@@ -3,15 +3,13 @@
     import { enhance } from '$app/forms'
     import { page } from '$app/stores'
     import { goto } from '$app/navigation';
-    // import type { SubmitFunction } from '@sveltejs/kit';
+    import type { SubmitFunction } from '@sveltejs/kit';
 
-    const enhanceForm = enhance(() => {
-	return async ({ result }) => {
-		if (result.type === 'success') {
-			await goto('/lyrical-lab');
-		}
-	};
-});
+    // const enhanceForm: SubmitFunction = ({ result }) => {
+	// 	if (result.type === 'success') {
+	// 		goto('/lyrical-lab');
+	// 	}
+	// };
     let email = $state("")
     let password = $state("")
 
@@ -27,7 +25,7 @@
             </div>
         {/if}
 
-        <form class="login-form" method="POST" action="?/login"  use:enhance={enhanceForm}>
+        <form class="login-form" method="POST" action="?/login"  use:enhance >
             <div class="login-group">
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" placeholder="Enter your email" required bind:value={email}>
