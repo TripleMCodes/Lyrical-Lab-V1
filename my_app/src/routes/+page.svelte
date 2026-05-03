@@ -17,7 +17,7 @@
             if (selected === "rhyme"){
                  
                   try {
-			const res = await fetch(`${get_url()}/api/public/get-rhymes`, {
+			const res = await fetch(`https://m-prosody.onrender.com/api/public/get-rhymes`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ word: word })
