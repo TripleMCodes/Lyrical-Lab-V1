@@ -7,12 +7,15 @@
     
     import { applyAction } from '$app/forms';
 
+    import { invalidateAll } from '$app/navigation';
+
     const enhanceForm = () => {
-        return async ({ result, update }: any) => {
-            if (result?.type === 'success') {
+        return async ({ result, update }: { result: any, update: any }) => {
+            if (result.type === 'success') {
+                await invalidateAll();        // forces all load() functions to re-run
                 await goto('/lyrical-lab');
             } else {
-                await applyAction(result);
+                await applyAction(result);    // renders error messages properly
             }
         };
     };
