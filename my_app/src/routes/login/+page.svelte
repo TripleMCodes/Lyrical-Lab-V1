@@ -1,20 +1,20 @@
 <script lang="ts">
-    import '../signup/sigup.css'
-    import { enhance } from '$app/forms'
-    import { page } from '$app/stores'
+    import '../signup/sigup.css';
+    import { enhance } from '$app/forms';
+    import { page } from '$app/stores';
     import { goto } from '$app/navigation';
-    import type { SubmitFunction } from '@sveltejs/kit';
 
-    // const enhanceForm: SubmitFunction = ({ result }) => {
-	// 	if (result.type === 'success') {
-	// 		goto('/lyrical-lab');
-	// 	}
-	// };
-    let email = $state("")
-    let password = $state("")
+    const enhanceForm = () => {
+        console.lgo("calling enhance form")
+        return async (event: any) => {
+            if (event.result?.type === 'success') {
+                await goto('/lyrical-lab');
+            }
+        };
+    };
 
-
-
+    let email = $state("");
+    let password = $state("");
 </script>
 
 <div class="container">
@@ -27,19 +27,36 @@
             </div>
         {/if}
 
-        <form class="login-form" method="POST" action="?/login">
+        <form class="login-form" method="POST" action="?/login" use:enhance={enhanceForm}>
             <div class="login-group">
                 <label for="email">Email</label>
-                <input type="text" id="email" name="email" placeholder="Enter your email" required bind:value={email}>
+                <input
+                    type="email" 
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                    bind:value={email}
+                >
             </div>
 
             <div class="login-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter password" required bind:value={password}>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                    bind:value={password}
+                >
             </div>
 
             <button type="submit">Login</button>
         </form>
-        <p class="signup-link">Don't have an account? <a href="/signup">Signup</a></p>
+
+        <p class="signup-link">
+            Don't have an account? <a href="/signup">Signup</a>
+        </p>
     </div>
 </div>
