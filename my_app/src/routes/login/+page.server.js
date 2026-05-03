@@ -40,8 +40,8 @@ export const actions = {
 
         cookies.set('access_token', data.access_token, {
             httpOnly: true,
-            secure: !dev,
-            sameSite: 'lax',
+            secure: true,
+            sameSite: 'none',
             path: '/',
             maxAge: 60 * 30
             });
@@ -49,8 +49,8 @@ export const actions = {
        
         cookies.set('refresh_token', data.refresh_token, {
             httpOnly: true,
-            secure: !dev,
-            sameSite: 'lax',
+            secure: true,
+            sameSite: 'none',
             path: '/',
             maxAge: 60 * 60 * 24 * 7
             });

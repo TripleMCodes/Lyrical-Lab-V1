@@ -18,7 +18,7 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session =
     logging.debug(f"logging user")
     
     user = db.query(models.Users).filter(models.Users.email == user_credentials.username).first()
-    # logging.debug(f'The user info is {user.uid} {type(user.id)}')
+    logging.debug(f'The user info is {user.uid} {type(user.id)}')
 
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
