@@ -13,4 +13,4 @@ export const load = () => {
     }
 }
 
-export const prerender = true;
+export const prerender = false;
