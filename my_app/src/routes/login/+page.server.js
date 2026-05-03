@@ -37,6 +37,8 @@ export const actions = {
 
         const data = await res.json();
 
+        console.log("logging in user")
+
 
         cookies.set('access_token', data.access_token, {
             httpOnly: true,
@@ -54,9 +56,10 @@ export const actions = {
             path: '/',
             maxAge: 60 * 60 * 24 * 7
             });
-
+        
+        return { success: true };
 
         // Success → redirect
-        throw redirect(303, '/lyrical-lab');
+        // throw redirect(303, '/lyrical-lab');
     }
 };

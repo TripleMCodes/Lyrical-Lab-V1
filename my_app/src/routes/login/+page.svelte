@@ -1,7 +1,17 @@
-<script>
+<script lang="ts">
     import '../signup/sigup.css'
     import { enhance } from '$app/forms'
     import { page } from '$app/stores'
+    import { goto } from '$app/navigation';
+    // import type { SubmitFunction } from '@sveltejs/kit';
+
+    const enhanceForm = () => {
+	return async (event: any) => {
+		if (event.result?.type === 'success') {
+			await goto('/lyrical-lab');
+		}
+	};
+};
 
     let email = $state("")
     let password = $state("")
