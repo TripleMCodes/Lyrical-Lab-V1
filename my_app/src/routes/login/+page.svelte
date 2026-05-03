@@ -5,14 +5,13 @@
     import { goto } from '$app/navigation';
     // import type { SubmitFunction } from '@sveltejs/kit';
 
-    const enhanceForm = () => {
-	return async (event: any) => {
-		if (event.result?.type === 'success') {
+    const enhanceForm = enhance(() => {
+	return async ({ result }) => {
+		if (result.type === 'success') {
 			await goto('/lyrical-lab');
 		}
 	};
-};
-
+});
     let email = $state("")
     let password = $state("")
 
