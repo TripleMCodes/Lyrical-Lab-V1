@@ -18,7 +18,7 @@
             </div>
         {/if}
 
-        <form class="login-form" method="POST" action="?/login" use:enhance >
+        <form class="login-form" method="POST" action="?/login" >
             <div class="login-group">
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" placeholder="Enter your email" required bind:value={email}>
