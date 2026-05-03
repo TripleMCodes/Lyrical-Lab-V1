@@ -14,6 +14,8 @@ router = APIRouter(tags=['Authentication'])
 
 @router.post('/api/login', response_model=schemas.Token)
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+
+    logging.debug(f"logging user")
     
     user = db.query(models.Users).filter(models.Users.email == user_credentials.username).first()
     # logging.debug(f'The user info is {user.uid} {type(user.id)}')
@@ -42,6 +44,8 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session =
 
 @router.post('/api/admin/login', response_model=schemas.Token)
 def admin_login(admin_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+
+    logging.debug(f"logging in admin")
     
     admin = db.query(models.Admin).filter(models.Admin.admin_name == admin_credentials.username).first()
 
