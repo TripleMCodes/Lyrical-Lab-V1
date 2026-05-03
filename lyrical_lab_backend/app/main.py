@@ -33,6 +33,8 @@ app = FastAPI()
 
 origins = [
     "*"
+    "http://localhost:8000",
+    "https://m-prosody.vercel.app"
 ]
 app.add_middleware(
     CORSMiddleware,
