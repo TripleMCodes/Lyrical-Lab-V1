@@ -4,11 +4,15 @@
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
 
+    
+    import { applyAction } from '$app/forms';
+
     const enhanceForm = () => {
-        console.log("calling enhance form");
-        return async (event: any) => {
-            if (event.result?.type === 'success') {
+        return async ({ result, update }: any) => {
+            if (result?.type === 'success') {
                 await goto('/lyrical-lab');
+            } else {
+                await applyAction(result);
             }
         };
     };
