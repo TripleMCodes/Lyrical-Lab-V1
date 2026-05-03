@@ -5,7 +5,7 @@
     import { goto } from '$app/navigation';
 
     const enhanceForm = () => {
-        console.lgo("calling enhance form")
+        console.log("calling enhance form");
         return async (event: any) => {
             if (event.result?.type === 'success') {
                 await goto('/lyrical-lab');
