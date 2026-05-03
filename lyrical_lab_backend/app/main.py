@@ -30,9 +30,9 @@ app = FastAPI()
 #     """Initialize embeddings and other resources on app startup."""
 #     initialize_embeddings()
 
+
 origins = [
-    "https://m-prosody.vercel.app",
-    "http://localhost:8000"
+    "*"
 ]
 app.add_middleware(
     CORSMiddleware,
