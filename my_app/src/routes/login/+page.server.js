@@ -60,6 +60,6 @@ export const actions = {
         // return { success: true };
 
         // Success → redirect
-        throw redirect(303, '/dashboard');
+        throw redirect(200, '/dashboard');
     }
 };
