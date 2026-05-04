@@ -207,6 +207,7 @@
     isLoading = true
     console.log("Fetch ", wordSelected)
     if (wordSelected === "rhyme"){
+      console.log("the rhyme is ", wordSearched)
       const data = await fetchRhymes(wordSearched)
       console.log('Rhyme data:', data)
       

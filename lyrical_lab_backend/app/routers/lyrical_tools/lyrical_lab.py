@@ -317,6 +317,9 @@ def find_rhymes(
     word = data["word"]
     word_rhymes_list = []
     phrasal_rhymes_list = []
+
+    logging.debug(f"the data is {data}")
+    logging.debug(f"the word is {word}") 
     
     try:
         results = find_rhymes_api(word)
