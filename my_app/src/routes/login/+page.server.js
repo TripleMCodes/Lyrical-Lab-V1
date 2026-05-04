@@ -37,7 +37,7 @@ export const actions = {
         const data = await res.json();
 
         cookies.set('access_token', data.access_token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: 'none',
             path: '/',
@@ -45,7 +45,7 @@ export const actions = {
         });
 
         cookies.set('refresh_token', data.refresh_token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: 'none',
             path: '/',
