@@ -4,6 +4,7 @@
     import { editingSong } from '$lib/stores/editingSong';
     import { redirect } from '@sveltejs/kit';
     import {get_url} from "$lib/url_vars/urls_vars"
+    import {apiDelete} from '$lib/api/api_proxy';
 
     let { data } = $props<{ data: PageData }>();
     let song = $derived(data.song);
@@ -14,28 +15,42 @@
     };
 
 
-    function delete_song() {
-        song_id = Number(song_id);
-        if (confirm('Are you sure you want to delete this song? This action cannot be undone.')) {
-            fetch(`${get_url()}/api/lyric-tools/delete-song/${song_id}`, {
-                method: 'DELETE',
-                credentials: "include"
+    // function delete_song() {
+    //     song_id = Number(song_id);
+    //     if (confirm('Are you sure you want to delete this song? This action cannot be undone.')) {
+    //         fetch(`${get_url()}/api/lyric-tools/delete-song/${song_id}`, {
+    //             method: 'DELETE',
+    //             credentials: "include"
 
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Song deleted successfully.');
-                    goto('/lyrical-lab/songs-library');
-                } else {
-                    alert('Failed to delete the song. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting song:', error);
-                alert('An error occurred while deleting the song. Please try again.');
-            });
-        }
+    //         })
+    //         .then(response => {
+    //             if (response.ok) {
+    //                 alert('Song deleted successfully.');
+    //                 goto('/lyrical-lab/songs-library');
+    //             } else {
+    //                 alert('Failed to delete the song. Please try again.');
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error('Error deleting song:', error);
+    //             alert('An error occurred while deleting the song. Please try again.');
+    //         });
+    //     }
         
+    // }
+
+    async function delete_song() {
+        song_id = Number(song_id);
+        if (!confirm('Are you sure you want to delete this song? This action cannot be undone.')) return;
+
+        try {
+            await apiDelete(`/api/lyric-tools/delete-song/${song_id}`);
+            alert('Song deleted successfully.');
+            goto('/lyrical-lab/songs-library');
+        } catch (err) {
+            console.error('Error deleting song:', err);
+            alert('Failed to delete the song. Please try again.');
+        }
     }
 
 

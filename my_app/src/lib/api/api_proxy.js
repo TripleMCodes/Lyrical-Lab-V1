@@ -15,3 +15,14 @@ export async function apiGet(endpoint, params = {}) {
     if (!res.ok) throw new Error(`Request failed: ${res.status}`);
     return res.json();
 }
+
+export async function apiDelete(endpoint) {
+    const res = await fetch('/api/proxy-delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint })
+    });
+
+    if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+    return res.json();
+}
