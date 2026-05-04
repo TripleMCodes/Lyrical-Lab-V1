@@ -43,12 +43,12 @@
       //     }
       //   }
       // );
-      const res = await apiGet(`/api/lyric-tools/api-requests-remaining`)
-      if (res.ok) {
-        const data = await res.json();
-        requestsRemaining = data.requests_remaining;
-        maxRequests = data.max_requests_per_day;
-      }
+      // const res = await apiGet(`/api/lyric-tools/api-requests-remaining`);
+    
+      const data = await apiGet(`/api/lyric-tools/api-requests-remaining`);
+      requestsRemaining = data.requests_remaining;
+      maxRequests = data.max_requests_per_day;
+      
     } catch (err) {
       console.log("Error fetching requests remaining:", err);
     }
@@ -161,11 +161,12 @@
         //     }
         // );
 
-        const res = await apiPost(`/api/lyric-tools/save-song`, song_to_save)
-        const msg = await res.json();
+        // const res = await apiPost(`/api/lyric-tools/save-song`, song_to_save)
+        // const msg = await res.json();
+        const msg = await apiPost(`/api/lyric-tools/save-song`, song_to_save)
         console.log(msg);
 
-        if (res.ok) {
+        if (msg.message === "Song saved successfully") {
             notificationMessage = msg.message || "Song saved successfully!";
             notificationType = "success";
             showNotification = true;
@@ -203,9 +204,9 @@
 
       const res = await apiPost(`/api/lyric-tools/increment-session`, {'sess': 1});
 
-      if (res.ok){
-        console.log("session count incremented")
-      }
+      // if (res.ok){
+      //   console.log("session count incremented")
+      // }
     }catch(err){
       console.log("Couldn't increment session count")
     }
@@ -320,8 +321,8 @@
       //     body: JSON.stringify({'message': lines})
       //   }
       // );
-      const res = await apiPost(`/api/lyric-tools/check-flow`, {'message': lines});
-      const data = await res.json();
+      // const res = await apiPost(`/api/lyric-tools/check-flow`, {'message': lines});
+      const data = await apiPost(`/api/lyric-tools/check-flow`, {'message': lines});
       editor2Content = data.message
       } catch (err){
         notificationMessage = "Couldn't process lines";
@@ -440,18 +441,18 @@
       //   }
       // );
 
-      const res = await apiPost(`/api/lyric-tools/generate`, data);
+      // const res = await apiPost(`/api/lyric-tools/generate`, data);
       
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        isLoading = false
-        notificationMessage = errorData.detail || "An error occurred";
-        notificationType = "error";
-        showNotification = true;
-        return;
-      }
+      // if (!res.ok) {
+      //   const errorData = await res.json().catch(() => ({}));
+      //   isLoading = false
+      //   notificationMessage = errorData.detail || "An error occurred";
+      //   notificationType = "error";
+      //   showNotification = true;
+      //   return;
+      // }
       
-      const msg = await res.json()
+      const msg = await apiPost(`/api/lyric-tools/generate`, data);
 
       isLoading = false
       console.log(msg)

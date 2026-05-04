@@ -5,6 +5,7 @@
     let { wordCount = $bindable(), charCount = $bindable(), editor1 = $bindable(), editor2 = $bindable(), selectedText = $bindable() , onSelected, loading = $bindable(), cancelRes, saveDraft} = $props()
     import SigilSpinner from '../../lib/components/SigilSpinner.svelte';
     import {get_url} from '$lib/url_vars/urls_vars'
+    import {apiPost} from '$lib/api/api_proxy'
     // let editor2 = $state("");
     
    
@@ -27,19 +28,20 @@
 
         debounceTimer = setTimeout(async () => {
             try{
-                const res = await fetch(
-                    `${get_url()}/api/lyric-tools/syllabe-counter`,
-                    {
-                        method: "POST",
-                        credentials: "include", 
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ message: lines })
-                    }
+                // const res = await fetch(
+                //     `${get_url()}/api/lyric-tools/syllabe-counter`,
+                //     {
+                //         method: "POST",
+                //         credentials: "include", 
+                //         headers: {
+                //             "Content-Type": "application/json"
+                //         },
+                //         body: JSON.stringify({ message: lines })
+                //     }
 
-                );
-                const data = await res.json();
+                // );
+                // const res = await apiPost(`/api/lyric-tools/syllabe-counter`, { message: lines })
+                const data = await apiPost(`/api/lyric-tools/syllabe-counter`, { message: lines });
                 editor2 = data.message
             } catch (err){
                 console.error(err)

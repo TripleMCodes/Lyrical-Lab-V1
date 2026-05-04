@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import {get_url} from "$lib/url_vars/urls_vars"
+  import {apiGet} from '$lib/api/api_proxy'
+  import {apiPost} from '$lib/api/api_proxy'
 
   export let idleSeconds = 10; // stop counting after this much inactivity
   export let float = true;     // float bottom-right
@@ -109,22 +111,25 @@
 
   async function sendSessionSecs(secs: number) {
     try {
-      const token = localStorage.getItem('access_token') || localStorage.getItem('token');
-      const headers: any = { 'Content-Type': 'application/json' };
-      if (token) headers['Authorization'] = `Bearer ${token}`;
+      // const token = localStorage.getItem('access_token') || localStorage.getItem('token');
+      // const headers: any = { 'Content-Type': 'application/json' };
+      // if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const res = await fetch(`${get_url()}/api/lyric-tools/save-writing-seconds`, {
-        method: 'POST',
-        credentials: 'include',
-        headers:{
-            "Content-Type": "application/json"
-          },
-        body: JSON.stringify({ secs }),
-      });
+      // const res = await fetch(`${get_url()}/api/lyric-tools/save-writing-seconds`, {
+      //   method: 'POST',
+      //   credentials: 'include',
+      //   headers:{
+      //       "Content-Type": "application/json"
+      //     },
+      //   body: JSON.stringify({ secs }),
+      // });
 
-      if (!res.ok) {
-        console.warn('Failed to save writing seconds', await res.text());
-      }
+      // if (!res.ok) {
+      //   console.warn('Failed to save writing seconds', await res.text());
+      // }
+
+      const data = await apiPost(`/api/lyric-tools/save-writing-seconds`, { secs });
+      console.log(data);
     } catch (err) {
       console.warn('Error saving writing seconds', err);
     }
