@@ -43,7 +43,7 @@
                 // const res = await apiPost(`/api/lyric-tools/syllabe-counter`, { message: lines })
                 let temp = {'message': lines};
                 const data = await apiPost(`/api/lyric-tools/syllabe-counter`, temp);
-                editor2 = data.message
+                editor2 = data.message;
             } catch (err){
                 console.error(err)
             }
