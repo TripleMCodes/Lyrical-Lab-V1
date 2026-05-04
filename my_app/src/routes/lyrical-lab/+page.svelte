@@ -12,6 +12,8 @@
     import type { PageData } from "../$types";
     import { editingSong } from '$lib/stores/editingSong';
     import {get_url} from '$lib/url_vars/urls_vars';
+    import {apiPost} from '$lib/api/api_proxy'
+    import {apiGet} from '$lib/api/api_proxy'
 
   let saved_song_id: Number = $state();
   let song_data;
@@ -31,16 +33,17 @@
   // Fetch remaining requests on component mount
   async function fetchRequestsRemaining() {
     try {
-      const res = await fetch(
-        `${get_url()}/api/lyric-tools/api-requests-remaining`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
+      // const res = await fetch(
+      //   `${get_url()}/api/lyric-tools/api-requests-remaining`,
+      //   {
+      //     method: "GET",
+      //     credentials: "include",
+      //     headers: {
+      //       "Content-Type": "application/json"
+      //     }
+      //   }
+      // );
+      const res = await apiGet(`/api/lyric-tools/api-requests-remaining`)
       if (res.ok) {
         const data = await res.json();
         requestsRemaining = data.requests_remaining;
@@ -146,17 +149,19 @@
     }
 
     try {
-        const res = await fetch(
-            `/lyrical-lab/save-song`,
-            {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(song_to_save)
-            }
-        );
+        // const res = await fetch(
+        //     `/lyrical-lab/save-song`,
+        //     {
+        //         method: "POST",
+        //         credentials: "include",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify(song_to_save)
+        //     }
+        // );
+
+        const res = await apiPost(`/api/lyric-tools/save-song`, song_to_save)
         const msg = await res.json();
         console.log(msg);
 
@@ -187,14 +192,17 @@
 
   async function increment_session_count(){
     try{
-      const res = await fetch(`${get_url()}/api/lyric-tools/increment-session`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-         },
-          body: JSON.stringify({'sess': 1})
-      })
+      // const res = await fetch(`lyrical-lab/increment-session-count`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //    },
+      //     body: JSON.stringify({'sess': 1})
+      // })
+
+
+      const res = await apiPost(`/api/lyric-tools/increment-session`, {'sess': 1});
+
       if (res.ok){
         console.log("session count incremented")
       }
@@ -301,17 +309,18 @@
         }
       
       try{
-        const res = await fetch(
-        `${get_url()}/api/lyric-tools/check-flow`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers:{
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({'message': lines})
-        }
-      );
+      //   const res = await fetch(
+      //   `${get_url()}/api/lyric-tools/check-flow`,
+      //   {
+      //     method: 'POST',
+      //     credentials: 'include',
+      //     headers:{
+      //       "Content-Type": "application/json"
+      //     },
+      //     body: JSON.stringify({'message': lines})
+      //   }
+      // );
+      const res = await apiPost(`/api/lyric-tools/check-flow`, {'message': lines});
       const data = await res.json();
       editor2Content = data.message
       } catch (err){
@@ -339,18 +348,18 @@
 
       debounceTimer = setTimeout( async () => {
         try{
-          const res = await fetch(
-            `${get_url()}/api/lyric-tools/save-draft`,
-            {
-              method: "POST",
-              credentials: "include",
-              headers:{
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(draftData)
-            }
-          );
-          const resData = await res.json();
+          // const res = await fetch(
+          //   `lyrical-lab/save-draft`,
+          //   {
+          //     method: "POST",
+          //     credentials: "include",
+          //     headers:{
+          //       "Content-Type": "application/json"
+          //     },
+          //     body: JSON.stringify(draftData)
+          //   }
+          // );
+          const resData = await apiPost(`/api/lyric-tools/save-draft`, draftData);
 
           console.log("draft saved");
         }catch (err){
@@ -419,17 +428,19 @@
     }
     isLoading = true
     try{
-      const res = await fetch(
-        `${get_url()}/api/lyric-tools/generate`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        }
-      );
+      // const res = await fetch(
+      //   `${get_url()}/api/lyric-tools/generate`,
+      //   {
+      //     method: "POST",
+      //     credentials: "include",
+      //     headers: {
+      //       "Content-Type": "application/json"
+      //     },
+      //     body: JSON.stringify(data)
+      //   }
+      // );
+
+      const res = await apiPost(`/api/lyric-tools/generate`, data);
       
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
