@@ -149,4 +149,49 @@ async function fetchWordsWrapper(){
     editor2Content = textList
   }
 
+This is how the cookies are set when I log in
+cookies.set('access_token', data.access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            path: '/',
+            maxAge: 60 * 30
+        });
 
+        cookies.set('refresh_token', data.refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7
+        });
+
+When I try to fetch rhymes this is these are reponses I get
+from backend hosted render:
+INFO:     102.251.68.13:0 - "OPTIONS /api/lyric-tools/find-rhymes HTTP/1.1" 200 OK
+INFO:     102.251.68.13:0 - "POST /api/lyric-tools/find-rhymes HTTP/1.1" 422 Unprocessable Content
+
+from frontend in the browser:
+5IFykFci.js:1 
+ POST https://m-prosody.onrender.com/api/lyric-tools/save-writing-seconds 422 (Unprocessable Content)
+13.CRr-bj_h.js:1 Failed to save writing seconds {"detail":[{"type":"missing","loc":["cookie","access_token"],"msg":"Field required","input":null}]}
+
+5IFykFci.js:1 
+ POST https://m-prosody.onrender.com/api/lyric-tools/save-writing-seconds 422 (Unprocessable Content)
+13.CRr-bj_h.js:1 Failed to save writing seconds {"detail":[{"type":"missing","loc":["cookie","access_token"],"msg":"Field required","input":null}]}
+
+
+When I check the cookies are saved in the browser
+Here is how I set my CORS in my main.py:
+origins = [
+    "*"
+    "http://localhost:5173",
+    "https://m-prosody.vercel.app"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
