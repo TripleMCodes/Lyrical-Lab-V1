@@ -147,7 +147,7 @@
 
     try {
         const res = await fetch(
-            `${get_url()}/api/lyric-tools/save-song`,
+            `/lyrical-lab/save-song`,
             {
                 method: "POST",
                 credentials: "include",
