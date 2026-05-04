@@ -491,7 +491,7 @@
    
   const dhandleSave = debounce(handleSave, 100);
   const dgenerate = debounce(generate, 100);
-  const dfetchWordsWrapper = debounce(fetchWordsWrapper, 100);
+  // const dfetchWordsWrapper = debounce(fetchWordsWrapper, 100);
   const dhandleTextSelectionWrapper = debounce(handleTextSelectionWrapper, 100);
 </script>
 
@@ -501,7 +501,7 @@
 <WritingTimer idleSeconds={10} />
 <section  class="ll-container" >
 
-  <Controls onSave={dhandleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={dfetchWordsWrapper} checkFlow={dhandleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={dgenerate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>
+  <Controls onSave={dhandleSave} bind:selected={wordSelected} bind:word={wordSearched} searchWord={fetchWordsWrapper} checkFlow={dhandleTextSelectionWrapper} bind:selectedValue={selectedValue} handleChange={radioBtnChanged} generate={dgenerate} bind:selectedGenre={selectedGenre} handleGenreChange={selectedGenreChanged} bind:selectedFos={selectedFos} handleFosChange={selectedFosChanged} bind:genInput={genInput} createNewSong={createNewSong}/>
 
   
     <Editor bind:editor1={editorContent} bind:wordCount={words} bind:charCount={chars} bind:editor2={editor2Content} bind:selectedText={selectedText} onSelected={handleTextSelection} bind:loading={isLoading} cancelRes={cancleAction} saveDraft={autoSave}/>
