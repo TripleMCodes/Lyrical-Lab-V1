@@ -13,14 +13,7 @@
   let days = 30;
 
   async function load() {
-    // const res = await fetch(`${get_url()}/api/users/dashboard/writing-stats`, {
-    //   credentials: "include"
-    // });
-    // if (!res.ok) throw new Error("Failed to load stats");
-
-    // data = await res.json();
     data = await apiGet('/api/users/dashboard/writing-stats');
-    // console.log(`This is your data ${data}`);
     renderChart();
   }
 

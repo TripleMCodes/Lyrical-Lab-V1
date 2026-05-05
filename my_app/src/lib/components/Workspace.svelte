@@ -64,8 +64,6 @@
     /* gap: 1.2rem; */
     align-items: start;
 
-    /* margin-top:2rem; */
-
     padding: 1rem;
 
     background: linear-gradient(
@@ -138,9 +136,6 @@ button{
     max-height: 100%;
 }
 
-/* .draft{
-    max-height: 200px;
-} */
 .recent-songs, .draft{
     overflow-y:scroll ;
     max-height: 280px;

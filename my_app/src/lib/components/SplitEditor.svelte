@@ -6,7 +6,6 @@
     import SigilSpinner from '../../lib/components/SigilSpinner.svelte';
     import {get_url} from '$lib/url_vars/urls_vars'
     import {apiPost} from '$lib/api/api_proxy'
-    // let editor2 = $state("");
     
    
     let debounceTimer;
@@ -28,19 +27,6 @@
 
         debounceTimer = setTimeout(async () => {
             try{
-                // const res = await fetch(
-                //     `${get_url()}/api/lyric-tools/syllabe-counter`,
-                //     {
-                //         method: "POST",
-                //         credentials: "include", 
-                //         headers: {
-                //             "Content-Type": "application/json"
-                //         },
-                //         body: JSON.stringify({ message: lines })
-                //     }
-
-                // );
-                // const res = await apiPost(`/api/lyric-tools/syllabe-counter`, { message: lines })
                 let temp = {'message': lines};
                 const data = await apiPost(`/api/lyric-tools/syllabe-counter`, temp);
                 editor2 = data.message;
@@ -196,19 +182,6 @@
         min-height: 10%;
         min-width: 10%;
 	}
-
-    /* .ll-container {
-        flex: 1;
-        display: flex;
-
-        width: 150%;
-        height: 200%;
-
-        padding: 1rem;
-        box-sizing: border-box;
-        } */
-
-
      .writing-section {
         flex: 1;
         display: grid;
@@ -410,24 +383,16 @@
    XS — Very small phones (< 375px)
    ----------------------------------------- */
 @media (max-width: 374px) {
-  /* .ll-container {
-    width: 100%;
-    height: 200dvh;         
-     padding: 0.5rem;
-  }  */
 
   .writing-section {
     grid-template-rows: 10fr 4px 2fr;  /* Thinner divider on tiny screens */
     padding: 0.5rem;
     border-radius: 8px;
     height: 200%;
-    /* min-height: 0; */
-    /* width: 200%; */
   }
 
   textarea {
     font-size: 1rem;         /* 2rem is too large for xs — line wrapping gets painful */
-    /* min-height: 80px; */
   }
 
   .editor {
@@ -445,7 +410,6 @@
         transparent 1.5em
       ),
       #0b0014;
-      /* height: 200%; */
   }
 
   .html-overlay {
@@ -478,19 +442,12 @@
    SM — Standard phones (375px – 639px)
    ----------------------------------------- */
 @media (min-width: 375px) and (max-width: 639px) {
-  /* .ll-container {
-    flex: none;
-    width: 100%;
-    height: 500dvh;
-    padding: 0.75rem;
-  } */
-
+  
   .writing-section {
     grid-template-rows: 10fr 5px 2fr;
     padding: 0.75rem;
     border-radius: 10px;
     height: 400%;
-    /* width: 400%; */
   }
 
   textarea {
@@ -539,11 +496,6 @@
    MD — Large phones / small tablets (640px – 1023px)
    ----------------------------------------- */
 @media (min-width: 640px) and (max-width: 1023px) {
-  /* .ll-container {
-    width: 100%;
-    height: 100dvh;
-    padding: 0.875rem;
-  } */
 
   .writing-section {
     grid-template-rows: 10fr 5px 2fr;
@@ -584,11 +536,6 @@
    LG — Tablets / small laptops (1024px – 1279px)
    ----------------------------------------- */
 @media (min-width: 1024px) and (max-width: 1279px) {
-  /* .ll-container {
-    width: 125%;             
-    height: 175%;
-    padding: 0.875rem;
-  } */
 
   .editor {
     font-size: 1.3rem;
@@ -617,10 +564,6 @@
    XL — Standard desktops (1280px – 1599px)
    ----------------------------------------- */
 @media (min-width: 1280px) {
-  /* Base styles are tuned for this range.
-     width: 150%, height: 200%, font-size: 1.5rem
-     are all intentional — preserved. */
-
   .editor {
     font-size: 1.5rem;      /* Matches your base */
     background:
@@ -639,9 +582,6 @@
    2XL — Large / wide monitors (1600px+)
    ----------------------------------------- */
 @media (min-width: 1600px) {
-  /* .ll-container {
-    padding: 1.25rem;
-  } */
 
   .writing-section {
     padding: 1.25rem;
