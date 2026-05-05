@@ -1,4 +1,3 @@
-<!-- Svelte 5 (Runes) - Privacy Policy Page -->
 <script>
 	// No reactive state needed for static policy
 </script>

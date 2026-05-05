@@ -33,18 +33,6 @@
   // Fetch remaining requests on component mount
   async function fetchRequestsRemaining() {
     try {
-      // const res = await fetch(
-      //   `${get_url()}/api/lyric-tools/api-requests-remaining`,
-      //   {
-      //     method: "GET",
-      //     credentials: "include",
-      //     headers: {
-      //       "Content-Type": "application/json"
-      //     }
-      //   }
-      // );
-      // const res = await apiGet(`/api/lyric-tools/api-requests-remaining`);
-    
       const data = await apiGet(`/api/lyric-tools/api-requests-remaining`);
       requestsRemaining = data.requests_remaining;
       maxRequests = data.max_requests_per_day;
@@ -149,20 +137,6 @@
     }
 
     try {
-        // const res = await fetch(
-        //     `/lyrical-lab/save-song`,
-        //     {
-        //         method: "POST",
-        //         credentials: "include",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify(song_to_save)
-        //     }
-        // );
-
-        // const res = await apiPost(`/api/lyric-tools/save-song`, song_to_save)
-        // const msg = await res.json();
         const msg = await apiPost(`/api/lyric-tools/save-song`, song_to_save)
         console.log(msg);
 
@@ -193,20 +167,7 @@
 
   async function increment_session_count(){
     try{
-      // const res = await fetch(`lyrical-lab/increment-session-count`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //    },
-      //     body: JSON.stringify({'sess': 1})
-      // })
-
-
       const res = await apiPost(`/api/lyric-tools/increment-session`, {'sess': 1});
-
-      // if (res.ok){
-      //   console.log("session count incremented")
-      // }
     }catch(err){
       console.log("Couldn't increment session count")
     }
@@ -263,11 +224,8 @@
     let textList = ""
     isLoading = false
     for (let index = 0; index < wordList.length; index++) {
-      const item = wordList[index]
-      // const score = item.score ? ` (${item.score.toFixed(2)})` : ''
-      // const typeLabel = item.type && item.type === 'phrasal' ? ' [phrasal]' : ''
-      // textList += item['word'] + score + typeLabel + '\n'
-      textList += item['word'] + '\n'
+      const item = wordList[index];
+      textList += item['word'] + '\n';
     }
     editor2Content = textList
   }
@@ -310,18 +268,6 @@
         }
       
       try{
-      //   const res = await fetch(
-      //   `${get_url()}/api/lyric-tools/check-flow`,
-      //   {
-      //     method: 'POST',
-      //     credentials: 'include',
-      //     headers:{
-      //       "Content-Type": "application/json"
-      //     },
-      //     body: JSON.stringify({'message': lines})
-      //   }
-      // );
-      // const res = await apiPost(`/api/lyric-tools/check-flow`, {'message': lines});
       const data = await apiPost(`/api/lyric-tools/check-flow`, {'message': lines});
       editor2Content = data.message
       } catch (err){
@@ -349,17 +295,6 @@
 
       debounceTimer = setTimeout( async () => {
         try{
-          // const res = await fetch(
-          //   `lyrical-lab/save-draft`,
-          //   {
-          //     method: "POST",
-          //     credentials: "include",
-          //     headers:{
-          //       "Content-Type": "application/json"
-          //     },
-          //     body: JSON.stringify(draftData)
-          //   }
-          // );
           const resData = await apiPost(`/api/lyric-tools/save-draft`, draftData);
 
           console.log("draft saved");
@@ -429,28 +364,6 @@
     }
     isLoading = true
     try{
-      // const res = await fetch(
-      //   `${get_url()}/api/lyric-tools/generate`,
-      //   {
-      //     method: "POST",
-      //     credentials: "include",
-      //     headers: {
-      //       "Content-Type": "application/json"
-      //     },
-      //     body: JSON.stringify(data)
-      //   }
-      // );
-
-      // const res = await apiPost(`/api/lyric-tools/generate`, data);
-      
-      // if (!res.ok) {
-      //   const errorData = await res.json().catch(() => ({}));
-      //   isLoading = false
-      //   notificationMessage = errorData.detail || "An error occurred";
-      //   notificationType = "error";
-      //   showNotification = true;
-      //   return;
-      // }
       
       const msg = await apiPost(`/api/lyric-tools/generate`, data);
 
