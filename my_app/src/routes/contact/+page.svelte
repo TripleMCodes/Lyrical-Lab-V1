@@ -14,16 +14,6 @@
 		status = '';
 
 		try {
-
-			// const res = await fetch(`${get_url()}/api/contact`, {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json'
-			// 	},
-			// 	body: JSON.stringify({ "email":email, "subject":subject, "message":message })
-			// });
-
-			// if (!res.ok) throw new Error('Failed to send message');
 			const res = await apiPost(`/api/contact`, { "email":email, "subject":subject, "message":message })
 			status = 'Message received. Thank you.';
 			email = '';

@@ -188,19 +188,6 @@
 		margin-bottom: 0.5rem;
 	}
 
-	/* a {
-		color: #c77dff;
-		text-decoration: none;
-		border-bottom: 1px solid #c77dff;
-		transition: all 0.3s ease;
-	} */
-
-	/* a:hover {
-		color: #e0aaff;
-		border-bottom-color: #e0aaff;
-	} */
-
-
 	/* =========================================
    MEDIA QUERIES — About / Landing Page
    xs: < 375px  |  sm: 375–639px  |  md: 640–1023px

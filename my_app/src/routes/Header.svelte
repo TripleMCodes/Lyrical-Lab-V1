@@ -19,12 +19,6 @@
 				<li aria-current={page.url.pathname === '/' ? 'page' : undefined}>
 					<a href={resolve('/')}>Home</a>
 				</li>
-				<!-- <li aria-current={page.url.pathname === '/about' ? 'page' : undefined}>
-					<a href={resolve('/about')}>About</a>
-				</li> -->
-				<!-- <li aria-current={page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
-					<a href={resolve('/sverdle')}>Sverdle</a>
-				</li> -->
 				{#if page.data?.urls?.signup}
 				<li aria-current={page.url.pathname === '/signup' ? 'page' : undefined}>
 					<a href={resolve('/signup')}>Signup</a>

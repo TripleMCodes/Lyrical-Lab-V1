@@ -73,20 +73,6 @@
         // Fetch the full song data from the backend using the doc_id
         try {
             const songId = parseInt(song.doc_id);
-            // const res = await fetch(`${get_url()}/api/lyric-tools/user-songs/${songId}`, {
-            //     method: "GET",
-            //     credentials: "include"
-            // });
-
-            // if (res.ok) {
-            //     const songData = await res.json();
-            //     editingSong.set(songData);
-            //     goto('/lyrical-lab');
-            // } else {
-            //     notificationMessage = "Failed to load song";
-            //     notificationType = "error";
-            //     showNotification = true;
-            // }
             const songData = await apiGet(`/api/lyric-tools/user-songs/${songId}`);
             editingSong.set(songData);
             goto('/lyrical-lab');
@@ -104,15 +90,6 @@
     }
 
     async function updateSongsList() {
-    //     const res5 = await fetch(`${get_url()}/api/lyric-tools/get-notes`, {
-    //     method: "GET",
-    //     credentials: "include"
-    // });
-
-    //     if (res5.ok) {
-    //         notes = await res5.json()
-    //     }
-
         notes = await apiGet(`/api/lyric-tools/get-notes`)
     }
 
@@ -126,18 +103,6 @@
         }
 
         try{
-            // const res = await fetch(
-            //     `${get_url()}/api/lyric-tools/save-note`,
-            //     {
-            //         method: 'POST', 
-            //         credentials: 'include',
-            //         headers:{
-            //             'Content-Type': 'application/json'
-            //         },
-            //         body: JSON.stringify({"note": note, "id":currentNoteId})
-            //     }
-            // )
-            // const res_data = await res.json();
             const res_data = await apiPost('/api/lyric-tools/save-note', {"note": note, "id":currentNoteId})
             updateSongsList()
             notificationMessage = res_data.message;
@@ -157,14 +122,6 @@
         console.log(id)
         // id = Number(id)
         try{
-            // const res = await fetch(`${get_url()}/api/lyric-tools/notes/${id}`,
-            //     {
-            //         method: 'DELETE',
-            //         credentials: 'include'
-            //     }
-            // )
-
-            // const res_data = await res.json();
             const res_data = await apiDelete(`/api/lyric-tools/notes/${id}`)
             updateSongsList()
             notificationMessage = res_data.message;
@@ -277,9 +234,6 @@
     overflow-y:scroll;
 }
 
-/* .main > * {
-    flex-shrink: 0;
-} */
 
 /* If one section should scroll */
 .main.scrollable {
