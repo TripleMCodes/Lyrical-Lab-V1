@@ -1,35 +1,5 @@
 import { get_url } from "$lib/url_vars/urls_vars";
 
-// export async function fetchRhymes(word) {
-//     let url = `${get_url()}/api/lyric-tools/find-rhymes`;
-
-//     console.log("rhyme query ", word)
-//     try {
-//         const res = await fetch(
-//             url,
-//             {
-//                 method: "POST",
-//                 credentials: "include",
-//                 headers: {
-//                     "Content-Type": "application/json"
-//                 },
-//                 body: JSON.stringify({"word": word})
-//             }
-
-//         )
-
-//         if (res.ok) {
-//             return res.json()
-//         }
-//         else {
-//             return {"message": `Error - couldn't fetch rhymes for ${word}`}
-//         }
-//     } catch (err) {
-//         return err
-//     }
-// }
-
-
 export async function fetchRhymes(word) {
     // Note: relative URL — hits SvelteKit, not Render directly
     const res = await fetch('/find-rhymes', {

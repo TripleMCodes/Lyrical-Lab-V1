@@ -10,13 +10,6 @@
 		response = null;
 
 		try {
-			// const res = await fetch(`${get_url()}/api/public/get-rhymes`, {
-			// 	method: 'POST',
-			// 	headers: { 'Content-Type': 'application/json' },
-			// 	body: JSON.stringify({ word: exampleWord })
-			// });
-
-			// response = await res.json();
       response = await apiPost(`/api/public/get-rhymes`, { word: exampleWord })
 		} catch (err) {
 			response = { error: 'Request failed' };
