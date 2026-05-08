@@ -14,7 +14,7 @@
 		status = '';
 
 		try {
-			const res = await apiPost(`/api/contact`, { "email":email, "subject":subject, "message":message })
+			const res = await fetch(`${get_url()}/api/contact`, { "email":email, "subject":subject, "message":message });
 			status = 'Message received. Thank you.';
 			email = '';
 			subject = '';
