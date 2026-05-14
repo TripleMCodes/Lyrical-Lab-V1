@@ -48,19 +48,9 @@ body {
   
   background-attachment: fixed;
   background-size: 100vw 100vh;
-  background-color: var(--color-bg-1);
-  background-image:
-    radial-gradient(
-      60% 60% at 50% 40%,
-      rgba(199, 125, 255, 0.15) 0%,
-      rgba(0, 0, 0, 0) 70%
-    ),
-    linear-gradient(
-      180deg,
-      var(--color-bg-0) 0%,
-      var(--color-bg-1) 35%,
-      var(--color-bg-2) 100%
-    );
+  background:
+			radial-gradient(circle at top, rgba(140, 82, 255, 0.12), transparent 40%),
+			#0b0613;
     
   animation: bg-pulse 10s ease-in-out infinite alternate;
 }

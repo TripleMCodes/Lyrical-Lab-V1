@@ -47,6 +47,9 @@
 				<li aria-current={page.url.pathname === '/public-rhyme-engine'}>
 					<a href={`${resolve('/public-rhyme-engine')}`}>Rhyme Api</a>
 				</li>
+				<li aria-current={page.url.pathname === '/download/m-prosody'}>
+					<a href={`${resolve('/download/m-prosody')}`}>Download App</a>
+				</li>
 
 
 			</ul>
