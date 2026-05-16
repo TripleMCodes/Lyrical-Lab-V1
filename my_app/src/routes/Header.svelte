@@ -8,7 +8,12 @@
     	<img src="/logo_no_bg.png" alt="M-Prosody logo" class="logo-1">
 	</div>
 	<div class="logo">
-		<h1>{'/ɛm ˈprɑːsədi/'}</h1>
+		<h1 
+			class="switch"
+			data-default="/ɛm ˈprɑːsədi/"
+            data-hover="M-Prosody"
+		>
+		</h1>
 		<p>{page.data.logo?.tagline}</p>
 	</div>
 
@@ -58,4 +63,6 @@
 
 
 </header>
+
+
 
