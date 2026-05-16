@@ -105,7 +105,7 @@
   .nav-cta:hover { background: rgba(255,255,255,0.22) !important; }
 
   /* ── HERO ── */
-  .hero {
+ .hero  {
     display: grid;
     grid-template-columns: 5fr 7fr;
     min-height: 480px;

@@ -54,24 +54,33 @@
 </script>
 
 
-<section class="intro">
-      <h2>Welcome to M-Prosody</h2>
-      <p>Experiment with rhymes, synonyms, homophones, and related words. Build your lyrics, check your syllables, and save your creations in your personal notebook.</p>
-      <h3>A Brief About The Rhyme Engine</h3>
+<section class="hero">
+      <div class="hero-image">
+            <span class="phoneme-tag">ə</span>
+            <span class="phoneme-tag">ʌ</span>
+            <span class="phoneme-tag">ɪ</span>
+            <div class="hero-image-inner">
+                  <div class="waveform">
+                  {#each [30, 55, 75, 90, 65, 45, 80, 50, 35, 70, 85, 40, 60, 75, 30] as h}
+                  <div class="waveform-bar" style="height: {h}px;"></div>
+                  {/each}
+                  </div>
+            </div>
+      </div>
 
-      <p>
-      M-Prosody's rhyme engine doesn’t look at how words are spelled—it listens to how they sound.
-      </p>
 
-      <p>
-      It matches rhythm, stress, and vowel flow to find rhymes that actually feel right, then ranks them by strength.
-      </p>
 
-      <p>
-      The engine is still evolving. For now, it understands <strong>sound</strong>, not <strong>meaning</strong>.
-      </p>
-      <a href="/lyrical-lab" class="cta-btn">Start Writing</a>
+      <div class="hero-content">
+            <p class="eyebrow">Welcome to M-Prosody</p>
+            <h1>Write lyrics that <em>sound</em> right.</h1>
+            <p>Experiment with rhymes, synonyms, homophones, and related words. Build your lyrics, check your syllables, and save your creations in your personal notebook.</p>
+            <p>M-Prosody's rhyme engine doesn't look at how words are spelled — it listens to how they sound. It matches rhythm, stress, and vowel flow to find rhymes that actually feel right, then ranks them by strength.</p>
+            <p class="engine-note">The engine is still evolving. For now, it understands <strong>sound</strong>, not meaning.</p>
+            <a href="/lyrical-lab" class="cta-btn">Start Writing →</a>
+      </div>
 </section>
+
+
 
 <section id="search" class="search-section">
       <h2>Lexical Tools</h2>
