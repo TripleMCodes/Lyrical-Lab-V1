@@ -36,14 +36,14 @@
 </svelte:head>
 
 <div class="text-column">
-	<section class="hero">
-		<p class="hero-text">
+	<section class="hero-download">
+		<p class="hero-text-download">
 			Words are rhythm. Rhythm becomes emotion. Emotion becomes memory.
 		</p>
 
 		<h1>M-Prosody Desktop</h1>
 
-		<p class="hero-tagline">
+		<p class="hero-tagline-download">
 			A lyric writing environment built for poets, rappers, storytellers, and restless minds.
 		</p>
 	</section>
@@ -121,14 +121,14 @@
 </div>
 
 <style>
-	:global(body) {
+	/* :global(body) {
 		margin: 0;
 		background:
 			radial-gradient(circle at top, rgba(140, 82, 255, 0.12), transparent 40%),
 			#0b0613;
 		font-family: 'Inter', sans-serif;
 		color: #f3e8ff;
-	}
+	} */
 
 	.text-column {
 		max-width: 800px;
@@ -138,20 +138,20 @@
 		color: #e6ccff;
 	}
 
-	.hero {
+	.hero-download {
 		margin-bottom: 3rem;
 		padding-bottom: 2rem;
 		border-bottom: 1px solid rgba(200, 120, 255, 0.2);
 	}
 
-	.hero-text {
+	.hero-text-download{
 		font-size: 1.1rem;
 		margin-bottom: 1rem;
 		font-style: italic;
 		color: #d4a5ff;
 	}
 
-	.hero-tagline {
+	.hero-tagline-download {
 		font-size: 1.2rem;
 		margin-top: 1.5rem;
 		color: #c77dff;
