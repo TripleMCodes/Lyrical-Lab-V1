@@ -80,9 +80,35 @@
       </div>
 </section>
 
+<div class="section-divider"></div>
+
+<!-- ── FEATURES ── -->
+<section class="features">
+  <div class="features-content">
+    <h2>Everything a lyricist needs.</h2>
+    <p>From finding the perfect rhyme to discovering unexpected synonyms — M-Prosody's suite of lexical tools helps you shape language with precision and feel. Each tool is built around how language actually sounds in context.</p>
+    <p>Save your favourite words and phrases to your personal notebook, revisit them when inspiration calls, and build a personal lexical library over time.</p>
+    <div class="feature-pills">
+      <span class="pill">Rhymes</span>
+      <span class="pill">Synonyms</span>
+      <span class="pill">Homophones</span>
+      <span class="pill">Related Words</span>
+      <span class="pill">Notebook</span>
+    </div>
+  </div>
+
+  <div class="features-image">
+    <div class="feature-grid-illustration">
+      <div class="feat-card accent">Rhyme</div>
+      <div class="feat-card">Synonym</div>
+      <div class="feat-card">Related</div>
+      <div class="feat-card accent">Homophone</div>
+    </div>
+  </div>
+</section>
 
 
-<section id="search" class="search-section">
+<!-- <section id="search" class="search-section">
       <h2>Lexical Tools</h2>
       <div class="search-box">
             <input type="text" id="word-input" placeholder="Enter search here..." bind:value={word}>
@@ -124,4 +150,56 @@
 
       
 
+</section> -->
+
+<div class="section-divider"></div>
+
+
+<!-- ── LEXICAL TOOLS ── -->
+<section id="search">
+  <div class="tools-section">
+    <h2>Lexical Tools</h2>
+
+    <div class="search-box">
+      <div class="input-row">
+        <input
+          type="text"
+          id="word-input"
+          placeholder="Enter search here..."
+          bind:value={word}
+          onkeydown={(e) => e.key === 'Enter' && fetchWordsWrapper()}
+        />
+        <select id="search-type" bind:value={selected}>
+          <option value="rhyme">Rhyme</option>
+          <option value="synonym">Synonym</option>
+          <option value="related">Related</option>
+          <option value="homophone">Homophone</option>
+        </select>
+        <button id="search-btn" onclick={fetchWordsWrapper}>Find Words</button>
+      </div>
+    </div>
+
+    <div class="results-area">
+      {#if isLoading}
+        <SigilSpinner text="Consulting the lexicon…" />
+      {:else}
+        {#if wordList.length > 0 || phraseList.length > 0}
+          <ul id="results-list">
+            {#if phraseList.length > 0}
+              {#each phraseList as lst (lst.phrase)}
+                <li>{lst.phrase}</li>
+              {/each}
+            {/if}
+            {#each wordList as lst (lst.word)}
+              <li>{lst.word}</li>
+            {/each}
+          </ul>
+        {:else}
+          <div class="notify">
+            <p>{notify}</p>
+          </div>
+        {/if}
+      {/if}
+    </div>
+  </div>
 </section>
