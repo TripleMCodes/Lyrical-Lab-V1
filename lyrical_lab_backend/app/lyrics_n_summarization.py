@@ -9,7 +9,7 @@ import os
 
 
 # API_KEY = Path(__file__).parent / "secrets/.env"
-# # API_KEY = 'thisismyapikeynowfornow'
+API_KEY = 'thisismyapikeynowfornow'
 # if not API_KEY.exists():
 #     logging.debug("API key not found")
 #     sys.exit()
@@ -19,7 +19,7 @@ API_KEY = os.getenv("OPEN_ROUTE_KEY")
 def check_api_key():
     if not API_KEY:
         logging.debug("API key not found in environment variable OPEN_ROUTE_KEY")
-        sys.exit()
+        # sys.exit()
 
 check_api_key()
 

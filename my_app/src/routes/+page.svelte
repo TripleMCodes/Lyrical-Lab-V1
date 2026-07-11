@@ -22,7 +22,6 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ word: word })
 			});
-
                         const data = await res.json();
                         console.log('the data is ', data)
                         console.log('the data is ', data.message)
