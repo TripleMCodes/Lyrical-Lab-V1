@@ -2,9 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 
-DATABASE_URL = "postgresql+psycopg://postgres:1234@localhost:5432/mprosody_db"
+DATABASE_URL = os.getenv("DATABASE_URL") or "postgresql+psycopg://postgres:1234@localhost:5432/mprosody_db"
 
-# os.getenv("DATABASE_URL")
+
 
 engine = create_engine(
     DATABASE_URL,
