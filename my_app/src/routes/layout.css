@@ -15,18 +15,18 @@
   --font-mono: 'Fira Mono', monospace;
 
   /* Core background palette */
-  --color-bg-0: hsl(260, 30%, 6%);   /* Deep near-black purple */
-  --color-bg-1: hsl(260, 35%, 9%);
+  --color-bg-0: #0e0b14;   /* Deep near-black purple */
+  --color-bg-1: #140f1f;
   --color-bg-2: #21142e;
 
   /* Neon accents */
   --color-theme-1: #c77dff; /* Neon lavender */
   --color-theme-2: #7b2cff; /* Electric purple */
-  --neon-purple: rgba(199, 125, 255, 0.9);
-  --neon-blue: rgba(0, 243, 255, 0.55);
+  --neon-purple: #c77dffe6;
+  --neon-blue: #00f3ff8c;
 
   /* Text */
-  --color-text: rgba(230, 225, 255, 0.85);
+  --color-text: #e6e1ffd9;
 
   /* Layout */
   --column-width: 42rem;
@@ -122,7 +122,7 @@ header, footer {
   background-color: var(--color-bg-1);
   text-align: center;
   padding: 2rem;
-  border-bottom: 2px solid rgba(123, 44, 255, 0.4);
+  border-bottom: 2px solid #7b2cff66;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 

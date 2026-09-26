@@ -6,4 +6,4 @@ export function get_url(){
     // let url = "http://192.168.0.194:8000"
     return url;
 
-}
+}  

@@ -143,7 +143,7 @@
             {@html editor1}
         </div>
       <textarea
-        class="editor"
+        class="editor wrapper"
         bind:value={editor2}
         bind:this={editorB}
         spellcheck="false"
@@ -385,10 +385,13 @@
 @media (max-width: 374px) {
 
   .writing-section {
-    grid-template-rows: 10fr 4px 2fr;  /* Thinner divider on tiny screens */
-    padding: 0.5rem;
-    border-radius: 8px;
-    height: 200%;
+    /* grid-template-rows: 10fr 4px 2fr;  Thinner divider on tiny screens */
+    /* padding: 0.5rem; */
+    /* border-radius: 8px; */
+    /* height: 400%; */
+    display: flex;
+    flex-direction: column;
+
   }
 
   textarea {
@@ -400,6 +403,7 @@
     line-height: 1.5;
     padding: 0.6rem;
     border-radius: 8px;
+    /* width: auto; */
     /* Lined background scaled to match new font size */
     background:
       repeating-linear-gradient(
@@ -410,6 +414,11 @@
         transparent 1.5em
       ),
       #0b0014;
+      height: 100%;
+  }
+
+  .wrapper{
+    display:none;
   }
 
   .html-overlay {
@@ -417,6 +426,8 @@
     line-height: 1.5;
     padding: 0.6rem;
     border-radius: 8px;
+    display: none;
+
   }
 
   .editor::-webkit-scrollbar {
@@ -426,6 +437,11 @@
   .divider {
     cursor: row-resize;      /* Keep functional — touch users can still drag */
     height: 4px;
+    display: none;
+  }
+
+  .textarea-wrapper {
+    display: none;
   }
 
   .cancle {
@@ -444,16 +460,22 @@
 @media (min-width: 375px) and (max-width: 639px) {
   
   .writing-section {
-    grid-template-rows: 10fr 5px 2fr;
-    padding: 0.75rem;
-    border-radius: 10px;
-    height: 400%;
+    /* grid-template-rows: 10fr 5px 2fr; */
+    /* padding: 0.75rem;
+    border-radius: 10px; */
+    
+    display: flex;
+    flex-direction: column;
+    /* height: 900px; */
+    /* height: 200%; */
+    min-height: 100dvh
   }
 
   textarea {
     font-size: 1.1rem;
-    min-height: 100px;
-  }
+    /* min-height: 100px; */
+    /* height: 100%; */
+  } 
 
   .editor {
     font-size: 1rem;
@@ -469,18 +491,31 @@
         transparent 1.5em
       ),
       #0b0014;
-    height: 200%;
+    /* height: 100%; */
   }
 
   .html-overlay {
     font-size: 1rem;
     line-height: 1.5;
     padding: 0.75rem;
+    display:none;
+  }
+
+  .textarea-wrapper {
+    display: none;
+  }
+  
+  .divider{
+    display: none;
   }
 
   .editor::-webkit-scrollbar {
     width: 6px;
   }
+
+
+
+
 
   .cancle {
     bottom: 1.25rem;
@@ -497,17 +532,17 @@
    ----------------------------------------- */
 @media (min-width: 640px) and (max-width: 1023px) {
 
-  .writing-section {
+   .writing-section {
     grid-template-rows: 10fr 5px 2fr;
     padding: 0.875rem;
     border-radius: 10px;
-  }
+  } 
 
-  textarea {
+   textarea {
     font-size: 1.25rem;
-  }
+  } 
 
-  .editor {
+   .editor {
     font-size: 1.15rem;
     line-height: 1.5;
     padding: 0.875rem;
@@ -520,15 +555,26 @@
         transparent 1.725em   /* 1.15rem × 1.5 line-height */
       ),
       #0b0014;
-  }
+  } 
 
-  .html-overlay {
+   .html-overlay {
     font-size: 1.15rem;
     padding: 0.875rem;
+  } 
+
+   .cancle button {
+    padding: 0.7rem 1.4rem;
+  } 
+
+
+  
+  .cancle {
+    bottom: 1.25rem;
   }
 
   .cancle button {
-    padding: 0.7rem 1.4rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
   }
 }
 

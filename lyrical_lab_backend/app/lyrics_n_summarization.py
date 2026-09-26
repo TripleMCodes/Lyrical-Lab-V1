@@ -14,7 +14,7 @@ API_KEY = 'thisismyapikeynowfornow'
 #     logging.debug("API key not found")
 #     sys.exit()
 
-API_KEY = os.getenv("OPEN_ROUTE_KEY")
+# API_KEY = os.getenv("OPEN_ROUTE_KEY")
 
 def check_api_key():
     if not API_KEY:

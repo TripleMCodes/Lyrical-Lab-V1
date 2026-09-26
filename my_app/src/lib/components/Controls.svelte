@@ -422,6 +422,7 @@
     /* align-items: center; */
     border-radius: 12px;
     width: 100%;
+    display: none;
   }
 
   .l-n-fos-gen label {
@@ -533,6 +534,10 @@
     font-size: 0.85rem;
     border-radius: 12px;
   }
+
+.r-n-l-container{
+  display: none;
+}
 }
 
 /* -----------------------------------------
@@ -550,11 +555,13 @@
    .r-n-l-container{
     display:flex;
     flex-direction:column;
+    display:none;
    }
   .l-n-fos-gen {
     padding: 16px;
     border-radius: 14px;
     width: 100%;
+    display: none;
   }
 
   .l-n-fos-gen label {

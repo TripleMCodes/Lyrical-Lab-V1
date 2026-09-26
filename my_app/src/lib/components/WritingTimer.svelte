@@ -1,4 +1,4 @@
-<script lang="ts">
+x<script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import {get_url} from "$lib/url_vars/urls_vars"
   import {apiGet} from '$lib/api/api_proxy'
@@ -315,4 +315,7 @@
     opacity: 0.45;
     cursor: not-allowed;
   }
+
+
+
 </style>

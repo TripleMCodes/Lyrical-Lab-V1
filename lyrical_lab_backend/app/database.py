@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 
 DATABASE_URL = os.getenv("DATABASE_URL") or "postgresql+psycopg://postgres:1234@localhost:5432/mprosody_db"
-
+# os.getenv("DATABASE_URL") or
 
 
 engine = create_engine(
@@ -14,7 +14,7 @@ engine = create_engine(
 )
 
 SessionLocal = sessionmaker(
-    bind=engine,
+    bind=engine,                                 
     autocommit=False,
     autoflush=False,
     expire_on_commit=False,

@@ -584,6 +584,7 @@
     padding: 12px 14px;
     border-radius: 12px;
     margin-top: 0.5rem;
+    display: none;
   }
 
   .word-counter > div {
@@ -608,8 +609,9 @@
   .ll-container {
     flex-direction: column-reverse;
     width: 100%;
-    /* height: auto; */
-    height: 400%;
+    height: auto;
+    /* height: 400%; */
+    min-height: 100dvh;
     padding: 0.75rem;
     gap: 0.75rem;
     flex: none;
@@ -626,6 +628,7 @@
     border-radius: 14px;
     margin-top: 0.75rem;
     height: 200%;
+    display: none;
   }
 
   .word-counter > div {
