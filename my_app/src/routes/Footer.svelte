@@ -3,7 +3,7 @@
 </script>
 
 <footer>
-    <p>&copy; {date} Lyrical Lab</p>
+    <p>&copy; {date} M-PROSODY</p>
 
     <div class="ft-container">
         <a href="/about">About</a>|

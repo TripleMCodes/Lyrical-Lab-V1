@@ -10,8 +10,8 @@
 	<div class="logo">
 		<h1 
 			class="switch"
-			data-default="/ɛm ˈprɑːsədi/"
-            data-hover="M-Prosody"
+			data-default="M-PROSODY"
+            data-hover="/ɛm ˈprɑːsədi/"
 		>
 		</h1>
 		<p>{page.data.logo?.tagline}</p>

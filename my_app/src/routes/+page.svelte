@@ -75,7 +75,7 @@
             <p>Experiment with rhymes, synonyms, homophones, and related words. Build your lyrics, check your syllables, and save your creations in your personal notebook.</p>
             <p>M-Prosody's rhyme engine doesn't look at how words are spelled — it listens to how they sound. It matches rhythm, stress, and vowel flow to find rhymes that actually feel right, then ranks them by strength.</p>
             <p class="engine-note">The engine is still evolving. For now, it understands <strong>sound</strong>, not meaning.</p>
-            <a href="/lyrical-lab" class="cta-btn">Start Writing →</a>
+            <a href="/lyrical-lab" class="cta-btn">Start Writing</a>
       </div>
 </section>
 
@@ -85,15 +85,8 @@
 <section class="features">
   <div class="features-content">
     <h2>Everything a lyricist needs.</h2>
-    <p>From finding the perfect rhyme to discovering unexpected synonyms — M-Prosody's suite of lexical tools helps you shape language with precision and feel. Each tool is built around how language actually sounds in context.</p>
+    <p>From finding the perfect rhyme to discovering unexpected synonyms — M-Prosody's suite of lexical tools helps you shape language with precision and feel.</p>
     <p>Save your favourite words and phrases to your personal notebook, revisit them when inspiration calls, and build a personal lexical library over time.</p>
-    <div class="feature-pills">
-      <span class="pill">Rhymes</span>
-      <span class="pill">Synonyms</span>
-      <span class="pill">Homophones</span>
-      <span class="pill">Related Words</span>
-      <span class="pill">Notebook</span>
-    </div>
   </div>
 
   <div class="features-image">

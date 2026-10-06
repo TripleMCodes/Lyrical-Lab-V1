@@ -82,6 +82,49 @@
   border-color: #c77dff;
 }
 
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #c77dff 0%, #8b5cf6 100%);
+  color: #120f1d;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.cta-btn:hover,
+.cta-btn:focus-visible {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 16px 36px rgba(168, 85, 247, 0.5);
+  filter: brightness(1.05);
+}
+
+.cta-btn:focus-visible {
+  outline: 2px solid #f5d0fe;
+  outline-offset: 3px;
+}
+
+.cta-btn span {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+
+.features, #search{
+  margin-top: 1rem;
+}
+
+
+
 /* =========================================
    RESULTS LIST & ITEMS
    ========================================= */
